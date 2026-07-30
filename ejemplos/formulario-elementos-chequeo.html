@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elementos de chequeo - Grinclic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <link href="../assets/grinclic-forms.css" rel="stylesheet">
+</head>
+<body>
+  <main class="gc-page">
+    <!-- Organismo: gc-formulario-elementos-chequeo -->
+    <!-- Uso conceptual: <gc-formulario-elementos-chequeo></gc-formulario-elementos-chequeo> -->
+    <form class="gc-form-shell" method="post" action="/elementos-chequeo/actualizar">
+      <header class="gc-form-head">
+        <div class="gc-form-logo gc-form-logo--demo"><img src="../assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
+        <div class="gc-form-title">
+          <h1>Elementos de chequeo</h1>
+          <p>Configuración de preguntas, obligatoriedad, respuesta esperada, sección y orden de visualización.</p>
+        </div>
+        <div class="gc-history">
+          <span><strong>Creado por:</strong> Usuario responsable</span>
+          <span><strong>Realizado por:</strong> Usuario responsable</span>
+          <span class="gc-last-change"><strong>Último cambio:</strong> Pendiente</span>
+        </div>
+      </header>
+
+      <section class="gc-form-section">
+        <div class="row justify-content-center">
+          <div class="col-xl-10 col-lg-11">
+<div class="row g-3">
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Configuración principal</h2>
+                  <p class="gc-section-kicker">Define la pregunta, su estado, tipo de respuesta y obligatoriedad dentro de la lista de chequeo.</p>
+
+                  <div class="row g-3">
+                    <div class="col-lg-6">
+                      <label for="chequeo_nombre" class="form-label"><span class="gc-required">*</span>Chequeo</label>
+                      <input type="text" class="form-control" id="chequeo_nombre" name="chequeo" value="¿El vehículo posee Número UN color naranja?" required>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="chequeo_activo" class="form-label"><span class="gc-required">*</span>Activo</label>
+                      <select class="form-select" id="chequeo_activo" name="activo" required>
+                        <option value="">Seleccione</option>
+                        <option value="Activo" selected>Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="chequeo_obligatoriedad" class="form-label"><span class="gc-required">*</span>Obligatoriedad</label>
+                      <select class="form-select" id="chequeo_obligatoriedad" name="obligatoriedad" required>
+                        <option value="">Seleccione</option>
+                        <option value="SI">SI</option>
+                        <option value="NO" selected>NO</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="chequeo_tipo_respuesta" class="form-label"><span class="gc-required">*</span>Tipo de respuesta</label>
+                      <select class="form-select" id="chequeo_tipo_respuesta" name="tipo_respuesta" required aria-describedby="chequeo_tipo_respuesta_help">
+                        <option value="">Seleccione</option>
+                        <option value="Cerrada" selected>Cerrada</option>
+                        <option value="Abierta">Abierta</option>
+                        <option value="Numérica">Numérica</option>
+                      </select>
+                      <div id="chequeo_tipo_respuesta_help" class="gc-help">Cuando la respuesta sea cerrada, valida si debe existir una respuesta esperada.</div>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="chequeo_respuesta_esperada" class="form-label">Respuesta esperada</label>
+                      <select class="form-select" id="chequeo_respuesta_esperada" name="respuesta_esperada" aria-describedby="chequeo_respuesta_esperada_help">
+                        <option value="">Seleccione</option>
+                        <option value="SI" selected>SI</option>
+                        <option value="NO">NO</option>
+                        <option value="N/A">N/A</option>
+                        <option value="No aplica">No aplica</option>
+                      </select>
+                      <div id="chequeo_respuesta_esperada_help" class="gc-help">Campo relevante principalmente para respuestas cerradas.</div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Clasificación y verificación</h2>
+                  <p class="gc-section-kicker">Ubica el elemento dentro de la lista y define quién debe verificarlo.</p>
+
+                  <div class="row g-3">
+                    <div class="col-lg-4">
+                      <label for="chequeo_verificacion" class="form-label"><span class="gc-required">*</span>Verificación por parte del</label>
+                      <select class="form-select" id="chequeo_verificacion" name="verificacion_por_parte_del" required>
+                        <option value="">Seleccione</option>
+                        <option value="Conductor">Conductor</option>
+                        <option value="Gestor" selected>Gestor</option>
+                        <option value="Proveedor">Proveedor</option>
+                        <option value="Cliente">Cliente</option>
+                        <option value="Equipo interno">Equipo interno</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-5">
+                      <label for="chequeo_seccion" class="form-label"><span class="gc-required">*</span>Sección a la que pertenece</label>
+                      <select class="form-select" id="chequeo_seccion" name="seccion" required>
+                        <option value="">Seleccione</option>
+                        <option value="Vehículo" selected>Vehículo</option>
+                        <option value="Conductor">Conductor</option>
+                        <option value="Documentación">Documentación</option>
+                        <option value="Elementos de seguridad">Elementos de seguridad</option>
+                        <option value="Manifiesto">Manifiesto</option>
+                        <option value="General">General</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="chequeo_orden" class="form-label">Orden</label>
+                      <input type="text" inputmode="numeric" class="form-control" id="chequeo_orden" name="orden" value="1" min="1" step="1" inputmode="numeric">
+                      <div class="gc-help">Controla la posición visual del elemento.</div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Descripción</h2>
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label for="chequeo_descripcion" class="form-label">Descripción</label>
+                      <textarea class="form-control" id="chequeo_descripcion" name="descripcion" rows="4" placeholder="Describe la regla, alcance o criterio de validación del elemento.">Validar que el vehículo cuente con identificación visible cuando aplique para el tipo de residuo transportado.</textarea>
+                      <div class="gc-help">Usa este campo para aclarar criterios de revisión y evitar interpretaciones distintas en operación.</div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="gc-review-footer">
+        <div class="gc-review-box">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="chequeo_confirmar_revision" data-gc-review-check="#chequeo_btn_actualizar">
+            <label class="form-check-label" for="chequeo_confirmar_revision">Confirmo que revisé la pregunta, obligatoriedad, respuesta esperada, sección y orden antes de actualizar el elemento de chequeo.</label>
+          </div>
+          <div class="gc-review-actions">
+            <button class="btn btn-outline-secondary" type="button">Cancelar</button>
+            <button class="btn btn-success" type="submit" id="chequeo_btn_actualizar" disabled>Actualizar elemento</button>
+          </div>
+        </div>
+      </footer>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="../assets/grinclic-forms.js"></script>
+</body>
+</html>

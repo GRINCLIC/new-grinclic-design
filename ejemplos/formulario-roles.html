@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mis roles - Grinclic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <link href="../assets/grinclic-forms.css" rel="stylesheet">
+</head>
+<body>
+  <main class="gc-page">
+    <!-- Organismo: gc-formulario-roles -->
+    <!-- Uso conceptual: <gc-formulario-roles></gc-formulario-roles> -->
+    <form class="gc-form-shell" method="post" action="/roles/actualizar">
+      <header class="gc-form-head">
+        <div class="gc-form-logo gc-form-logo--demo"><img src="../assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
+        <div class="gc-form-title">
+          <h1>Mis roles</h1>
+          <p>Configuración básica del rol, módulo asociado y descripción funcional.</p>
+        </div>
+        <div class="gc-history">
+          <span><strong>Creado por:</strong> Usuario responsable</span>
+          <span><strong>Realizado por:</strong> Usuario responsable</span>
+          <span class="gc-last-change"><strong>Último cambio:</strong> Pendiente</span>
+        </div>
+      </header>
+
+      <section class="gc-form-section">
+        <div class="row justify-content-center">
+          <div class="col-xl-8 col-lg-9">
+<section class="border rounded-3 p-3 bg-white">
+              <h2 class="gc-section-title">Datos del rol/perfil</h2>
+              <p class="gc-section-kicker">Mantén nombres claros y descripciones breves para que el equipo pueda identificar el alcance del perfil sin ambigüedad.</p>
+
+              <div class="row g-3">
+                <div class="col-lg-7">
+                  <label for="rol_nombre" class="form-label"><span class="gc-required">*</span>Nombre del rol</label>
+                  <input type="text" class="form-control" id="rol_nombre" name="nombre_rol" value="Coordinador logístico" required autocomplete="off">
+                </div>
+                <div class="col-lg-5">
+                  <label for="rol_modulo" class="form-label"><span class="gc-required">*</span>Módulo</label>
+                  <select class="form-select" id="rol_modulo" name="modulo" required>
+                    <option value="">Seleccione</option>
+                    <option value="Administración">Administración</option>
+                    <option value="Logística" selected>Logística</option>
+                    <option value="Operación">Operación</option>
+                    <option value="Comercial">Comercial</option>
+                    <option value="Reportes">Reportes</option>
+                    <option value="APP">APP</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="rol_descripcion" class="form-label">Descripción</label>
+                  <textarea class="form-control" id="rol_descripcion" name="descripcion" rows="4" placeholder="Describe el alcance funcional del rol y los permisos asociados.">Perfil encargado de gestionar solicitudes, revisar manifiestos y consultar información operativa.</textarea>
+                  <div class="gc-help">Documenta el alcance para facilitar soporte, auditoría y mantenimiento de permisos.</div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <footer class="gc-review-footer">
+        <div class="gc-review-box">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="rol_confirmar_revision" data-gc-review-check="#rol_btn_actualizar">
+            <label class="form-check-label" for="rol_confirmar_revision">Confirmo que revisé el nombre del rol, el módulo asociado y el alcance funcional antes de actualizar.</label>
+          </div>
+          <div class="gc-review-actions">
+            <button class="btn btn-outline-secondary" type="button">Cancelar</button>
+            <button class="btn btn-success" type="submit" id="rol_btn_actualizar" disabled>Actualizar rol</button>
+          </div>
+        </div>
+      </footer>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="../assets/grinclic-forms.js"></script>
+</body>
+</html>

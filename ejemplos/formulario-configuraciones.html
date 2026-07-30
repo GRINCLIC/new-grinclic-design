@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mis datos / Configuraciones - Grinclic</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <link href="../assets/grinclic-forms.css" rel="stylesheet">
+</head>
+<body>
+  <div class="gc-page">
+<!-- Organismo: gc-formulario-configuraciones -->
+<form class="gc-form-shell" method="post" action="/configuraciones/actualizar" enctype="multipart/form-data">
+  <header class="gc-form-head">
+    <div class="gc-form-logo gc-form-logo--demo"><img src="../assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
+    <div class="gc-form-title">
+      <h1>Mis datos / Configuraciones</h1>
+      <p>Datos generales de la empresa, parámetros operativos, alertas y funcionalidades del sistema.</p>
+    </div>
+    <div class="gc-history">
+      <span><strong>Creado por:</strong> Usuario responsable</span>
+      <span><strong>Realizado por:</strong> Usuario responsable</span>
+      <span class="gc-last-change"><strong>Ultimo cambio:</strong> Pendiente</span>
+    </div>
+  </header>
+
+  <section class="gc-form-section">
+<ul class="nav nav-tabs mb-3" id="config_empresa_tabs" role="tablist">
+      <li class="nav-item" role="presentation"><button class="nav-link active" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab">Información del negocio</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" id="alertas-vigencia-tab" data-bs-toggle="tab" data-bs-target="#alertas-vigencia" type="button" role="tab">Alertas y vigencia</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" id="manifiesto-tab" data-bs-toggle="tab" data-bs-target="#campos-manifiesto" type="button" role="tab">Campos Manifiesto</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" id="solicitudes-tab" data-bs-toggle="tab" data-bs-target="#campos-solicitudes" type="button" role="tab">Campos Solicitudes</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" id="funcionalidad-tab" data-bs-toggle="tab" data-bs-target="#funcionalidad" type="button" role="tab">Funcionalidad</button></li>
+    </ul>
+
+    <div class="tab-content" id="config_empresa_tabs_content">
+      <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" tabindex="0" aria-labelledby="datos-generales-tab">
+        <h2 class="gc-section-title">Información del negocio</h2>
+        <div class="row g-3">
+      <div class="col-lg-6">
+        <label for="config_nombre" class="form-label"><span class="gc-required">*</span>Nombre</label>
+        <input type="text" class="form-control" id="config_nombre" name="nombre" value="Empresa demo" required>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <label for="config_identificacion" class="form-label"><span class="gc-required">*</span>Identificación</label>
+        <input type="text" class="form-control" id="config_identificacion" name="identificacion" value="900123456" required inputmode="numeric" pattern="[0-9]*">
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <label for="config_digito_verificacion" class="form-label"><span class="gc-required">*</span>Dígito de verificación</label>
+        <input type="text" inputmode="numeric" class="form-control" id="config_digito_verificacion" name="digito_verificacion" value="1" required min="0" max="9">
+      </div>
+      <div class="col-lg-4">
+        <label for="config_representante_legal" class="form-label">Representante legal</label>
+        <input type="text" class="form-control" id="config_representante_legal" name="representante_legal" value="Usuario representante">
+      </div>
+      <div class="col-lg-4">
+        <label for="config_telefono" class="form-label"><span class="gc-required">*</span>Teléfono</label>
+        <input type="tel" class="form-control" id="config_telefono" name="telefono" value="6010000000" required>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_direccion" class="form-label"><span class="gc-required">*</span>Dirección</label>
+        <input type="text" class="form-control" id="config_direccion" name="direccion" value="Dirección principal" required>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_contacto_general" class="form-label"><span class="gc-required">*</span>Contacto general</label>
+        <input type="text" class="form-control" id="config_contacto_general" name="contacto_general" value="Contacto general" required>
+      </div>
+      <div class="col-lg-4">
+        <label for="config_pais" class="form-label"><span class="gc-required">*</span>País</label>
+        <select class="form-select" id="config_pais" name="pais" required>
+          <option value="">Seleccione</option>
+          <option value="CO" selected>Colombia</option>
+          <option value="PE">Perú</option>
+          <option value="EC">Ecuador</option>
+          <option value="MX">México</option>
+        </select>
+      </div>
+      <div class="col-lg-4">
+        <label for="config_ciudad_depto" class="form-label"><span class="gc-required">*</span>Ciudad / Depto</label>
+        <select class="form-select" id="config_ciudad_depto" name="ciudad_depto" required>
+          <option value="bogota_cundinamarca" selected>Bogotá D.C. / Cundinamarca</option>
+          <option value="medellin_antioquia">Medellín / Antioquia</option>
+          <option value="cali_valle">Cali / Valle del Cauca</option>
+          <option value="barranquilla_atlantico">Barranquilla / Atlántico</option>
+        </select>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_correos_admon" class="form-label">Correo/s electrónicos de Admon</label>
+        <input type="email" class="form-control" id="config_correos_admon" name="correos_admon" value="admon@empresa.com" multiple>
+        <div class="gc-help">Separar varios correos con coma.</div>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_correos_tecnicos" class="form-label">Correo/s electrónicos Técnicos</label>
+        <input type="email" class="form-control" id="config_correos_tecnicos" name="correos_tecnicos" value="tecnico@empresa.com" multiple>
+        <div class="gc-help">Separar varios correos con coma.</div>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_correos_comercial" class="form-label">Correo/s electrónicos Ger. comercial</label>
+        <input type="email" class="form-control" id="config_correos_comercial" name="correos_comercial" value="comercial@empresa.com" multiple>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_correos_logistica" class="form-label">Correo/s electrónicos de Logística</label>
+        <input type="email" class="form-control" id="config_correos_logistica" name="correos_logistica" value="logistica@empresa.com" multiple>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_correos_conciliaciones" class="form-label">Correo/s electrónicos de conciliaciones</label>
+        <input type="email" class="form-control" id="config_correos_conciliaciones" name="correos_conciliaciones" value="conciliaciones@empresa.com" multiple>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_clave" class="form-label"><span class="gc-required">*</span>Clave</label>
+        <input type="password" class="form-control" id="config_clave" name="clave" value="Configuracion123" required autocomplete="new-password">
+        <div id="config_clave_summary" class="gc-password-summary">
+          Debe tener mínimo 8 caracteres e incluir letra, mayúscula, minúscula y número.
+          <button class="gc-inline-link" type="button" data-bs-toggle="collapse" data-bs-target="#config_clave_rules" aria-expanded="false" aria-controls="config_clave_rules">Ver requisitos</button>
+        </div>
+        <div class="collapse" id="config_clave_rules">
+          <div class="gc-password-rules-card" aria-label="Requisitos de contraseña">
+            <div class="gc-password-rule">Debe incluir al menos una letra.</div>
+            <div class="gc-password-rule">Debe incluir al menos una letra en mayúscula.</div>
+            <div class="gc-password-rule">Debe incluir al menos una letra en minúscula.</div>
+            <div class="gc-password-rule">Debe incluir al menos un número.</div>
+            <div class="gc-password-rule">Debe tener mínimo 8 caracteres.</div>
+          </div>
+        </div>
+        <div class="gc-help">Dato sensible. Debe revisarse antes de actualizar.</div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <label for="config_prefijo" class="form-label">Prefijo</label>
+        <input type="text" class="form-control" id="config_prefijo" name="prefijo" value="GC" maxlength="10">
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <label for="config_sitio_web" class="form-label">Sitio web</label>
+        <input type="url" class="form-control" id="config_sitio_web" name="sitio_web" value="https://www.empresa-demo.com" placeholder="https://">
+      </div>
+
+      <div class="col-12">
+        <hr class="my-1">
+        <h3 class="h6 fw-bold mb-0">Logo e imagen corporativa</h3>
+        <p class="gc-help mb-0">Carga primero el logo que se usará como referencia visual en encabezados, documentos y comunicaciones.</p>
+      </div>
+      <div class="col-lg-6">
+        <div class="mb-3 gc-upload-field">
+          <label for="config_logo" class="form-label">Logo o imagen corporativa</label>
+          <input type="file" class="form-control" id="config_logo" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" aria-describedby="config_logo_specs" data-gc-image-preview-input data-gc-image-preview-target="#config_logo_preview_modal">
+          <div id="config_logo_specs" class="gc-upload-specs">Formatos permitidos: PNG, JPG, JPEG, WEBP o SVG. Peso máximo recomendado: 5 MB.</div>
+          <div class="gc-upload-preview" aria-label="Ejemplo de logo esperado">
+            <div class="gc-upload-thumb"><img src="../assets/logo-demo.svg" alt="Ejemplo de logo demo"></div>
+            <div class="gc-upload-meta">
+              <strong>logo_empresa.svg</strong>
+              <span>Imagen lista para revisar antes de cargar.</span>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#config_logo_preview_modal">Ver vista previa</button>
+          </div>
+        </div>
+        <div class="modal fade" id="config_logo_preview_modal" tabindex="-1" aria-labelledby="config_logo_preview_modal_title" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered gc-logo-preview-dialog">
+            <div class="modal-content gc-image-preview-modal">
+              <div class="modal-header">
+                <h2 class="modal-title fs-6" id="config_logo_preview_modal_title">Vista previa del logo</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+              </div>
+              <div class="modal-body">
+                <div class="gc-logo-preview-stage"><img src="../assets/logo-demo.svg" alt="Vista previa del logo" data-gc-image-preview-output></div>
+                <p class="gc-logo-preview-name" data-gc-image-preview-name>logo_empresa.svg</p>
+              </div>
+              <div class="gc-logo-preview-actions">
+                <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-success" type="button" data-bs-dismiss="modal">Cargar imagen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <hr class="my-1">
+        <h3 class="h6 fw-bold mb-0">Licencia ambiental y contactos críticos</h3>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_licencia_ambiental" class="form-label">Licencia ambiental</label>
+        <input type="text" class="form-control" id="config_licencia_ambiental" name="licencia_ambiental" value="Resolución ambiental vigente">
+      </div>
+      <div class="col-lg-6">
+        <div class="mb-3 gc-upload-field">
+          <label for="config_archivo_licencia_ambiental" class="form-label">Archivo licencia ambiental</label>
+          <input type="file" class="form-control" id="config_archivo_licencia_ambiental" name="archivo_licencia_ambiental" accept="application/pdf,.pdf" aria-describedby="config_archivo_licencia_specs">
+          <div id="config_archivo_licencia_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 15 MB.</div>
+          <div class="gc-upload-preview" aria-label="Archivo licencia ambiental cargado">
+            <span class="gc-upload-file-icon" aria-hidden="true">PDF</span>
+            <div class="gc-upload-meta">
+              <strong>licencia_ambiental.pdf</strong>
+              <span>Adjuntar PDF legible, vigente y sin contraseña.</span>
+            </div>
+            <a class="btn btn-outline-secondary btn-sm ms-auto" href="#" target="_blank" rel="noopener">Ver documento</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label for="config_contacto_logistico" class="form-label">Contacto logístico</label>
+        <input type="text" class="form-control" id="config_contacto_logistico" name="contacto_logistico" value="Contacto logístico">
+      </div>
+      <div class="col-lg-6 gc-search-select" data-gc-search-select>
+        <label class="form-label" for="config_responsable_contingencia_value">Responsable plan de contingencia</label>
+        <input type="hidden" id="config_responsable_contingencia_value" name="responsable_plan_contingencia" value="Responsable operativo">
+        <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span data-gc-search-label>Responsable operativo</span>
+        </button>
+        <div class="dropdown-menu gc-search-menu">
+          <input class="form-control mb-2" type="search" placeholder="Buscar responsable..." data-gc-search-input>
+          <button class="dropdown-item active" type="button" data-gc-option="Responsable operativo">Responsable operativo</button>
+          <button class="dropdown-item" type="button" data-gc-option="Coordinador logístico">Coordinador logístico</button>
+          <button class="dropdown-item" type="button" data-gc-option="Director técnico">Director técnico</button>
+          <button class="dropdown-item" type="button" data-gc-option="Administrador del sistema">Administrador del sistema</button>
+        </div>
+      </div>
+      <div class="col-12">
+        <label for="config_contactos_emergencia" class="form-label">Contactos en caso de emergencia</label>
+        <textarea class="form-control" id="config_contactos_emergencia" name="contactos_emergencia" rows="4" placeholder="Nombre, teléfono, cargo y horario de contacto."></textarea>
+      </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="alertas-vigencia" role="tabpanel" tabindex="0" aria-labelledby="alertas-vigencia-tab">
+        <h2 class="gc-section-title">Alertas</h2>
+        <div class="row g-3 mb-4">
+      <div class="col-lg-4">
+        <label for="alerta_vencimiento_tecnico_mecanica" class="form-label">Alerta F. venc. Técnico mecánica</label>
+        <input type="text" inputmode="numeric" class="form-control" id="alerta_vencimiento_tecnico_mecanica" name="alerta_vencimiento_tecnico_mecanica" value="30" min="0">
+      </div>
+      <div class="col-lg-4">
+        <label for="alerta_vencimiento_soat" class="form-label">Alerta F. venc. SOAT</label>
+        <input type="text" inputmode="numeric" class="form-control" id="alerta_vencimiento_soat" name="alerta_vencimiento_soat" value="30" min="0">
+      </div>
+      <div class="col-lg-4">
+        <label for="alerta_vencimiento_certificados_sanitarios" class="form-label">Alerta F. venc. de certificados sanitarios</label>
+        <input type="text" inputmode="numeric" class="form-control" id="alerta_vencimiento_certificados_sanitarios" name="alerta_vencimiento_certificados_sanitarios" value="30" min="0">
+      </div>
+        </div>
+        <h2 class="gc-section-title">Vigencia solicitudes</h2>
+        <div class="row g-3">
+      <div class="col-lg-4">
+        <label for="vigencia_maxima_dias" class="form-label">Indique vigencia máxima en días</label>
+        <input type="text" inputmode="numeric" class="form-control" id="vigencia_maxima_dias" name="vigencia_maxima_dias" value="15" min="1">
+      </div>
+      <div class="col-lg-4">
+        <label for="observacion_solicitud_carga" class="form-label">Observación solicitud de carga</label>
+        <textarea class="form-control" id="observacion_solicitud_carga" name="observacion_solicitud_carga" rows="3" placeholder="Mensaje visible para solicitudes de carga."></textarea>
+      </div>
+      <div class="col-lg-4">
+        <label for="observacion_solicitud_descarga" class="form-label">Observación solicitud de descarga</label>
+        <textarea class="form-control" id="observacion_solicitud_descarga" name="observacion_solicitud_descarga" rows="3" placeholder="Mensaje visible para solicitudes de descarga."></textarea>
+      </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="campos-manifiesto" role="tabpanel" tabindex="0" aria-labelledby="manifiesto-tab">
+        <h2 class="gc-section-title">Campos personalizados del Manifiesto</h2>
+        <p class="gc-section-kicker">Configura hasta cinco campos adicionales para Manifiesto. Cada grupo conserva título, unidad, formato y obligatoriedad.</p>
+        <div class="accordion" id="configManifiestoAccordion">
+    <div class="accordion-item">
+      <h3 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_1">
+          Campo personalizado Manifiesto 1
+        </button>
+      </h3>
+      <div id="config_manifiesto_campo_1" class="accordion-collapse collapse show" data-bs-parent="#configManifiestoAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+      <div class="col-lg-5">
+        <label for="manifiesto_titulo_campo_1" class="form-label">Título campo 1</label>
+        <input type="text" class="form-control" id="manifiesto_titulo_campo_1" name="manifiesto_titulo_campo_1" maxlength="80">
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_unidad_campo_1" class="form-label">Unidad</label>
+        <select class="form-select" id="manifiesto_unidad_campo_1" name="manifiesto_unidad_campo_1">
+          <option value="kg" selected>kg</option>
+          <option value="Ton">Ton</option>
+          <option value="Und">Und</option>
+          <option value="m3">m³</option>
+          <option value="Gal">Gal</option>
+          <option value="Lot">Lot</option>
+        </select>
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_formato_campo_1" class="form-label">Formato</label>
+        <select class="form-select" id="manifiesto_formato_campo_1" name="manifiesto_formato_campo_1">
+          <option value="texto" selected>Texto</option>
+          <option value="numero">Número</option>
+          <option value="decimal">Decimal</option>
+          <option value="fecha">Fecha</option>
+          <option value="lista">Lista desplegable</option>
+        </select>
+      </div>
+      <div class="col-lg-1 d-flex align-items-end">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_1" name="manifiesto_obligatorio_campo_1" value="1">
+          <label class="form-check-label" for="manifiesto_obligatorio_campo_1">Obligatorio</label>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_2">
+          Campo personalizado Manifiesto 2
+        </button>
+      </h3>
+      <div id="config_manifiesto_campo_2" class="accordion-collapse collapse" data-bs-parent="#configManifiestoAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+      <div class="col-lg-5">
+        <label for="manifiesto_titulo_campo_2" class="form-label">Título campo 2</label>
+        <input type="text" class="form-control" id="manifiesto_titulo_campo_2" name="manifiesto_titulo_campo_2" maxlength="80">
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_unidad_campo_2" class="form-label">Unidad</label>
+        <select class="form-select" id="manifiesto_unidad_campo_2" name="manifiesto_unidad_campo_2">
+          <option value="kg" selected>kg</option>
+          <option value="Ton">Ton</option>
+          <option value="Und">Und</option>
+          <option value="m3">m³</option>
+          <option value="Gal">Gal</option>
+          <option value="Lot">Lot</option>
+        </select>
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_formato_campo_2" class="form-label">Formato</label>
+        <select class="form-select" id="manifiesto_formato_campo_2" name="manifiesto_formato_campo_2">
+          <option value="texto" selected>Texto</option>
+          <option value="numero">Número</option>
+          <option value="decimal">Decimal</option>
+          <option value="fecha">Fecha</option>
+          <option value="lista">Lista desplegable</option>
+        </select>
+      </div>
+      <div class="col-lg-1 d-flex align-items-end">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_2" name="manifiesto_obligatorio_campo_2" value="1">
+          <label class="form-check-label" for="manifiesto_obligatorio_campo_2">Obligatorio</label>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_3">
+          Campo personalizado Manifiesto 3
+        </button>
+      </h3>
+      <div id="config_manifiesto_campo_3" class="accordion-collapse collapse" data-bs-parent="#configManifiestoAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+      <div class="col-lg-5">
+        <label for="manifiesto_titulo_campo_3" class="form-label">Título campo 3</label>
+        <input type="text" class="form-control" id="manifiesto_titulo_campo_3" name="manifiesto_titulo_campo_3" maxlength="80">
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_unidad_campo_3" class="form-label">Unidad</label>
+        <select class="form-select" id="manifiesto_unidad_campo_3" name="manifiesto_unidad_campo_3">
+          <option value="kg" selected>kg</option>
+          <option value="Ton">Ton</option>
+          <option value="Und">Und</option>
+          <option value="m3">m³</option>
+          <option value="Gal">Gal</option>
+          <option value="Lot">Lot</option>
+        </select>
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_formato_campo_3" class="form-label">Formato</label>
+        <select class="form-select" id="manifiesto_formato_campo_3" name="manifiesto_formato_campo_3">
+          <option value="texto" selected>Texto</option>
+          <option value="numero">Número</option>
+          <option value="decimal">Decimal</option>
+          <option value="fecha">Fecha</option>
+          <option value="lista">Lista desplegable</option>
+        </select>
+      </div>
+      <div class="col-lg-1 d-flex align-items-end">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_3" name="manifiesto_obligatorio_campo_3" value="1">
+          <label class="form-check-label" for="manifiesto_obligatorio_campo_3">Obligatorio</label>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_4">
+          Campo personalizado Manifiesto 4
+        </button>
+      </h3>
+      <div id="config_manifiesto_campo_4" class="accordion-collapse collapse" data-bs-parent="#configManifiestoAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+      <div class="col-lg-5">
+        <label for="manifiesto_titulo_campo_4" class="form-label">Título campo 4</label>
+        <input type="text" class="form-control" id="manifiesto_titulo_campo_4" name="manifiesto_titulo_campo_4" maxlength="80">
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_unidad_campo_4" class="form-label">Unidad</label>
+        <select class="form-select" id="manifiesto_unidad_campo_4" name="manifiesto_unidad_campo_4">
+          <option value="kg" selected>kg</option>
+          <option value="Ton">Ton</option>
+          <option value="Und">Und</option>
+          <option value="m3">m³</option>
+          <option value="Gal">Gal</option>
+          <option value="Lot">Lot</option>
+        </select>
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_formato_campo_4" class="form-label">Formato</label>
+        <select class="form-select" id="manifiesto_formato_campo_4" name="manifiesto_formato_campo_4">
+          <option value="texto" selected>Texto</option>
+          <option value="numero">Número</option>
+          <option value="decimal">Decimal</option>
+          <option value="fecha">Fecha</option>
+          <option value="lista">Lista desplegable</option>
+        </select>
+      </div>
+      <div class="col-lg-1 d-flex align-items-end">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_4" name="manifiesto_obligatorio_campo_4" value="1">
+          <label class="form-check-label" for="manifiesto_obligatorio_campo_4">Obligatorio</label>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_5">
+          Campo personalizado Manifiesto 5
+        </button>
+      </h3>
+      <div id="config_manifiesto_campo_5" class="accordion-collapse collapse" data-bs-parent="#configManifiestoAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+      <div class="col-lg-5">
+        <label for="manifiesto_titulo_campo_5" class="form-label">Título campo 5</label>
+        <input type="text" class="form-control" id="manifiesto_titulo_campo_5" name="manifiesto_titulo_campo_5" maxlength="80">
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_unidad_campo_5" class="form-label">Unidad</label>
+        <select class="form-select" id="manifiesto_unidad_campo_5" name="manifiesto_unidad_campo_5">
+          <option value="kg" selected>kg</option>
+          <option value="Ton">Ton</option>
+          <option value="Und">Und</option>
+          <option value="m3">m³</option>
+          <option value="Gal">Gal</option>
+          <option value="Lot">Lot</option>
+        </select>
+      </div>
+      <div class="col-lg-3">
+        <label for="manifiesto_formato_campo_5" class="form-label">Formato</label>
+        <select class="form-select" id="manifiesto_formato_campo_5" name="manifiesto_formato_campo_5">
+          <option value="texto" selected>Texto</option>
+          <option value="numero">Número</option>
+          <option value="decimal">Decimal</option>
+          <option value="fecha">Fecha</option>
+          <option value="lista">Lista desplegable</option>
+        </select>
+      </div>
+      <div class="col-lg-1 d-flex align-items-end">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_5" name="manifiesto_obligatorio_campo_5" value="1">
+          <label class="form-check-label" for="manifiesto_obligatorio_campo_5">Obligatorio</label>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="campos-solicitudes" role="tabpanel" tabindex="0" aria-labelledby="solicitudes-tab">
+        <h2 class="gc-section-title">Campos personalizados Solicitudes</h2>
+        <p class="gc-section-kicker">Configura hasta dos campos adicionales para solicitudes.</p>
+        <div class="accordion" id="configSolicitudesAccordion">
+    <div class="accordion-item">
+      <h3 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#config_solicitudes_campo_1">
+          Campo personalizado Solicitudes 1
+        </button>
+      </h3>
+      <div id="config_solicitudes_campo_1" class="accordion-collapse collapse show" data-bs-parent="#configSolicitudesAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+      <div class="col-lg-5">
+        <label for="solicitudes_titulo_campo_1" class="form-label">Título campo 1</label>
+        <input type="text" class="form-control" id="solicitudes_titulo_campo_1" name="solicitudes_titulo_campo_1" maxlength="80">
+      </div>
+      <div class="col-lg-5">
+        <label for="solicitudes_formato_campo_1" class="form-label">Formato</label>
+        <select class="form-select" id="solicitudes_formato_campo_1" name="solicitudes_formato_campo_1">
+          <option value="texto" selected>Texto</option>
+          <option value="numero">Número</option>
+          <option value="decimal">Decimal</option>
+          <option value="fecha">Fecha</option>
+          <option value="lista">Lista desplegable</option>
+        </select>
+      </div>
+      <div class="col-lg-1 d-flex align-items-end">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="solicitudes_obligatorio_campo_1" name="solicitudes_obligatorio_campo_1" value="1">
+          <label class="form-check-label" for="solicitudes_obligatorio_campo_1">Obligatorio</label>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_solicitudes_campo_2">
+          Campo personalizado Solicitudes 2
+        </button>
+      </h3>
+      <div id="config_solicitudes_campo_2" class="accordion-collapse collapse" data-bs-parent="#configSolicitudesAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+      <div class="col-lg-5">
+        <label for="solicitudes_titulo_campo_2" class="form-label">Título campo 2</label>
+        <input type="text" class="form-control" id="solicitudes_titulo_campo_2" name="solicitudes_titulo_campo_2" maxlength="80">
+      </div>
+      <div class="col-lg-5">
+        <label for="solicitudes_formato_campo_2" class="form-label">Formato</label>
+        <select class="form-select" id="solicitudes_formato_campo_2" name="solicitudes_formato_campo_2">
+          <option value="texto" selected>Texto</option>
+          <option value="numero">Número</option>
+          <option value="decimal">Decimal</option>
+          <option value="fecha">Fecha</option>
+          <option value="lista">Lista desplegable</option>
+        </select>
+      </div>
+      <div class="col-lg-1 d-flex align-items-end">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="solicitudes_obligatorio_campo_2" name="solicitudes_obligatorio_campo_2" value="1">
+          <label class="form-check-label" for="solicitudes_obligatorio_campo_2">Obligatorio</label>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="funcionalidad" role="tabpanel" tabindex="0" aria-labelledby="funcionalidad-tab">
+        <h2 class="gc-section-title">Funcionalidad</h2>
+        <p class="gc-section-kicker">Las opciones se agrupan en acordeones para reducir scroll y facilitar la revisión de configuraciones críticas.</p>
+        <div class="accordion" id="configFuncionalidadAccordion">
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#func_solicitudes_manifiesto">
+        Solicitudes y Manifiesto
+      </button>
+    </h3>
+    <div id="func_solicitudes_manifiesto" class="accordion-collapse collapse show" data-bs-parent="#configFuncionalidadAccordion">
+      <div class="accordion-body">
+        <div class="row g-3">
+      <div class="col-lg-6">
+        <label for="porcentaje_solicitudes_preprogramadas" class="form-label">Porcentaje aparición solicitudes pre-programadas según frecuencia</label>
+        <input type="text" inputmode="numeric" class="form-control" id="porcentaje_solicitudes_preprogramadas" name="porcentaje_solicitudes_preprogramadas" value="80" min="0" max="100" step="1">
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="habilitar_lista_chequeo_campo_label">Desea habilitar lista de chequeo en campo desde el diligenciamiento del Manifiesto?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="habilitar_lista_chequeo_campo_label">
+            <input class="btn-check" type="radio" name="habilitar_lista_chequeo_campo" id="habilitar_lista_chequeo_campo_no" value="NO">
+            <label class="btn" for="habilitar_lista_chequeo_campo_no">NO</label>
+            <input class="btn-check" type="radio" name="habilitar_lista_chequeo_campo" id="habilitar_lista_chequeo_campo_si" value="SI" checked>
+            <label class="btn" for="habilitar_lista_chequeo_campo_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="inhabilitar_obligatoriedad_lista_chequeo_campo_label">Desea inhabilitar obligatoriedad en lista de chequeo en campo desde el diligenciamiento del Manifiesto?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="inhabilitar_obligatoriedad_lista_chequeo_campo_label">
+            <input class="btn-check" type="radio" name="inhabilitar_obligatoriedad_lista_chequeo_campo" id="inhabilitar_obligatoriedad_lista_chequeo_campo_no" value="NO" checked>
+            <label class="btn" for="inhabilitar_obligatoriedad_lista_chequeo_campo_no">NO</label>
+            <input class="btn-check" type="radio" name="inhabilitar_obligatoriedad_lista_chequeo_campo" id="inhabilitar_obligatoriedad_lista_chequeo_campo_si" value="SI">
+            <label class="btn" for="inhabilitar_obligatoriedad_lista_chequeo_campo_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="habilitar_otro_residuo_label">Habilitar campo “Otro residuo” al diligenciar Manifiesto</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="habilitar_otro_residuo_label">
+            <input class="btn-check" type="radio" name="habilitar_otro_residuo" id="habilitar_otro_residuo_no" value="NO" checked>
+            <label class="btn" for="habilitar_otro_residuo_no">NO</label>
+            <input class="btn-check" type="radio" name="habilitar_otro_residuo" id="habilitar_otro_residuo_si" value="SI">
+            <label class="btn" for="habilitar_otro_residuo_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="duplicar_declarado_replicar_datos_label">Desea que al duplicar declarado/servicio replique precio, frecuencia y hoja de seguridad/caracterización</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="duplicar_declarado_replicar_datos_label">
+            <input class="btn-check" type="radio" name="duplicar_declarado_replicar_datos" id="duplicar_declarado_replicar_datos_no" value="NO" checked>
+            <label class="btn" for="duplicar_declarado_replicar_datos_no">NO</label>
+            <input class="btn-check" type="radio" name="duplicar_declarado_replicar_datos" id="duplicar_declarado_replicar_datos_si" value="SI">
+            <label class="btn" for="duplicar_declarado_replicar_datos_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="obligar_peso_lleno_vacio_label">Obligatoriedad en el registro de peso lleno y peso vacío en el Manifiesto de carga</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="obligar_peso_lleno_vacio_label">
+            <input class="btn-check" type="radio" name="obligar_peso_lleno_vacio" id="obligar_peso_lleno_vacio_no" value="NO" checked>
+            <label class="btn" for="obligar_peso_lleno_vacio_no">NO</label>
+            <input class="btn-check" type="radio" name="obligar_peso_lleno_vacio" id="obligar_peso_lleno_vacio_si" value="SI">
+            <label class="btn" for="obligar_peso_lleno_vacio_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="habilitar_observacion_respuestas_cerradas_label">Desea habilitar una observación para las respuestas cerradas de la lista de chequeo interna y en campo?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="habilitar_observacion_respuestas_cerradas_label">
+            <input class="btn-check" type="radio" name="habilitar_observacion_respuestas_cerradas" id="habilitar_observacion_respuestas_cerradas_no" value="NO" checked>
+            <label class="btn" for="habilitar_observacion_respuestas_cerradas_no">NO</label>
+            <input class="btn-check" type="radio" name="habilitar_observacion_respuestas_cerradas" id="habilitar_observacion_respuestas_cerradas_si" value="SI">
+            <label class="btn" for="habilitar_observacion_respuestas_cerradas_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="obligar_especificaciones_adicionales_label">Habilitar obligatoriedad en especificaciones adicionales desde solicitudes?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="obligar_especificaciones_adicionales_label">
+            <input class="btn-check" type="radio" name="obligar_especificaciones_adicionales" id="obligar_especificaciones_adicionales_no" value="NO" checked>
+            <label class="btn" for="obligar_especificaciones_adicionales_no">NO</label>
+            <input class="btn-check" type="radio" name="obligar_especificaciones_adicionales" id="obligar_especificaciones_adicionales_si" value="SI">
+            <label class="btn" for="obligar_especificaciones_adicionales_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="obligar_categorias_declarado_label">Desea habilitar obligatoriedad para relacionar categorías del declarado?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="obligar_categorias_declarado_label">
+            <input class="btn-check" type="radio" name="obligar_categorias_declarado" id="obligar_categorias_declarado_no" value="NO" checked>
+            <label class="btn" for="obligar_categorias_declarado_no">NO</label>
+            <input class="btn-check" type="radio" name="obligar_categorias_declarado" id="obligar_categorias_declarado_si" value="SI">
+            <label class="btn" for="obligar_categorias_declarado_si">SI</label>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#func_conciliacion_indicadores">
+        Conciliación e indicadores
+      </button>
+    </h3>
+    <div id="func_conciliacion_indicadores" class="accordion-collapse collapse" data-bs-parent="#configFuncionalidadAccordion">
+      <div class="accordion-body">
+        <div class="row g-3">
+      <div class="col-lg-7">
+        <label for="tipo_desviacion_peso" class="form-label">Desviación de peso en conciliaciones</label>
+        <div class="row g-2">
+          <div class="col-md-6">
+            <select class="form-select" id="tipo_desviacion_peso" name="tipo_desviacion_peso">
+              <option value="porcentaje" selected>Porcentaje</option>
+              <option value="valor_absoluto">Valor absoluto</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <input type="text" inputmode="numeric" class="form-control" id="valor_desviacion_peso" name="valor_desviacion_peso" value="5.00" step="0.01" min="0">
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <label for="unidad_medida_indicadores" class="form-label">Unidad de medida de indicadores</label>
+        <select class="form-select" id="unidad_medida_indicadores" name="unidad_medida_indicadores">
+          <option value="kg" selected>kg</option>
+          <option value="Ton">Ton</option>
+          <option value="Und">Und</option>
+          <option value="m3">m³</option>
+          <option value="Gal">Gal</option>
+        </select>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="replicar_datos_conciliar_cliente_label">Habilitar replicación de datos al conciliar CLIENTE</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="replicar_datos_conciliar_cliente_label">
+            <input class="btn-check" type="radio" name="replicar_datos_conciliar_cliente" id="replicar_datos_conciliar_cliente_no" value="NO">
+            <label class="btn" for="replicar_datos_conciliar_cliente_no">NO</label>
+            <input class="btn-check" type="radio" name="replicar_datos_conciliar_cliente" id="replicar_datos_conciliar_cliente_si" value="SI" checked>
+            <label class="btn" for="replicar_datos_conciliar_cliente_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="replicar_datos_conciliar_proveedor_label">Habilitar replicación de datos al conciliar PROVEEDOR</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="replicar_datos_conciliar_proveedor_label">
+            <input class="btn-check" type="radio" name="replicar_datos_conciliar_proveedor" id="replicar_datos_conciliar_proveedor_no" value="NO">
+            <label class="btn" for="replicar_datos_conciliar_proveedor_no">NO</label>
+            <input class="btn-check" type="radio" name="replicar_datos_conciliar_proveedor" id="replicar_datos_conciliar_proveedor_si" value="SI" checked>
+            <label class="btn" for="replicar_datos_conciliar_proveedor_si">SI</label>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#func_actas_facturacion">
+        Actas y facturación
+      </button>
+    </h3>
+    <div id="func_actas_facturacion" class="accordion-collapse collapse" data-bs-parent="#configFuncionalidadAccordion">
+      <div class="accordion-body">
+        <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="habilitar_descarga_actas_estado_factura_label">Desea habilitar descarga de actas por estado de factura?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="habilitar_descarga_actas_estado_factura_label">
+            <input class="btn-check" type="radio" name="habilitar_descarga_actas_estado_factura" id="habilitar_descarga_actas_estado_factura_no" value="NO" checked>
+            <label class="btn" for="habilitar_descarga_actas_estado_factura_no">NO</label>
+            <input class="btn-check" type="radio" name="habilitar_descarga_actas_estado_factura" id="habilitar_descarga_actas_estado_factura_si" value="SI">
+            <label class="btn" for="habilitar_descarga_actas_estado_factura_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="habilitar_aprobacion_actas_label">Habilitar aprobación de actas</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="habilitar_aprobacion_actas_label">
+            <input class="btn-check" type="radio" name="habilitar_aprobacion_actas" id="habilitar_aprobacion_actas_no" value="NO">
+            <label class="btn" for="habilitar_aprobacion_actas_no">NO</label>
+            <input class="btn-check" type="radio" name="habilitar_aprobacion_actas" id="habilitar_aprobacion_actas_si" value="SI" checked>
+            <label class="btn" for="habilitar_aprobacion_actas_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="obligar_imagen_aprobacion_actas_label">Habilitar obligatoriedad de carga de imagen en la aprobación de actas</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="obligar_imagen_aprobacion_actas_label">
+            <input class="btn-check" type="radio" name="obligar_imagen_aprobacion_actas" id="obligar_imagen_aprobacion_actas_no" value="NO" checked>
+            <label class="btn" for="obligar_imagen_aprobacion_actas_no">NO</label>
+            <input class="btn-check" type="radio" name="obligar_imagen_aprobacion_actas" id="obligar_imagen_aprobacion_actas_si" value="SI">
+            <label class="btn" for="obligar_imagen_aprobacion_actas_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="habilitar_acta_por_residuo_label">Habilitar generación de acta por residuo</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="habilitar_acta_por_residuo_label">
+            <input class="btn-check" type="radio" name="habilitar_acta_por_residuo" id="habilitar_acta_por_residuo_no" value="NO" checked>
+            <label class="btn" for="habilitar_acta_por_residuo_no">NO</label>
+            <input class="btn-check" type="radio" name="habilitar_acta_por_residuo" id="habilitar_acta_por_residuo_si" value="SI">
+            <label class="btn" for="habilitar_acta_por_residuo_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-check gc-check-card">
+          <input class="form-check-input" type="checkbox" id="acta_automatica_formato" name="acta_automatica_formato" value="1">
+          <label class="form-check-label" for="acta_automatica_formato">Habilitar generación de acta automática por tipo de formato de acta</label>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-check gc-check-card">
+          <input class="form-check-input" type="checkbox" id="acta_automatica_factura_pagada_api_emlaze" name="acta_automatica_factura_pagada_api_emlaze" value="1">
+          <label class="form-check-label" for="acta_automatica_factura_pagada_api_emlaze">Generar Acta automática por estado de factura pagada Api Emlaze</label>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="visualizar_precio_compra_manifiesto_descarga_label">Habilitar visualización de precio de compra en Manifiesto de descarga?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="visualizar_precio_compra_manifiesto_descarga_label">
+            <input class="btn-check" type="radio" name="visualizar_precio_compra_manifiesto_descarga" id="visualizar_precio_compra_manifiesto_descarga_no" value="NO" checked>
+            <label class="btn" for="visualizar_precio_compra_manifiesto_descarga_no">NO</label>
+            <input class="btn-check" type="radio" name="visualizar_precio_compra_manifiesto_descarga" id="visualizar_precio_compra_manifiesto_descarga_si" value="SI">
+            <label class="btn" for="visualizar_precio_compra_manifiesto_descarga_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="habilitar_formato_tirilla_recibo_descarga_label">Habilitar formato tipo tirilla para el recibo del Manifiesto de descarga?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="habilitar_formato_tirilla_recibo_descarga_label">
+            <input class="btn-check" type="radio" name="habilitar_formato_tirilla_recibo_descarga" id="habilitar_formato_tirilla_recibo_descarga_no" value="NO" checked>
+            <label class="btn" for="habilitar_formato_tirilla_recibo_descarga_no">NO</label>
+            <input class="btn-check" type="radio" name="habilitar_formato_tirilla_recibo_descarga" id="habilitar_formato_tirilla_recibo_descarga_si" value="SI">
+            <label class="btn" for="habilitar_formato_tirilla_recibo_descarga_si">SI</label>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#func_app_proveedores_rutas">
+        APP, proveedores y rutas
+      </button>
+    </h3>
+    <div id="func_app_proveedores_rutas" class="accordion-collapse collapse" data-bs-parent="#configFuncionalidadAccordion">
+      <div class="accordion-body">
+        <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="obligar_ficha_residuo_peligroso_label">Obligatorio cargue ficha de datos de seguridad/caracterización residuo peligroso</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="obligar_ficha_residuo_peligroso_label">
+            <input class="btn-check" type="radio" name="obligar_ficha_residuo_peligroso" id="obligar_ficha_residuo_peligroso_no" value="NO">
+            <label class="btn" for="obligar_ficha_residuo_peligroso_no">NO</label>
+            <input class="btn-check" type="radio" name="obligar_ficha_residuo_peligroso" id="obligar_ficha_residuo_peligroso_si" value="SI" checked>
+            <label class="btn" for="obligar_ficha_residuo_peligroso_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="obligar_ficha_residuo_no_peligroso_label">Obligatorio cargue ficha de datos de seguridad/caracterización residuo NO peligroso</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="obligar_ficha_residuo_no_peligroso_label">
+            <input class="btn-check" type="radio" name="obligar_ficha_residuo_no_peligroso" id="obligar_ficha_residuo_no_peligroso_no" value="NO" checked>
+            <label class="btn" for="obligar_ficha_residuo_no_peligroso_no">NO</label>
+            <input class="btn-check" type="radio" name="obligar_ficha_residuo_no_peligroso" id="obligar_ficha_residuo_no_peligroso_si" value="SI">
+            <label class="btn" for="obligar_ficha_residuo_no_peligroso_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="obligar_lista_chequeo_interna_app_label">Obligar el registro de la lista de chequeo interna para cargar Manifiesto desde APP</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="obligar_lista_chequeo_interna_app_label">
+            <input class="btn-check" type="radio" name="obligar_lista_chequeo_interna_app" id="obligar_lista_chequeo_interna_app_no" value="NO" checked>
+            <label class="btn" for="obligar_lista_chequeo_interna_app_no">NO</label>
+            <input class="btn-check" type="radio" name="obligar_lista_chequeo_interna_app" id="obligar_lista_chequeo_interna_app_si" value="SI">
+            <label class="btn" for="obligar_lista_chequeo_interna_app_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="obligar_adjunto_solicitud_descarga_label">Obligar adjunto en solicitud de descarga</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="obligar_adjunto_solicitud_descarga_label">
+            <input class="btn-check" type="radio" name="obligar_adjunto_solicitud_descarga" id="obligar_adjunto_solicitud_descarga_no" value="NO" checked>
+            <label class="btn" for="obligar_adjunto_solicitud_descarga_no">NO</label>
+            <input class="btn-check" type="radio" name="obligar_adjunto_solicitud_descarga" id="obligar_adjunto_solicitud_descarga_si" value="SI">
+            <label class="btn" for="obligar_adjunto_solicitud_descarga_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="permitir_gestores_sucursales_declaraciones_label">Permitir a clientes gestores relacionar sucursales a declaraciones</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="permitir_gestores_sucursales_declaraciones_label">
+            <input class="btn-check" type="radio" name="permitir_gestores_sucursales_declaraciones" id="permitir_gestores_sucursales_declaraciones_no" value="NO" checked>
+            <label class="btn" for="permitir_gestores_sucursales_declaraciones_no">NO</label>
+            <input class="btn-check" type="radio" name="permitir_gestores_sucursales_declaraciones" id="permitir_gestores_sucursales_declaraciones_si" value="SI">
+            <label class="btn" for="permitir_gestores_sucursales_declaraciones_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="habilitar_correos_doble_via_proveedores_label">Desea habilitar envío de correos en doble vía de proveedores?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="habilitar_correos_doble_via_proveedores_label">
+            <input class="btn-check" type="radio" name="habilitar_correos_doble_via_proveedores" id="habilitar_correos_doble_via_proveedores_no" value="NO" checked>
+            <label class="btn" for="habilitar_correos_doble_via_proveedores_no">NO</label>
+            <input class="btn-check" type="radio" name="habilitar_correos_doble_via_proveedores" id="habilitar_correos_doble_via_proveedores_si" value="SI">
+            <label class="btn" for="habilitar_correos_doble_via_proveedores_si">SI</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="gc-question">
+          <label class="form-label" id="permitir_rutas_mismo_vehiculo_diferentes_conductores_label">Desea permitir registrar rutas con el mismo vehículo para diferentes conductores?</label>
+          <div class="gc-yes-no" role="radiogroup" aria-labelledby="permitir_rutas_mismo_vehiculo_diferentes_conductores_label">
+            <input class="btn-check" type="radio" name="permitir_rutas_mismo_vehiculo_diferentes_conductores" id="permitir_rutas_mismo_vehiculo_diferentes_conductores_no" value="NO" checked>
+            <label class="btn" for="permitir_rutas_mismo_vehiculo_diferentes_conductores_no">NO</label>
+            <input class="btn-check" type="radio" name="permitir_rutas_mismo_vehiculo_diferentes_conductores" id="permitir_rutas_mismo_vehiculo_diferentes_conductores_si" value="SI">
+            <label class="btn" for="permitir_rutas_mismo_vehiculo_diferentes_conductores_si">SI</label>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="gc-review-footer">
+    <div class="gc-review-box">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="confirmar_revision_configuracion" data-gc-review-check="#btn_actualizar_configuracion">
+        <label class="form-check-label" for="confirmar_revision_configuracion">Confirmo que revisé los datos sensibles, alertas y funcionalidades críticas antes de actualizar.</label>
+      </div>
+      <div class="gc-review-actions">
+        <button class="btn btn-outline-secondary" type="button">Cancelar</button>
+        <button class="btn btn-success" type="submit" id="btn_actualizar_configuracion" disabled>Actualizar configuración</button>
+      </div>
+    </div>
+  </footer>
+</form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="../assets/grinclic-forms.js"></script>
+</body>
+</html>

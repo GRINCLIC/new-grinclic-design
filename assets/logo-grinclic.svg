@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 56" role="img" aria-labelledby="title desc">
+  <title id="title">Logo Grinclic</title>
+  <desc id="desc">Marca Grinclic para la biblioteca interna de formularios.</desc>
+  <defs>
+    <linearGradient id="gcGradient" x1="8" y1="8" x2="50" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3e9836"/>
+      <stop offset="1" stop-color="#1b7f4d"/>
+    </linearGradient>
+  </defs>
+  <rect width="190" height="56" rx="12" fill="#ffffff"/>
+  <g transform="translate(8 8)">
+    <rect width="40" height="40" rx="10" fill="url(#gcGradient)"/>
+    <path d="M13.2 24.4c0-7.2 5.4-12.5 12.8-12.5 3.4 0 6.3 1.1 8.4 3l-3.2 3.5c-1.3-1.2-2.9-1.8-5-1.8-4.2 0-7.2 3-7.2 7.7 0 4.8 3 7.8 7.4 7.8 1.5 0 2.9-.3 4-.9v-4.1h-5.1v-4.4h10.1v11.1c-2.4 1.9-5.7 2.9-9.2 2.9-7.6 0-13-5.2-13-12.3Z" fill="#ffffff"/>
+    <path d="M11.8 30.7c2.7 4.1 7 6.3 12.5 6.3 5.8 0 10.6-2.5 13.2-6.7" fill="none" stroke="#fac500" stroke-width="2.4" stroke-linecap="round" opacity=".95"/>
+  </g>
+  <g transform="translate(58 15)">
+    <text x="0" y="22" font-family="Montserrat, Inter, Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="-.6" fill="#1b7f4d">Grinclic</text>
+    <circle cx="105" cy="10" r="3.6" fill="#fac500"/>
+  </g>
+</svg>

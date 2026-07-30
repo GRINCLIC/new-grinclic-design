@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejemplo Mis clientes / Actualizar cliente - Grinclic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <link href="../assets/grinclic-forms.css" rel="stylesheet">
+</head>
+<body>
+  <main class="gc-page">
+<!-- Organismo: gc-formulario-clientes -->
+    <!-- Uso conceptual: <gc-formulario-clientes></gc-formulario-clientes> -->
+    <form class="gc-form-shell" method="post" action="/clientes/actualizar">
+      <header class="gc-form-head">
+        <div class="gc-form-logo gc-form-logo--demo"><img src="../assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
+        <div class="gc-form-title">
+          <h1>Mis clientes</h1>
+          <p>Actualización de información general, ubicación, contactos, configuración comercial e integración.</p>
+        </div>
+        <div class="gc-history">
+          <span><strong>Creado por:</strong> Usuario responsable</span>
+          <span><strong>Realizado por:</strong> Usuario responsable</span>
+          <span class="gc-last-change"><strong>Último cambio:</strong> 2026-06-09 15:00:35</span>
+        </div>
+      </header>
+    
+      <section class="gc-form-section">
+<ul class="nav nav-tabs mb-3" id="cliente_tabs" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" id="cliente-general-tab" data-bs-toggle="tab" data-bs-target="#cliente-general" type="button" role="tab" aria-controls="cliente-general" aria-selected="true">General y ubicación</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" id="cliente-contactos-tab" data-bs-toggle="tab" data-bs-target="#cliente-contactos" type="button" role="tab" aria-controls="cliente-contactos" aria-selected="false">Contactos y legales</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" id="cliente-comercial-tab" data-bs-toggle="tab" data-bs-target="#cliente-comercial" type="button" role="tab" aria-controls="cliente-comercial" aria-selected="false">Comercial y horarios</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" id="cliente-configuracion-tab" data-bs-toggle="tab" data-bs-target="#cliente-configuracion" type="button" role="tab" aria-controls="cliente-configuracion" aria-selected="false">Configuración</button></li>
+        </ul>
+    
+        <div class="tab-content" id="cliente_tabs_content">
+          <div class="tab-pane fade show active" id="cliente-general" role="tabpanel" tabindex="0" aria-labelledby="cliente-general-tab">
+            <div class="row g-3">
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Datos generales</h2>
+                  <div class="row g-3">
+                    <div class="col-lg-6">
+                      <label for="cliente_nombre" class="form-label"><span class="gc-required">*</span>Nombre cliente</label>
+                      <input type="text" class="form-control" id="cliente_nombre" name="nombre_cliente" value="Cliente demo S.A.S." required>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <label for="cliente_estado" class="form-label"><span class="gc-required">*</span>Estado</label>
+                      <select class="form-select" id="cliente_estado" name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option value="Activo" selected>Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                        <option value="Suspendido">Suspendido</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <label for="cliente_categoria" class="form-label"><span class="gc-required">*</span>Categoría</label>
+                      <select class="form-select" id="cliente_categoria" name="categoria" required>
+                        <option value="">Seleccione</option>
+                        <option value="Directo" selected>Directo</option>
+                        <option value="Indirecto">Indirecto</option>
+                        <option value="Gestor">Gestor</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <label for="cliente_tipo_identificacion" class="form-label"><span class="gc-required">*</span>Tipo de identificación</label>
+                      <select class="form-select" id="cliente_tipo_identificacion" name="tipo_identificacion" required>
+                        <option value="NIT" selected>NIT</option>
+                        <option value="CC">CC</option>
+                        <option value="CE">CE</option>
+                        <option value="PAS">PAS</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <label for="cliente_identificacion" class="form-label"><span class="gc-required">*</span>Identificación</label>
+                      <input type="text" class="form-control" id="cliente_identificacion" name="identificacion" value="900123456" required inputmode="numeric" pattern="[0-9]*">
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <label for="cliente_digito_verificacion" class="form-label"><span class="gc-required">*</span>Dígito de verificación</label>
+                      <input type="text" inputmode="numeric" class="form-control" id="cliente_digito_verificacion" name="digito_verificacion" value="1" required min="0" max="9">
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                      <label for="cliente_codigo" class="form-label">Código cliente</label>
+                      <input type="text" class="form-control" id="cliente_codigo" name="codigo_cliente" value="CL-001" readonly>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_prueba_autollenado" class="form-label"><span class="gc-required">*</span>PRUEBA AUTOLLENADO</label>
+                      <input type="text" class="form-control" id="cliente_prueba_autollenado" name="prueba_autollenado" value="Valor prellenado" required>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_prueba_autollenado_2" class="form-label"><span class="gc-required">*</span>PRUEBA AUTOLLENADO 2</label>
+                      <input type="text" class="form-control" id="cliente_prueba_autollenado_2" name="prueba_autollenado_2" value="Valor prellenado 2" required>
+                    </div>
+                  </div>
+                </section>
+              </div>
+    
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Ubicación</h2>
+                  <div class="row g-3">
+                    <div class="col-lg-6">
+                      <label for="cliente_direccion_administrativa" class="form-label"><span class="gc-required">*</span>Dirección administrativa</label>
+                      <input type="text" class="form-control" id="cliente_direccion_administrativa" name="direccion_administrativa" value="Calle 123 # 45 - 67" required>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_direccion_correspondencia" class="form-label"><span class="gc-required">*</span>Dirección correspondencia</label>
+                      <input type="text" class="form-control" id="cliente_direccion_correspondencia" name="direccion_correspondencia" value="Carrera 10 # 20 - 30" required>
+                    </div>
+                    <div class="col-lg-4">
+                      <label for="cliente_pais" class="form-label"><span class="gc-required">*</span>País</label>
+                      <select class="form-select" id="cliente_pais" name="pais" required>
+                        <option value="">Seleccione</option>
+                        <option value="Colombia" selected>Colombia</option>
+                        <option value="Perú">Perú</option>
+                        <option value="Ecuador">Ecuador</option>
+                        <option value="México">México</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="mb-0 gc-search-select" data-gc-search-select>
+                        <label class="form-label" for="cliente_ciudad_depto_value"><span class="gc-required">*</span>Ciudad / Depto</label>
+                        <input type="hidden" id="cliente_ciudad_depto_value" name="ciudad_depto" value="Bogotá D.C. / Cundinamarca">
+                        <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <span data-gc-search-label>Bogotá D.C. / Cundinamarca</span>
+                        </button>
+                        <div class="dropdown-menu gc-search-menu">
+                          <input class="form-control mb-2" type="search" placeholder="Buscar ciudad o departamento..." data-gc-search-input>
+                          <button class="dropdown-item active" type="button" data-gc-option="Bogotá D.C. / Cundinamarca">Bogotá D.C. / Cundinamarca</button>
+                          <button class="dropdown-item" type="button" data-gc-option="Medellín / Antioquia">Medellín / Antioquia</button>
+                          <button class="dropdown-item" type="button" data-gc-option="Cali / Valle del Cauca">Cali / Valle del Cauca</button>
+                          <button class="dropdown-item" type="button" data-gc-option="Barranquilla / Atlántico">Barranquilla / Atlántico</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <label for="cliente_vereda_barrio" class="form-label">Vereda o Barrio</label>
+                      <input type="text" class="form-control" id="cliente_vereda_barrio" name="vereda_barrio" value="Barrio demo">
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+    
+          <div class="tab-pane fade" id="cliente-contactos" role="tabpanel" tabindex="0" aria-labelledby="cliente-contactos-tab">
+            <div class="row g-3">
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Contactos</h2>
+                  <div class="row g-3">
+                    <div class="col-lg-6">
+                      <label for="cliente_telefono" class="form-label"><span class="gc-required">*</span>Teléfono</label>
+                      <input type="tel" class="form-control" id="cliente_telefono" name="telefono" value="6010000000" required>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_sitio_web" class="form-label">Sitio web</label>
+                      <input type="url" class="form-control" id="cliente_sitio_web" name="sitio_web" value="https://www.demo.com" placeholder="https://www.empresa.com">
+                      <div class="gc-help is-valid">URL con protocolo incluido.</div>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_contacto_general" class="form-label"><span class="gc-required">*</span>Contacto general</label>
+                      <input type="text" class="form-control" id="cliente_contacto_general" name="contacto_general" value="Contacto general" required>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_correo_general" class="form-label"><span class="gc-required">*</span>Correo contacto general</label>
+                      <input type="email" class="form-control" id="cliente_correo_general" name="correo_contacto_general" value="contacto@demo.com" required>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_contacto_comercial" class="form-label">Contacto de comercial</label>
+                      <input type="text" class="form-control" id="cliente_contacto_comercial" name="contacto_comercial" value="Contacto comercial">
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_correo_comercial" class="form-label">Correo contacto comercial</label>
+                      <input type="email" class="form-control" id="cliente_correo_comercial" name="correo_contacto_comercial" value="comercial@demo.com">
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_contacto_facturacion" class="form-label">Contacto de facturación</label>
+                      <input type="text" class="form-control" id="cliente_contacto_facturacion" name="contacto_facturacion" value="Contacto facturación">
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_correo_facturacion" class="form-label">Correo de facturación</label>
+                      <input type="email" class="form-control" id="cliente_correo_facturacion" name="correo_facturacion" value="facturacion@demo.com">
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_direccion_facturacion" class="form-label">Dirección de facturación</label>
+                      <input type="text" class="form-control" id="cliente_direccion_facturacion" name="direccion_facturacion" value="Dirección de facturación">
+                    </div>
+                  </div>
+                </section>
+              </div>
+    
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Datos legales</h2>
+                  <div class="row g-3">
+                    <div class="col-lg-6">
+                      <label for="cliente_representante_legal" class="form-label">Representante legal</label>
+                      <input type="text" class="form-control" id="cliente_representante_legal" name="representante_legal" value="Representante demo">
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_actividad_economica" class="form-label">Actividad económica</label>
+                      <input type="text" class="form-control" id="cliente_actividad_economica" name="actividad_economica" value="3811 - Recolección de desechos no peligrosos">
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+    
+          <div class="tab-pane fade" id="cliente-comercial" role="tabpanel" tabindex="0" aria-labelledby="cliente-comercial-tab">
+            <div class="row g-3">
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Información comercial</h2>
+                  <div class="row g-3">
+                    <div class="col-lg-6">
+                      <div class="mb-0 gc-search-select" data-gc-search-select>
+                        <label class="form-label" for="cliente_asesor_comercial_value"><span class="gc-required">*</span>Asesor comercial</label>
+                        <input type="hidden" id="cliente_asesor_comercial_value" name="asesor_comercial" value="Asesor comercial demo">
+                        <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <span data-gc-search-label>Asesor comercial demo</span>
+                        </button>
+                        <div class="dropdown-menu gc-search-menu">
+                          <input class="form-control mb-2" type="search" placeholder="Buscar asesor..." data-gc-search-input>
+                          <button class="dropdown-item active" type="button" data-gc-option="Asesor comercial demo">Asesor comercial demo</button>
+                          <button class="dropdown-item" type="button" data-gc-option="Asesor principal">Asesor principal</button>
+                          <button class="dropdown-item" type="button" data-gc-option="Equipo comercial">Equipo comercial</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="cliente_ref_cotizacion" class="form-label">Ref. cotización</label>
+                      <input type="text" class="form-control" id="cliente_ref_cotizacion" name="ref_cotizacion" value="12345" inputmode="numeric">
+                    </div>
+                  </div>
+                </section>
+              </div>
+    
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Información adicional</h2>
+                  <div class="row g-3">
+                    <div class="col-lg-4">
+                      <label for="cliente_clasificacion_interna" class="form-label">Clasificación interna</label>
+                      <select class="form-select" id="cliente_clasificacion_interna" name="clasificacion_interna">
+                        <option value="">Seleccione</option>
+                        <option value="A" selected>Cliente A</option>
+                        <option value="B">Cliente B</option>
+                        <option value="C">Cliente C</option>
+                        <option value="Especial">Especial</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-8">
+                      <div class="gc-help mt-lg-4">Los horarios se agrupan para facilitar revisión en desktop y mantener lectura clara en responsive.</div>
+                    </div>
+                    <div class="col-12">
+                      <div class="row g-3 gc-schedule-groups">
+                        <div class="col-lg-6">
+                          <section class="border rounded-3 p-3 bg-white h-100 gc-schedule-card">
+                            <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario principal</h3>
+                            <div class="row g-3">
+                              <div class="col-md-6">
+                                <label for="cliente_horario_entrada" class="form-label"><span class="gc-required">*</span>Horario entrada</label>
+                                <input type="text" class="form-control gc-materialize-time timepicker" data-gc-timepicker="materialize" readonly id="cliente_horario_entrada" name="horario_entrada" value="08:00" required>
+                              </div>
+                              <div class="col-md-6">
+                                <label for="cliente_horario_salida" class="form-label"><span class="gc-required">*</span>Horario salida</label>
+                                <input type="text" class="form-control gc-materialize-time timepicker" data-gc-timepicker="materialize" readonly id="cliente_horario_salida" name="horario_salida" value="17:00" required>
+                              </div>
+                            </div>
+                          </section>
+                        </div>
+                        <div class="col-lg-6">
+                          <section class="border rounded-3 p-3 bg-white h-100 gc-schedule-card">
+                            <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario adicional</h3>
+                            <div class="row g-3">
+                              <div class="col-md-6">
+                                <label for="cliente_horario_entrada_adicional" class="form-label">Horario entrada adicional</label>
+                                <input type="text" class="form-control gc-materialize-time timepicker" data-gc-timepicker="materialize" readonly id="cliente_horario_entrada_adicional" name="horario_entrada_adicional" value="18:00">
+                              </div>
+                              <div class="col-md-6">
+                                <label for="cliente_horario_salida_adicional" class="form-label">Horario salida adicional</label>
+                                <input type="text" class="form-control gc-materialize-time timepicker" data-gc-timepicker="materialize" readonly id="cliente_horario_salida_adicional" name="horario_salida_adicional" value="20:00">
+                              </div>
+                            </div>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="cliente_observaciones_generales" class="form-label">Observaciones generales</label>
+                      <textarea class="form-control" id="cliente_observaciones_generales" name="observaciones_generales" rows="4" placeholder="Registra observaciones operativas o comerciales relevantes.">Cliente con condiciones operativas predefinidas. Validar antes de actualizar.</textarea>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+    
+          <div class="tab-pane fade" id="cliente-configuracion" role="tabpanel" tabindex="0" aria-labelledby="cliente-configuracion-tab">
+            <div class="row g-3">
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Configuración</h2>
+                  <div class="row g-3">
+                    <div class="col-lg-6">
+                      <div class="gc-question">
+                        <label class="form-label" id="cliente_descarga_acta_label">¿Permitir descargar acta independiente de estado de pago de la factura?</label>
+                        <div class="gc-yes-no" role="radiogroup" aria-labelledby="cliente_descarga_acta_label">
+                          <input class="btn-check" type="radio" name="descargar_acta_independiente" id="cliente_descarga_acta_no" value="NO" checked>
+                          <label class="btn" for="cliente_descarga_acta_no">NO</label>
+                          <input class="btn-check" type="radio" name="descargar_acta_independiente" id="cliente_descarga_acta_si" value="SI">
+                          <label class="btn" for="cliente_descarga_acta_si">SI</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="gc-question">
+                        <label class="form-label" id="cliente_orden_compra_label">¿Requiere la obligatoriedad de relacionar orden de compra para aprobar solicitud?</label>
+                        <div class="gc-yes-no" role="radiogroup" aria-labelledby="cliente_orden_compra_label">
+                          <input class="btn-check" type="radio" name="obligar_orden_compra" id="cliente_orden_compra_no" value="NO" checked>
+                          <label class="btn" for="cliente_orden_compra_no">NO</label>
+                          <input class="btn-check" type="radio" name="obligar_orden_compra" id="cliente_orden_compra_si" value="SI">
+                          <label class="btn" for="cliente_orden_compra_si">SI</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="gc-question">
+                        <label class="form-label" id="cliente_validar_cantidades_label">¿Desea validar cantidades solicitadas en el Manifiesto de descarga?</label>
+                        <div class="gc-yes-no" role="radiogroup" aria-labelledby="cliente_validar_cantidades_label">
+                          <input class="btn-check" type="radio" name="validar_cantidades_manifiesto_descarga" id="cliente_validar_cantidades_no" value="NO" checked>
+                          <label class="btn" for="cliente_validar_cantidades_no">NO</label>
+                          <input class="btn-check" type="radio" name="validar_cantidades_manifiesto_descarga" id="cliente_validar_cantidades_si" value="SI">
+                          <label class="btn" for="cliente_validar_cantidades_si">SI</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="gc-question">
+                        <label class="form-label" id="cliente_acta_agrupada_label">Aplica generar acta agrupada por sucursal manual?</label>
+                        <div class="gc-yes-no" role="radiogroup" aria-labelledby="cliente_acta_agrupada_label">
+                          <input class="btn-check" type="radio" name="acta_agrupada_sucursal_manual" id="cliente_acta_agrupada_no" value="NO" checked>
+                          <label class="btn" for="cliente_acta_agrupada_no">NO</label>
+                          <input class="btn-check" type="radio" name="acta_agrupada_sucursal_manual" id="cliente_acta_agrupada_si" value="SI">
+                          <label class="btn" for="cliente_acta_agrupada_si">SI</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+    
+              <div class="col-12">
+                <section class="border rounded-3 p-3 bg-white">
+                  <h2 class="gc-section-title">Integración EMLAZE</h2>
+                  <div class="form-check gc-check-card">
+                    <input class="form-check-input" type="checkbox" id="cliente_modificar_emlaze" name="modificar_cliente_emlaze" value="1" checked>
+                    <label class="form-check-label" for="cliente_modificar_emlaze">¿Desea modificar el cliente en EMLAZE?</label>
+                  </div>
+                  <div class="gc-help">Al marcar esta opción, el cambio puede sincronizar información hacia el ERP.</div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <footer class="gc-review-footer">
+        <div class="gc-review-box">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="cliente_confirmar_revision" data-gc-review-check="#cliente_btn_actualizar">
+            <label class="form-check-label" for="cliente_confirmar_revision">Confirmo que revisé los datos prellenados, campos obligatorios y configuraciones críticas antes de actualizar el cliente.</label>
+          </div>
+          <div class="gc-review-actions">
+            <button class="btn btn-outline-secondary" type="button">Cancelar</button>
+            <button class="btn btn-success" type="submit" id="cliente_btn_actualizar" disabled>Actualizar cliente</button>
+          </div>
+        </div>
+      </footer>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="../assets/grinclic-forms.js"></script>
+</body>
+</html>

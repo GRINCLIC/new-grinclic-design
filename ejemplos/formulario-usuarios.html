@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mis usuarios / Actualizar usuario - Grinclic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <link href="../assets/grinclic-forms.css" rel="stylesheet">
+</head>
+<body>
+  <main class="gc-page">
+    <!-- Organismo: gc-formulario-usuarios -->
+    <!-- Uso conceptual: <gc-formulario-usuarios></gc-formulario-usuarios> -->
+    <form class="gc-form-shell" method="post" action="/usuarios/actualizar" enctype="multipart/form-data">
+      <header class="gc-form-head">
+        <div class="gc-form-logo gc-form-logo--demo"><img src="../assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
+        <div class="gc-form-title">
+          <h1>Mis usuarios</h1>
+          <p>Datos del usuario, acceso al sistema, credenciales, adjuntos y comunicación.</p>
+        </div>
+        <div class="gc-history">
+          <span><strong>Creado por:</strong> Usuario responsable</span>
+          <span><strong>Realizado por:</strong> Usuario responsable</span>
+          <span class="gc-last-change"><strong>Último cambio:</strong> Pendiente</span>
+        </div>
+      </header>
+
+      <section class="gc-form-section">
+<ul class="nav nav-tabs mb-3" id="usuario_tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="usuario-datos-tab" data-bs-toggle="tab" data-bs-target="#usuario-datos" type="button" role="tab" aria-controls="usuario-datos" aria-selected="true">Datos del usuario</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="usuario-credenciales-tab" data-bs-toggle="tab" data-bs-target="#usuario-credenciales" type="button" role="tab" aria-controls="usuario-credenciales" aria-selected="false">Credenciales</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="usuario-adicional-tab" data-bs-toggle="tab" data-bs-target="#usuario-adicional" type="button" role="tab" aria-controls="usuario-adicional" aria-selected="false">Información adicional</button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="usuario_tabs_content">
+          <div class="tab-pane fade show active" id="usuario-datos" role="tabpanel" tabindex="0" aria-labelledby="usuario-datos-tab">
+            <section class="border rounded-3 p-3 bg-white">
+              <h2 class="gc-section-title">Datos del usuario</h2>
+              <div class="row g-3">
+                <div class="col-lg-4">
+                  <label for="usuario_nombre" class="form-label"><span class="gc-required">*</span>Nombre</label>
+                  <input type="text" class="form-control" id="usuario_nombre" name="nombre" value="Usuario demo" required>
+                </div>
+                <div class="col-lg-4">
+                  <label for="usuario_identificacion" class="form-label"><span class="gc-required">*</span>Identificación</label>
+                  <input type="text" class="form-control" id="usuario_identificacion" name="identificacion" value="1020304050" required inputmode="numeric" pattern="[0-9]*">
+                </div>
+                <div class="col-lg-4">
+                  <label for="usuario_cargo" class="form-label">Cargo</label>
+                  <input type="text" class="form-control" id="usuario_cargo" name="cargo" value="Coordinador operativo">
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label for="usuario_rol" class="form-label"><span class="gc-required">*</span>Rol</label>
+                  <select class="form-select" id="usuario_rol" name="rol" required>
+                    <option value="">Seleccione</option>
+                    <option value="administrador">Administrador</option>
+                    <option value="logistica" selected>Logística</option>
+                    <option value="sac">Servicio al cliente</option>
+                    <option value="cliente">Cliente</option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label for="usuario_estado" class="form-label"><span class="gc-required">*</span>Estado</label>
+                  <select class="form-select" id="usuario_estado" name="estado" required>
+                    <option value="Activo" selected>Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                    <option value="Suspendido">Suspendido</option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label for="usuario_codigo" class="form-label">Código</label>
+                  <input type="text" class="form-control" id="usuario_codigo" name="codigo" value="USR-001" readonly>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label for="usuario_modulo_acceso" class="form-label">Módulo de acceso</label>
+                  <select class="form-select" id="usuario_modulo_acceso" name="modulo_acceso">
+                    <option value="">Seleccione</option>
+                    <option value="Administración" selected>Administración</option>
+                    <option value="Logística">Logística</option>
+                    <option value="Cliente">Cliente</option>
+                  </select>
+                </div>
+                <div class="col-lg-4">
+                  <div class="mb-0 gc-search-select" data-gc-search-select>
+                    <label class="form-label" for="usuario_cliente_value">Cliente</label>
+                    <input type="hidden" id="usuario_cliente_value" name="cliente" value="Cliente demo S.A.S.">
+                    <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span data-gc-search-label>Cliente demo S.A.S.</span>
+                    </button>
+                    <div class="dropdown-menu gc-search-menu">
+                      <input class="form-control mb-2" type="search" placeholder="Buscar cliente..." data-gc-search-input>
+                      <button class="dropdown-item active" type="button" data-gc-option="Cliente demo S.A.S.">Cliente demo S.A.S.</button>
+                      <button class="dropdown-item" type="button" data-gc-option="Cliente industrial">Cliente industrial</button>
+                      <button class="dropdown-item" type="button" data-gc-option="Cliente gestor">Cliente gestor</button>
+                      <button class="dropdown-item" type="button" data-gc-option="Cliente transportador">Cliente transportador</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <label for="usuario_telefono" class="form-label">Teléfono</label>
+                  <input type="tel" class="form-control" id="usuario_telefono" name="telefono" value="6010000000">
+                </div>
+                <div class="col-lg-4">
+                  <label for="usuario_celular" class="form-label">Celular</label>
+                  <input type="tel" class="form-control" id="usuario_celular" name="celular" value="3000000000">
+                </div>
+                <div class="col-lg-6">
+                  <label for="usuario_direccion" class="form-label">Dirección</label>
+                  <input type="text" class="form-control" id="usuario_direccion" name="direccion" value="Dirección de contacto">
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label for="usuario_pais" class="form-label">País</label>
+                  <select class="form-select" id="usuario_pais" name="pais">
+                    <option value="Colombia" selected>Colombia</option>
+                    <option value="Perú">Perú</option>
+                    <option value="Ecuador">Ecuador</option>
+                    <option value="México">México</option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div class="mb-0 gc-search-select" data-gc-search-select>
+                    <label class="form-label" for="usuario_ciudad_depto_value">Ciudad / Depto</label>
+                    <input type="hidden" id="usuario_ciudad_depto_value" name="ciudad_depto" value="Bogotá D.C.">
+                    <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span data-gc-search-label>Bogotá D.C.</span>
+                    </button>
+                    <div class="dropdown-menu gc-search-menu">
+                      <input class="form-control mb-2" type="search" placeholder="Buscar ciudad o departamento..." data-gc-search-input>
+                      <button class="dropdown-item active" type="button" data-gc-option="Bogotá D.C.">Bogotá D.C.</button>
+                      <button class="dropdown-item" type="button" data-gc-option="Medellín / Antioquia">Medellín / Antioquia</button>
+                      <button class="dropdown-item" type="button" data-gc-option="Cali / Valle del Cauca">Cali / Valle del Cauca</button>
+                      <button class="dropdown-item" type="button" data-gc-option="Barranquilla / Atlántico">Barranquilla / Atlántico</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="gc-question">
+                    <label class="form-label" id="usuario_acceso_sistema_label">¿Deseas que el usuario acceda al sistema?</label>
+                    <div class="gc-yes-no" role="radiogroup" aria-labelledby="usuario_acceso_sistema_label">
+                      <input class="btn-check" type="radio" name="acceso_sistema" id="usuario_acceso_no" value="NO">
+                      <label class="btn" for="usuario_acceso_no">NO</label>
+                      <input class="btn-check" type="radio" name="acceso_sistema" id="usuario_acceso_si" value="SI" checked>
+                      <label class="btn" for="usuario_acceso_si">SI</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="tab-pane fade" id="usuario-credenciales" role="tabpanel" tabindex="0" aria-labelledby="usuario-credenciales-tab">
+            <section class="border rounded-3 p-3 bg-white">
+              <h2 class="gc-section-title">Credenciales de acceso</h2>
+<div class="gc-password-summary mb-3">
+                Debe tener mínimo 8 caracteres e incluir letra, mayúscula, minúscula y número.
+                <button class="gc-inline-link" type="button" data-bs-toggle="collapse" data-bs-target="#usuario_clave_rules" aria-expanded="false" aria-controls="usuario_clave_rules">Ver requisitos</button>
+              </div>
+              <div class="collapse" id="usuario_clave_rules">
+                <div class="gc-password-rules-card mb-3" aria-label="Requisitos de contraseña">
+                  <div class="gc-password-rule">Debe incluir al menos una letra.</div>
+                  <div class="gc-password-rule">Debe incluir al menos una letra en mayúscula.</div>
+                  <div class="gc-password-rule">Debe incluir al menos una letra en minúscula.</div>
+                  <div class="gc-password-rule">Debe incluir al menos un número.</div>
+                  <div class="gc-password-rule">Debe tener mínimo 8 caracteres.</div>
+                </div>
+              </div>
+              <div class="row g-3">
+                <div class="col-lg-4">
+                  <label for="usuario_correo" class="form-label"><span class="gc-required">*</span>Correo</label>
+                  <input type="email" class="form-control" id="usuario_correo" name="correo" value="usuario@empresa.com" required autocomplete="email">
+                </div>
+                <div class="col-lg-4">
+                  <label for="usuario_nueva_clave" class="form-label"><span class="gc-required">*</span>Nueva clave</label>
+                  <input type="password" class="form-control" id="usuario_nueva_clave" name="nueva_clave" required autocomplete="new-password">
+                </div>
+                <div class="col-lg-4">
+                  <label for="usuario_confirmar_clave" class="form-label"><span class="gc-required">*</span>Confirmar clave</label>
+                  <input type="password" class="form-control" id="usuario_confirmar_clave" name="confirmar_clave" required autocomplete="new-password">
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="tab-pane fade" id="usuario-adicional" role="tabpanel" tabindex="0" aria-labelledby="usuario-adicional-tab">
+            <div class="accordion" id="usuario_info_adicional_accordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="usuario_adjuntos_heading">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#usuario_adjuntos_panel" aria-expanded="true" aria-controls="usuario_adjuntos_panel">Adjuntos</button>
+                </h2>
+                <div id="usuario_adjuntos_panel" class="accordion-collapse collapse show" aria-labelledby="usuario_adjuntos_heading" data-bs-parent="#usuario_info_adicional_accordion">
+                  <div class="accordion-body">
+                    <div class="row g-3">
+                      <div class="col-lg-6">
+                        <div class="mb-3 gc-upload-field">
+                          <label for="usuario_firma" class="form-label">Cargar firma png, jpg, jpeg, gif</label>
+                          <input type="file" class="form-control" id="usuario_firma" name="firma" accept="image/png,image/jpeg,image/gif" aria-describedby="usuario_firma_specs" data-gc-image-preview-input data-gc-image-preview-target="#usuario_firma_preview_modal">
+                          <div id="usuario_firma_specs" class="gc-upload-specs">Formatos permitidos: PNG, JPG, JPEG o GIF. Peso máximo recomendado: 5 MB.</div>
+                          <div class="gc-upload-preview" aria-label="Firma cargada">
+                            <div class="gc-upload-thumb"><img src="../assets/logo-demo.svg" alt="Ejemplo visual de firma"></div>
+                            <div class="gc-upload-meta">
+                              <strong>firma_usuario.png</strong>
+                              <span>Imagen legible y con fondo limpio.</span>
+                            </div>
+                            <button class="btn btn-outline-secondary btn-sm ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#usuario_firma_preview_modal">Ver vista previa</button>
+                          </div>
+                        </div>
+                        <div class="modal fade" id="usuario_firma_preview_modal" tabindex="-1" aria-labelledby="usuario_firma_preview_modal_title" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered gc-logo-preview-dialog">
+                            <div class="modal-content gc-image-preview-modal">
+                              <div class="modal-header"><h2 class="modal-title fs-6" id="usuario_firma_preview_modal_title">Vista previa de firma</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
+                              <div class="modal-body"><div class="gc-logo-preview-stage"><img src="../assets/logo-demo.svg" alt="Vista previa de firma" data-gc-image-preview-output></div><p class="gc-logo-preview-name" data-gc-image-preview-name>firma_usuario.png</p></div>
+                              <div class="gc-logo-preview-actions"><button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancelar</button><button class="btn btn-success" type="button" data-bs-dismiss="modal">Cargar imagen</button></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3 gc-upload-field">
+                          <label for="usuario_parafiscales" class="form-label">Parafiscales</label>
+                          <input type="file" class="form-control" id="usuario_parafiscales" name="parafiscales" accept="application/pdf,.pdf" aria-describedby="usuario_parafiscales_specs">
+                          <div id="usuario_parafiscales_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 15 MB.</div>
+                          <div class="gc-upload-preview" aria-label="Parafiscales cargados">
+                            <span class="gc-upload-file-icon" aria-hidden="true">PDF</span>
+                            <div class="gc-upload-meta">
+                              <strong>parafiscales_vigentes.pdf</strong>
+                              <span>PDF legible, vigente y sin contraseña.</span>
+                            </div>
+                            <a class="btn btn-outline-secondary btn-sm ms-auto" href="#" target="_blank" rel="noopener">Ver documento</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="usuario_sucursales_heading">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#usuario_sucursales_panel" aria-expanded="false" aria-controls="usuario_sucursales_panel">Sucursales y comunicación</button>
+                </h2>
+                <div id="usuario_sucursales_panel" class="accordion-collapse collapse" aria-labelledby="usuario_sucursales_heading" data-bs-parent="#usuario_info_adicional_accordion">
+                  <div class="accordion-body">
+                    <div class="row g-3">
+                      <div class="col-lg-6">
+                        <div class="mb-0 dropdown" data-gc-multiselect>
+                          <label class="form-label">Sucursales de acopio</label>
+                          <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">Seleccionar sucursales</button>
+                          <div class="dropdown-menu gc-multiselect-menu">
+                            <input class="form-control gc-multiselect-search" type="search" placeholder="Buscar sucursal..." data-gc-multiselect-search>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="usuario_sucursal_principal" name="sucursales_acopio[]" value="principal" checked>
+                              <label class="form-check-label" for="usuario_sucursal_principal">Sucursal principal</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="usuario_sucursal_norte" name="sucursales_acopio[]" value="norte">
+                              <label class="form-check-label" for="usuario_sucursal_norte">Sucursal norte</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="usuario_sucursal_sur" name="sucursales_acopio[]" value="sur">
+                              <label class="form-check-label" for="usuario_sucursal_sur">Sucursal sur</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="usuario_sucursal_occidente" name="sucursales_acopio[]" value="occidente">
+                              <label class="form-check-label" for="usuario_sucursal_occidente">Sucursal occidente</label>
+                            </div>
+                          </div>
+                          <div class="gc-selected-summary" data-gc-multiselect-summary>Seleccionados: ninguno</div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="gc-question">
+                          <label class="form-label" id="usuario_comunicar_credenciales_label">¿Desea comunicarle al usuario mediante correo electrónico sus credenciales?</label>
+                          <div class="gc-yes-no" role="radiogroup" aria-labelledby="usuario_comunicar_credenciales_label">
+                            <input class="btn-check" type="radio" name="comunicar_credenciales" id="usuario_comunicar_no" value="NO" checked>
+                            <label class="btn" for="usuario_comunicar_no">NO</label>
+                            <input class="btn-check" type="radio" name="comunicar_credenciales" id="usuario_comunicar_si" value="SI">
+                            <label class="btn" for="usuario_comunicar_si">SI</label>
+                          </div>
+                        </div>
+                        <div class="gc-help">Antes de activar el envío, valida correo, rol y clave.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="gc-review-footer">
+        <div class="gc-review-box">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="usuario_confirmar_revision" data-gc-review-check="#usuario_btn_actualizar">
+            <label class="form-check-label" for="usuario_confirmar_revision">Confirmo que revisé datos personales, acceso, credenciales, correo, adjuntos y permisos antes de actualizar el usuario.</label>
+          </div>
+          <div class="gc-review-actions">
+            <button class="btn btn-outline-secondary" type="button">Cancelar</button>
+            <button class="btn btn-success" type="submit" id="usuario_btn_actualizar" disabled>Actualizar usuario</button>
+          </div>
+        </div>
+      </footer>
+    </form>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="../assets/grinclic-forms.js"></script>
+</body>
+</html>

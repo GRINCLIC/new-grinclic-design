@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup — Ejemplos de implementación (3 opciones)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/grinclic-forms.css" rel="stylesheet">
+  <style>
+    /* ====== chrome del mockup (no forma parte de la propuesta) ====== */
+    body{padding:28px 16px 80px}
+    .mock-intro{max-width:960px;margin:0 auto 34px}
+    .mock-intro h1{font-size:1.35rem;margin-bottom:6px}
+    .mock-intro p{color:#5a6b5e;font-size:.92rem;margin:0}
+    .mock-card{max-width:960px;margin:0 auto 46px;background:#fff;border:1px solid var(--gc-soft);border-radius:var(--gc-radius);box-shadow:0 18px 45px rgba(15,23,42,.08);padding:22px 26px}
+    .opt-head{max-width:960px;margin:0 auto 10px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+    .opt-letter{font-family:Montserrat;font-weight:700;font-size:.95rem;background:var(--gc-green-dark);color:#fff;border-radius:8px;padding:4px 12px;flex:none}
+    .opt-letter.gray{background:#7a8798}
+    .opt-head h2{font-size:1.05rem;margin:0}
+    .opt-head p{margin:0;color:#5a6b5e;font-size:.85rem;flex-basis:100%}
+    .mock-context{color:#94a3b8;font-size:.8rem;border-bottom:1px dashed var(--gc-soft);padding-bottom:10px;margin-bottom:14px}
+    #demoToast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#0f172a;color:#fff;font-size:.85rem;border-radius:8px;padding:10px 18px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99;max-width:90vw}
+    #demoToast.show{opacity:.95}
+
+    /* ====== leyenda compartida (opciones A y B) ====== */
+    .lg-chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-left:auto}
+    .lg-chip{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;border-radius:999px;padding:3px 11px;white-space:nowrap}
+    .lg-int{background:var(--gc-soft-green);color:var(--gc-green-dark);border:1px solid #cfe8d6}
+    .lg-ext{background:#fff;border:1px dashed var(--gc-border);color:#475569}
+
+    /* ====== BASELINE: estilos actuales copiados de index.html, scoped bajo .v0 ====== */
+    .v0 .gc-impl{margin-top:16px;border:1px solid var(--gc-soft);border-radius:8px;background:#fbfcfd;padding:12px;font-size:.84rem;line-height:1.45}
+    .v0 .gc-impl-title{font-size:.95rem;margin:0 0 4px;color:var(--gc-strong)}
+    .v0 .gc-impl-intro{color:#475569;margin:0 0 10px}
+    .v0 .gc-impl-catalog{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--gc-soft)}
+    .v0 .gc-impl-catalog strong{color:var(--gc-green-dark)}
+    .v0 .gc-impl-catalog-link{border:1px solid var(--gc-soft);background:#fff;color:var(--gc-green-dark);border-radius:999px;padding:3px 12px;font-size:.8rem;cursor:pointer}
+    .v0 .gc-impl-item{display:grid;grid-template-columns:128px minmax(0,1fr);gap:8px;padding:8px 0;color:#475569}
+    .v0 .gc-impl-item + .gc-impl-item{border-top:1px solid var(--gc-soft)}
+    .v0 .gc-impl-module{color:var(--gc-green-dark);font-weight:600}
+    .v0 .gc-impl-data{display:flex;flex-direction:column;gap:3px;min-width:0}
+    .v0 .gc-impl-url{font-size:.82rem;word-break:break-all}
+    .v0 .gc-impl-file{font-size:.78rem;background:#eef2f6;border:1px solid var(--gc-soft);border-radius:4px;padding:2px 6px;align-self:flex-start;color:#334155}
+    .v0 .gc-impl-detail{font-size:.82rem;color:#64748b}
+
+    /* ====== OPCIÓN A: tarjetas por módulo ====== */
+    .va-impl{margin-top:16px;border:1px solid var(--gc-soft);border-radius:10px;background:#fff;padding:16px 16px 14px}
+    .va-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+    .va-title{font-size:.95rem;margin:0;color:var(--gc-strong)}
+    .va-intro{color:#64748b;font-size:.82rem;margin:0 0 12px}
+    .va-internal{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--gc-soft-green);border:1px solid #d8ecdd;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:.82rem;color:var(--gc-green-dark)}
+    .va-internal .bi{font-size:1rem}
+    .va-int-btn{display:inline-flex;align-items:center;gap:6px;background:var(--gc-green-dark);color:#fff;border:none;border-radius:999px;padding:5px 14px;font-size:.8rem;font-weight:600;cursor:pointer;transition:background .15s}
+    .va-int-btn:hover{background:#14653c}
+    .va-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px}
+    .va-card{border:1px solid var(--gc-soft);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px;background:#fff;transition:box-shadow .15s,border-color .15s,transform .15s}
+    .va-card:hover{border-color:var(--gc-green);box-shadow:0 8px 20px rgba(27,127,77,.13);transform:translateY(-2px)}
+    .va-mod{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .va-mod strong{font-family:Montserrat;font-weight:700;color:var(--gc-strong);font-size:.9rem}
+    .va-badge{font-size:.7rem;font-weight:600;background:#eef2f6;color:#475569;border-radius:4px;padding:2px 7px;white-space:nowrap}
+    .va-detail{font-size:.79rem;color:#64748b;line-height:1.45;flex:1;margin:0}
+    .va-file{display:flex;align-items:center;gap:6px;background:#f6f8fa;border:1px solid var(--gc-soft);border-radius:6px;padding:3px 6px 3px 9px;min-width:0}
+    .va-file code{font-size:.72rem;color:#334155;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;background:none;padding:0}
+    .va-copy{border:none;background:none;color:#7a8798;cursor:pointer;padding:2px 4px;font-size:.85rem;flex:none;border-radius:4px}
+    .va-copy:hover{color:var(--gc-green-dark);background:#e9f3ec}
+    .va-open{display:inline-flex;align-items:center;gap:6px;color:var(--gc-green-dark);font-weight:600;font-size:.79rem;text-decoration:none;border:1px solid var(--gc-green-dark);border-radius:6px;padding:5px 11px;align-self:flex-start;transition:background .15s,color .15s}
+    .va-open:hover{background:var(--gc-green-dark);color:#fff}
+    .va-foot{margin:12px 0 0;font-size:.75rem;color:#94a3b8}
+
+    /* ====== OPCIÓN B: filas con columna de acciones ====== */
+    .vb-impl{margin-top:16px;border:1px solid var(--gc-soft);border-radius:10px;background:#fff;padding:16px}
+    .vb-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+    .vb-title{font-size:.95rem;margin:0;color:var(--gc-strong)}
+    .vb-int-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--gc-soft);font-size:.82rem;color:#475569}
+    .vb-int-link{display:inline-flex;align-items:center;gap:5px;background:var(--gc-soft-green);border:1px solid #cfe8d6;color:var(--gc-green-dark);border-radius:999px;padding:4px 13px;font-size:.8rem;font-weight:600;cursor:pointer;transition:background .15s,color .15s}
+    .vb-int-link:hover{background:var(--gc-green-dark);border-color:var(--gc-green-dark);color:#fff}
+    .vb-row{display:grid;grid-template-columns:140px minmax(0,1fr) auto;gap:14px;align-items:center;padding:11px 8px;border-radius:6px;transition:background .12s}
+    .vb-row:hover{background:#f7faf8}
+    .vb-row + .vb-row{border-top:1px solid var(--gc-soft)}
+    .vb-mod{display:flex;flex-direction:column;gap:2px;min-width:0}
+    .vb-mod strong{color:var(--gc-strong);font-size:.86rem;font-weight:600}
+    .vb-agregar{font-size:.72rem;color:#94a3b8}
+    .vb-data{display:flex;flex-direction:column;gap:4px;min-width:0}
+    .vb-detail{font-size:.8rem;color:#64748b;line-height:1.4}
+    .vb-file{display:inline-flex;align-items:center;gap:6px;background:#f6f8fa;border:1px solid var(--gc-soft);border-radius:5px;padding:2px 8px;font-size:.72rem;color:#334155;align-self:flex-start;cursor:pointer}
+    .vb-file:hover .bi{color:var(--gc-green-dark)}
+    .vb-file .bi{color:#94a3b8;font-size:.78rem}
+    .vb-open{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gc-green);color:var(--gc-green-dark);border-radius:6px;padding:5px 12px;font-size:.79rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:background .15s,color .15s}
+    .vb-open:hover{background:var(--gc-green-dark);border-color:var(--gc-green-dark);color:#fff}
+    @media (max-width:720px){.vb-row{grid-template-columns:1fr;gap:6px}.vb-open{justify-self:start}}
+
+    /* ====== OPCIÓN C: dos bloques separados ====== */
+    .vc-impl{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+    .vc-title{font-size:.95rem;margin:0;color:var(--gc-strong)}
+    .vc-panel{border-radius:10px;padding:14px 16px}
+    .vc-cat{background:var(--gc-soft-green);border:1px solid #d3e9da}
+    .vc-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:Montserrat;font-weight:700;font-size:.88rem;margin-bottom:2px}
+    .vc-cat .vc-head{color:var(--gc-green-dark)}
+    .vc-sub{font-size:.79rem;margin:0 0 10px}
+    .vc-cat .vc-sub{color:#4f7059}
+    .vc-cat-btns{display:flex;flex-wrap:wrap;gap:8px}
+    .vc-cat-btn{background:#fff;border:1px solid var(--gc-green-dark);color:var(--gc-green-dark);border-radius:8px;padding:7px 14px;font-size:.83rem;font-weight:600;display:inline-flex;gap:8px;align-items:center;cursor:pointer;transition:background .15s,color .15s}
+    .vc-cat-btn:hover{background:var(--gc-green-dark);color:#fff}
+    .vc-app{background:#fff;border:1px solid var(--gc-soft)}
+    .vc-app .vc-head{color:var(--gc-strong)}
+    .vc-app .vc-sub{color:#64748b}
+    .vc-session{margin-left:auto;font-size:.73rem;font-weight:500;font-family:Inter;color:#8a6d1a;background:var(--gc-warning);border:1px solid #f0e2ad;border-radius:999px;padding:3px 11px;display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
+    .vc-row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:9px 0}
+    .vc-row + .vc-row{border-top:1px dashed var(--gc-soft)}
+    .vc-open{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--gc-border);border-radius:8px;padding:6px 13px;font-size:.82rem;font-weight:600;color:var(--gc-strong);text-decoration:none;white-space:nowrap;min-width:150px;justify-content:space-between;transition:border-color .15s,box-shadow .15s}
+    .vc-open .bi{color:var(--gc-orange)}
+    .vc-open:hover{border-color:var(--gc-orange);color:var(--gc-strong);box-shadow:0 3px 10px rgba(227,96,14,.12)}
+    .vc-file{display:inline-flex;align-items:center;gap:6px;background:#f6f8fa;border:1px solid var(--gc-soft);border-radius:5px;padding:3px 8px;font-size:.72rem;color:#334155;cursor:pointer}
+    .vc-file .bi{color:#94a3b8;font-size:.78rem}
+    .vc-file:hover .bi{color:var(--gc-green-dark)}
+    .vc-detail{font-size:.79rem;color:#64748b;flex:1;min-width:220px;line-height:1.4}
+    @media (max-width:600px){.vc-session{margin-left:0}}
+  </style>
+</head>
+<body>
+  <div class="mock-intro">
+    <h1>Sección «Ejemplos de implementación» — 3 propuestas</h1>
+    <p>Todas usan los datos reales del componente <strong>Campo de texto y número</strong> y el CSS del visor (grinclic-forms.css).
+    Los botones verdes <em>internos</em> aquí solo muestran un aviso (en el catálogo real navegan al formulario); los enlaces «↗» sí abren dev.grinclic.com.
+    Elige una opción (o pide mezclar piezas de varias).</p>
+  </div>
+
+  <!-- ================= BASELINE ================= -->
+  <div class="opt-head">
+    <span class="opt-letter gray">HOY</span>
+    <h2>Cómo se ve actualmente (v1.3)</h2>
+    <p>Referencia para comparar: todo en gris, la URL cruda como enlace, sin jerarquía ni distinción interno/externo.</p>
+  </div>
+  <div class="mock-card v0">
+    <div class="mock-context">…debajo del ejemplo del componente…</div>
+    <section class="gc-impl">
+      <h2 class="gc-impl-title">Ejemplos de implementación</h2>
+      <p class="gc-impl-intro">Dónde ver este componente ya usado: en los formularios de esta biblioteca (sin salir) o en los módulos reales de Grinclic (vista y archivo fuente para tomar la clase).</p>
+      <div class="gc-impl-catalog"><strong>Verlo ya usado en esta biblioteca:</strong>
+        <button type="button" class="gc-impl-catalog-link">Mis usuarios / Actualizar usuario</button>
+        <button type="button" class="gc-impl-catalog-link">Mis clientes / Actualizar cliente</button>
+      </div>
+      <div class="gc-impl-item">
+        <span class="gc-impl-module">Usuarios</span>
+        <div class="gc-impl-data">
+          <a class="gc-impl-url" href="https://dev.grinclic.com/incluir.php?agregar=105" target="_blank" rel="noopener">https://dev.grinclic.com/incluir.php?agregar=105</a>
+          <code class="gc-impl-file">cplus/views/mostrarUsuarios.php</code>
+          <span class="gc-impl-detail">Nombre, cédula, cargo, teléfono, dirección (líneas 310-603)</span>
+        </div>
+      </div>
+      <div class="gc-impl-item">
+        <span class="gc-impl-module">Sucursales</span>
+        <div class="gc-impl-data">
+          <a class="gc-impl-url" href="https://dev.grinclic.com/incluir.php?agregar=127" target="_blank" rel="noopener">https://dev.grinclic.com/incluir.php?agregar=127</a>
+          <code class="gc-impl-file">cplus/views/mostrarSucursales.php</code>
+          <span class="gc-impl-detail">Nombre, NIT, código, dirección, latitud/longitud (líneas 376-596)</span>
+        </div>
+      </div>
+      <div class="gc-impl-item">
+        <span class="gc-impl-module">Embalajes</span>
+        <div class="gc-impl-data">
+          <a class="gc-impl-url" href="https://dev.grinclic.com/incluir.php?agregar=106" target="_blank" rel="noopener">https://dev.grinclic.com/incluir.php?agregar=106</a>
+          <code class="gc-impl-file">cplus/views/mostrarEmbalajes.php</code>
+          <span class="gc-impl-detail">Nombre y código interno (líneas 155-167) — el ejemplo más simple</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= OPCIÓN A ================= -->
+  <div class="opt-head">
+    <span class="opt-letter">A</span>
+    <h2>Tarjetas por módulo</h2>
+    <p>Cada módulo es una tarjeta con hover: nombre + chip <code>agregar=N</code>, descripción, botón «Abrir vista ↗» y ruta copiable. Lo interno vive en una franja verde arriba, claramente separado.</p>
+  </div>
+  <div class="mock-card">
+    <div class="mock-context">…debajo del ejemplo del componente…</div>
+    <section class="va-impl">
+      <div class="va-head">
+        <h2 class="va-title">Ejemplos de implementación</h2>
+        <div class="lg-chips">
+          <span class="lg-chip lg-int"><i class="bi bi-arrow-right-circle"></i> Interno: navega en este catálogo</span>
+          <span class="lg-chip lg-ext"><i class="bi bi-box-arrow-up-right"></i> App dev · requiere sesión</span>
+        </div>
+      </div>
+      <p class="va-intro">Míralo ya montado en un formulario completo del catálogo, o ábrelo en los módulos reales de Grinclic y toma la clase del archivo fuente.</p>
+      <div class="va-internal">
+        <i class="bi bi-journal-bookmark-fill"></i> <strong>En esta biblioteca:</strong>
+        <button type="button" class="va-int-btn" data-demo="Mis usuarios / Actualizar usuario">Mis usuarios / Actualizar usuario <i class="bi bi-arrow-right-short"></i></button>
+        <button type="button" class="va-int-btn" data-demo="Mis clientes / Actualizar cliente">Mis clientes / Actualizar cliente <i class="bi bi-arrow-right-short"></i></button>
+      </div>
+      <div class="va-grid">
+        <article class="va-card">
+          <div class="va-mod"><strong>Usuarios</strong><span class="va-badge">agregar=105</span></div>
+          <p class="va-detail">Nombre, cédula, cargo, teléfono, dirección (líneas 310-603)</p>
+          <div class="va-file"><code>cplus/views/mostrarUsuarios.php</code><button type="button" class="va-copy" data-copy="cplus/views/mostrarUsuarios.php" title="Copiar ruta"><i class="bi bi-clipboard"></i></button></div>
+          <a class="va-open" href="https://dev.grinclic.com/incluir.php?agregar=105" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Abrir vista <i class="bi bi-box-arrow-up-right"></i></a>
+        </article>
+        <article class="va-card">
+          <div class="va-mod"><strong>Sucursales</strong><span class="va-badge">agregar=127</span></div>
+          <p class="va-detail">Nombre, NIT, código, dirección, latitud/longitud (líneas 376-596)</p>
+          <div class="va-file"><code>cplus/views/mostrarSucursales.php</code><button type="button" class="va-copy" data-copy="cplus/views/mostrarSucursales.php" title="Copiar ruta"><i class="bi bi-clipboard"></i></button></div>
+          <a class="va-open" href="https://dev.grinclic.com/incluir.php?agregar=127" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Abrir vista <i class="bi bi-box-arrow-up-right"></i></a>
+        </article>
+        <article class="va-card">
+          <div class="va-mod"><strong>Embalajes</strong><span class="va-badge">agregar=106</span></div>
+          <p class="va-detail">Nombre y código interno (líneas 155-167) — el ejemplo más simple</p>
+          <div class="va-file"><code>cplus/views/mostrarEmbalajes.php</code><button type="button" class="va-copy" data-copy="cplus/views/mostrarEmbalajes.php" title="Copiar ruta"><i class="bi bi-clipboard"></i></button></div>
+          <a class="va-open" href="https://dev.grinclic.com/incluir.php?agregar=106" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Abrir vista <i class="bi bi-box-arrow-up-right"></i></a>
+        </article>
+        <article class="va-card">
+          <div class="va-mod"><strong>Métricas</strong><span class="va-badge">agregar=139</span></div>
+          <p class="va-detail">Nombre, código y abreviación (líneas 148-171)</p>
+          <div class="va-file"><code>cplus/views/mostrarMetrica.php</code><button type="button" class="va-copy" data-copy="cplus/views/mostrarMetrica.php" title="Copiar ruta"><i class="bi bi-clipboard"></i></button></div>
+          <a class="va-open" href="https://dev.grinclic.com/incluir.php?agregar=139" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Abrir vista <i class="bi bi-box-arrow-up-right"></i></a>
+        </article>
+        <article class="va-card">
+          <div class="va-mod"><strong>Mesa de ayuda</strong><span class="va-badge">agregar=148</span></div>
+          <p class="va-detail">Campo Detalle del filtro (líneas 97-98)</p>
+          <div class="va-file"><code>cplus/views/mostrarMesaAyuda.php</code><button type="button" class="va-copy" data-copy="cplus/views/mostrarMesaAyuda.php" title="Copiar ruta"><i class="bi bi-clipboard"></i></button></div>
+          <a class="va-open" href="https://dev.grinclic.com/incluir.php?agregar=148" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Abrir vista <i class="bi bi-box-arrow-up-right"></i></a>
+        </article>
+      </div>
+      <p class="va-foot"><i class="bi bi-box-arrow-up-right"></i> Los enlaces «Abrir vista» abren dev.grinclic.com y requieren sesión iniciada en la app.</p>
+    </section>
+  </div>
+
+  <!-- ================= OPCIÓN B ================= -->
+  <div class="opt-head">
+    <span class="opt-letter">B</span>
+    <h2>Filas con columna de acciones</h2>
+    <p>Conserva el formato de lista (compacto para componentes con muchos módulos) pero alinea una columna de acciones a la derecha: botón «Ver vista ↗» y ruta clicable que se copia. Hover por fila.</p>
+  </div>
+  <div class="mock-card">
+    <div class="mock-context">…debajo del ejemplo del componente…</div>
+    <section class="vb-impl">
+      <div class="vb-head">
+        <h2 class="vb-title">Ejemplos de implementación</h2>
+        <div class="lg-chips">
+          <span class="lg-chip lg-int"><i class="bi bi-arrow-right-circle"></i> Interno: navega en este catálogo</span>
+          <span class="lg-chip lg-ext"><i class="bi bi-box-arrow-up-right"></i> App dev · requiere sesión</span>
+        </div>
+      </div>
+      <div class="vb-int-row">
+        <strong>En esta biblioteca:</strong>
+        <button type="button" class="vb-int-link" data-demo="Mis usuarios / Actualizar usuario"><i class="bi bi-arrow-right-circle"></i> Mis usuarios / Actualizar usuario</button>
+        <button type="button" class="vb-int-link" data-demo="Mis clientes / Actualizar cliente"><i class="bi bi-arrow-right-circle"></i> Mis clientes / Actualizar cliente</button>
+      </div>
+      <div class="vb-row">
+        <div class="vb-mod"><strong>Usuarios</strong><span class="vb-agregar">?agregar=105</span></div>
+        <div class="vb-data">
+          <span class="vb-detail">Nombre, cédula, cargo, teléfono, dirección (líneas 310-603)</span>
+          <span class="vb-file" data-copy="cplus/views/mostrarUsuarios.php" title="Clic para copiar la ruta">cplus/views/mostrarUsuarios.php <i class="bi bi-clipboard"></i></span>
+        </div>
+        <a class="vb-open" href="https://dev.grinclic.com/incluir.php?agregar=105" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Ver vista <i class="bi bi-box-arrow-up-right"></i></a>
+      </div>
+      <div class="vb-row">
+        <div class="vb-mod"><strong>Sucursales</strong><span class="vb-agregar">?agregar=127</span></div>
+        <div class="vb-data">
+          <span class="vb-detail">Nombre, NIT, código, dirección, latitud/longitud (líneas 376-596)</span>
+          <span class="vb-file" data-copy="cplus/views/mostrarSucursales.php" title="Clic para copiar la ruta">cplus/views/mostrarSucursales.php <i class="bi bi-clipboard"></i></span>
+        </div>
+        <a class="vb-open" href="https://dev.grinclic.com/incluir.php?agregar=127" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Ver vista <i class="bi bi-box-arrow-up-right"></i></a>
+      </div>
+      <div class="vb-row">
+        <div class="vb-mod"><strong>Embalajes</strong><span class="vb-agregar">?agregar=106</span></div>
+        <div class="vb-data">
+          <span class="vb-detail">Nombre y código interno (líneas 155-167) — el ejemplo más simple</span>
+          <span class="vb-file" data-copy="cplus/views/mostrarEmbalajes.php" title="Clic para copiar la ruta">cplus/views/mostrarEmbalajes.php <i class="bi bi-clipboard"></i></span>
+        </div>
+        <a class="vb-open" href="https://dev.grinclic.com/incluir.php?agregar=106" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Ver vista <i class="bi bi-box-arrow-up-right"></i></a>
+      </div>
+      <div class="vb-row">
+        <div class="vb-mod"><strong>Métricas</strong><span class="vb-agregar">?agregar=139</span></div>
+        <div class="vb-data">
+          <span class="vb-detail">Nombre, código y abreviación (líneas 148-171)</span>
+          <span class="vb-file" data-copy="cplus/views/mostrarMetrica.php" title="Clic para copiar la ruta">cplus/views/mostrarMetrica.php <i class="bi bi-clipboard"></i></span>
+        </div>
+        <a class="vb-open" href="https://dev.grinclic.com/incluir.php?agregar=139" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Ver vista <i class="bi bi-box-arrow-up-right"></i></a>
+      </div>
+      <div class="vb-row">
+        <div class="vb-mod"><strong>Mesa de ayuda</strong><span class="vb-agregar">?agregar=148</span></div>
+        <div class="vb-data">
+          <span class="vb-detail">Campo Detalle del filtro (líneas 97-98)</span>
+          <span class="vb-file" data-copy="cplus/views/mostrarMesaAyuda.php" title="Clic para copiar la ruta">cplus/views/mostrarMesaAyuda.php <i class="bi bi-clipboard"></i></span>
+        </div>
+        <a class="vb-open" href="https://dev.grinclic.com/incluir.php?agregar=148" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Ver vista <i class="bi bi-box-arrow-up-right"></i></a>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= OPCIÓN C ================= -->
+  <div class="opt-head">
+    <span class="opt-letter">C</span>
+    <h2>Dos bloques separados</h2>
+    <p>La separación interno/externo es espacial: panel verde «En esta biblioteca» (botones que navegan aquí) y panel blanco «En Grinclic dev» con aviso de sesión; el botón lleva el nombre del módulo y el ícono ↗ naranja marca que sale del catálogo.</p>
+  </div>
+  <div class="mock-card">
+    <div class="mock-context">…debajo del ejemplo del componente…</div>
+    <section class="vc-impl">
+      <h2 class="vc-title">Ejemplos de implementación</h2>
+      <div class="vc-panel vc-cat">
+        <div class="vc-head"><i class="bi bi-journal-bookmark-fill"></i> En esta biblioteca</div>
+        <p class="vc-sub">Formularios completos del catálogo que ya usan este componente — navegas sin salir de aquí.</p>
+        <div class="vc-cat-btns">
+          <button type="button" class="vc-cat-btn" data-demo="Mis usuarios / Actualizar usuario"><i class="bi bi-arrow-right-circle"></i> Mis usuarios / Actualizar usuario</button>
+          <button type="button" class="vc-cat-btn" data-demo="Mis clientes / Actualizar cliente"><i class="bi bi-arrow-right-circle"></i> Mis clientes / Actualizar cliente</button>
+        </div>
+      </div>
+      <div class="vc-panel vc-app">
+        <div class="vc-head"><i class="bi bi-window-sidebar"></i> En Grinclic (ambiente dev)
+          <span class="vc-session"><i class="bi bi-key"></i> Requiere sesión iniciada en dev.grinclic.com</span>
+        </div>
+        <p class="vc-sub">Abre la vista real del módulo y toma la clase del archivo fuente indicado.</p>
+        <div class="vc-row">
+          <a class="vc-open" href="https://dev.grinclic.com/incluir.php?agregar=105" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Usuarios <i class="bi bi-box-arrow-up-right"></i></a>
+          <span class="vc-file" data-copy="cplus/views/mostrarUsuarios.php" title="Clic para copiar la ruta">mostrarUsuarios.php <i class="bi bi-clipboard"></i></span>
+          <span class="vc-detail">Nombre, cédula, cargo, teléfono, dirección (líneas 310-603)</span>
+        </div>
+        <div class="vc-row">
+          <a class="vc-open" href="https://dev.grinclic.com/incluir.php?agregar=127" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Sucursales <i class="bi bi-box-arrow-up-right"></i></a>
+          <span class="vc-file" data-copy="cplus/views/mostrarSucursales.php" title="Clic para copiar la ruta">mostrarSucursales.php <i class="bi bi-clipboard"></i></span>
+          <span class="vc-detail">Nombre, NIT, código, dirección, latitud/longitud (líneas 376-596)</span>
+        </div>
+        <div class="vc-row">
+          <a class="vc-open" href="https://dev.grinclic.com/incluir.php?agregar=106" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Embalajes <i class="bi bi-box-arrow-up-right"></i></a>
+          <span class="vc-file" data-copy="cplus/views/mostrarEmbalajes.php" title="Clic para copiar la ruta">mostrarEmbalajes.php <i class="bi bi-clipboard"></i></span>
+          <span class="vc-detail">Nombre y código interno (líneas 155-167) — el ejemplo más simple</span>
+        </div>
+        <div class="vc-row">
+          <a class="vc-open" href="https://dev.grinclic.com/incluir.php?agregar=139" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Métricas <i class="bi bi-box-arrow-up-right"></i></a>
+          <span class="vc-file" data-copy="cplus/views/mostrarMetrica.php" title="Clic para copiar la ruta">mostrarMetrica.php <i class="bi bi-clipboard"></i></span>
+          <span class="vc-detail">Nombre, código y abreviación (líneas 148-171)</span>
+        </div>
+        <div class="vc-row">
+          <a class="vc-open" href="https://dev.grinclic.com/incluir.php?agregar=148" target="_blank" rel="noopener" title="Abre dev.grinclic.com — requiere sesión iniciada">Mesa de ayuda <i class="bi bi-box-arrow-up-right"></i></a>
+          <span class="vc-file" data-copy="cplus/views/mostrarMesaAyuda.php" title="Clic para copiar la ruta">mostrarMesaAyuda.php <i class="bi bi-clipboard"></i></span>
+          <span class="vc-detail">Campo Detalle del filtro (líneas 97-98)</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <p style="max-width:960px;margin:0 auto;color:#94a3b8;font-size:.8rem">Este archivo es solo un mockup de decisión: no modifica index.html ni los datos del catálogo.</p>
+
+  <div id="demoToast"></div>
+  <div id="mockupStatus" hidden></div>
+
+  <script>
+    (function(){
+      var toast = document.getElementById("demoToast");
+      var toastTimer = null;
+      function showToast(message){
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 2200);
+      }
+
+      document.querySelectorAll("[data-demo]").forEach(function(button){
+        button.addEventListener("click", function(){
+          showToast("En el catálogo real esto navega a: " + button.dataset.demo);
+        });
+      });
+
+      function copyText(text){
+        var area = document.createElement("textarea");
+        area.value = text;
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        var done = false;
+        try { done = document.execCommand("copy"); } catch (e) { done = false; }
+        document.body.removeChild(area);
+        return done;
+      }
+
+      document.querySelectorAll("[data-copy]").forEach(function(el){
+        el.addEventListener("click", function(){
+          var ok = copyText(el.dataset.copy);
+          showToast(ok ? "Ruta copiada: " + el.dataset.copy : "No se pudo copiar (copia manual): " + el.dataset.copy);
+          var icon = el.querySelector(".bi-clipboard");
+          if(ok && icon){
+            icon.className = "bi bi-check2";
+            setTimeout(function(){ icon.className = "bi bi-clipboard"; }, 1400);
+          }
+        });
+      });
+
+      document.getElementById("mockupStatus").textContent = "MOCKUP OK";
+    })();
+  </script>
+</body>
+</html>

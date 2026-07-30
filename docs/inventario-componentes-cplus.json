@@ -1,0 +1,1285 @@
+{
+  "modules": [
+    {
+      "view": "mostrarUsuarios.php",
+      "agregar": 105,
+      "moduleName": "Usuarios (Encargados)",
+      "formLocation": "cplus/views/mostrarUsuarios.php (form inline id=\"form\", líneas 273-1080); encabezado vía cplus/views/partials/form-head.php (include en línea 274); lógica en cplus/js/entities/usuarios/form-manager.js",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarUsuarios.php:310-317 (nombre), :334-340 (cedula), :352-358 (cargo), :544-562 (telefono), :566-582 (celular), :584-603 (direccion), :448-462 (codigo), :707-722 (correo) — todos con label.form-label + input.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-password",
+          "evidence": "cplus/views/mostrarUsuarios.php:735-750 input#clave data-gc-rule=\"password\" (type=\"text\", no type=\"password\"); :756-768 div.gc-password-summary + div#pswd_info.gc-password-rules-card con li.gc-password-rule — clases gc-password-* presentes tal como el catálogo, pero el input no es type=password",
+          "confidence": "media"
+        },
+        {
+          "componentId": "campo-fecha",
+          "evidence": "cplus/views/mostrarUsuarios.php:852-853 input#fecha_licencia (comentario \"datepicker #fecha_licencia inicializado en UsuariosFormManager.js\"); cplus/js/entities/usuarios/form-manager.js:1000-1004 flatpickr('#fecha_licencia', {enableTime:true, dateFormat:'Y-m-d H:i', time_24hr:true})",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarUsuarios.php:427 select#activo.form-select (sin data-gc-search-select); :468 select#tipo.form-select (sin data-gc-search-select)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/mostrarUsuarios.php:373 select#id_rol data-gc-search-select; :489 select#id_empresa data-gc-search-select; :614 select#pais data-gc-search-select; :637 select#ciudad data-gc-search-select",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-multiple-desplegable",
+          "evidence": "cplus/views/mostrarUsuarios.php:968 div#id_sucursal_rel.suc-rel-container.gc-multiselect-menu (sucursales de acopio); :1019 div#suc_rel_cliente.suc-rel-container.gc-multiselect-menu (sucursales relacionadas), ambos con checkbox 'TODAS' + contador; el resumen real es 'Total seleccionadas: N' (form-manager.js:1095) no literalmente 'Seleccionados:', y el contenedor es una lista de checkboxes siempre visible, no un dropdown que se despliega",
+          "confidence": "media"
+        },
+        {
+          "componentId": "radio-si-no",
+          "evidence": "cplus/views/mostrarUsuarios.php:658-687 div.gc-question > div.gc-yes-no[role=radiogroup] (¿acceder al sistema?); :795-809 mismo patrón para 'enviarcorreo'",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarUsuarios.php:970-972 input.form-check-input#selectAllSucursalesAcopio; :1062-1064 input.form-check-input#gc_review_usuarios (gc-review-footer); checkboxes por sucursal en :984-995",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-validado",
+          "evidence": "cplus/views/mostrarUsuarios.php:724 div.gc-help ('Recibe notificaciones del sistema...'); :769 div.gc-help ('Se usa para iniciar sesión...'); :784 div.gc-help — clase gc-help presente pero como texto de ayuda estático bajo el campo, no como botón '?' con popover (gc-help-button no encontrado)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/usuarios/form-manager.js:46,72,77,80,83,94,155,345,350,460-461,830,860,884,922 CplusAlerts.error/.warning/.info; cplus/js/core/alerts.js:54-89 confirma motor SweetAlert2 (window.Swal.fire)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarUsuarios.php:274 include 'cplus/views/partials/form-head.php'; cplus/views/partials/form-head.php:43-68 header.gc-form-head con gc-form-logo, gc-form-title y gc-history ('Creado por'/'Realizado por'/'Último cambio')",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "pestanas-internas",
+          "evidence": "cplus/views/mostrarUsuarios.php:294-305 ul.nav.nav-tabs#usuario_tabs con 3 nav-link (Datos del usuario / Credenciales / Información adicional) + div.tab-content#usuario_tabs_content con 3 tab-pane",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Vista con formulario extenso (105 líneas de tabs). No hay textarea, ni carga-pdf, ni carga-logo-imagen (la firma es un canvas jSignature, no un upload de imagen con preview), ni campo-hora ni campo-horario, ni seleccion-multiple-busqueda, ni opciones-acordeon. El input file oculto id='upload' (name='firma') es solo transporte del PNG generado por el canvas de firma, no un componente de carga de archivo visible al usuario."
+    },
+    {
+      "view": "mostrarEmbalajes.php",
+      "agregar": 106,
+      "moduleName": "Embalajes",
+      "formLocation": "cplus/views/mostrarEmbalajes.php (form inline id=\"formularioRegistrar\", líneas 140-197); encabezado vía cplus/views/partials/form-head.php (include en línea 144); sin form-manager.js propio — validación ad-hoc de duplicado en cplus/js/entities/embalajes/datatable.js:84-115",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarEmbalajes.php:155-159 label.form-label + input#nombre.form-control; :163-167 label.form-label + input#codigo_interno.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarEmbalajes.php:171-173 textarea#descripcion.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarEmbalajes.php:176-181 select#activo.form-select (Activo/Inactivo, sin data-gc-search-select)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-validado",
+          "evidence": "cplus/views/mostrarEmbalajes.php:160 div.gc-help ('Nombre visible del embalaje en formularios y actas.'); :168 div.gc-help ('Código interno único...') — texto de ayuda estático, sin botón '?' visible",
+          "confidence": "media"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/embalajes/datatable.js:101 CplusAlerts.error('El código interno ya existe...') tras validación AJAX de duplicado; motor SweetAlert2 confirmado en cplus/js/core/alerts.js",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarEmbalajes.php:144 include 'cplus/views/partials/form-head.php' → header.gc-form-head con gc-form-logo/gc-history",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Módulo piloto minimalista: solo 4 campos (nombre, código, descripción, estado). No hay campo-password/fecha/hora, selects con búsqueda, multiselect, radio-si-no, checkbox, carga-pdf/logo, campo-horario, acordeones ni pestañas. Es el ejemplo más simple de los tres."
+    },
+    {
+      "view": "mostrarParafiscales.php",
+      "agregar": 144,
+      "moduleName": "Parafiscales (Planillas Parafiscales)",
+      "formLocation": "cplus/views/mostrarParafiscales.php (form inline id=\"formularioParafiscal\", líneas 135-289); encabezado vía cplus/views/partials/form-head.php (include en línea 139); lógica en cplus/js/entities/parafiscales/form-manager.js",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarParafiscales.php:151-155 label.form-label + input#nombre.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-fecha",
+          "evidence": "cplus/views/mostrarParafiscales.php:196-198 input#vigencia_desde type=\"date\"; :202-204 input#vigencia_hasta type=\"date\" (con data-gc-no-flatpickr solo en modo ver); auto-init global confirmado en cplus/js/core/gc-dates.js:34-37 (querySelectorAll input[type=date] → flatpickr)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarParafiscales.php:232-236 select#parafiscalModuloFilter.form-select.parafiscal-modulo-filter (filtro Todos/Administrativo/Logístico)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-multiple-busqueda",
+          "evidence": "cplus/views/mostrarParafiscales.php:230-243 input#parafiscalUserSearch (buscador) + select#parafiscalModuloFilter (filtro) + checkbox#parafiscalSelectAll + span 'Seleccionados: <span id=parafiscalSelCount>'; render dinámico en cplus/js/entities/parafiscales/form-manager.js:327-366 (renderUsers/renderUserRow) — implementación a medida (no usa clases gc-multiselect del catálogo) pero funcionalmente equivalente, con el literal 'Seleccionados:' que pide el catálogo",
+          "confidence": "media"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarParafiscales.php:240 input.form-check-input#parafiscalSelectAll; cplus/js/entities/parafiscales/form-manager.js:360-361 renderUserRow() genera input.form-check-input.parafiscal-user-cb por fila",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "carga-pdf",
+          "evidence": "cplus/views/mostrarParafiscales.php:167-168 input#archivo.form-control.gc-upload-field + div#parafiscalArchivoSpecs.gc-upload-specs; :172-186 div.gc-upload-empty / div.gc-upload-preview con gc-upload-file-icon y gc-upload-meta",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/parafiscales/form-manager.js:511-514 CplusAlerts.warning (alertMsg); cplus/js/entities/parafiscales/datatable.js:82,86,95-101 CplusAlerts.showLoading/.toast/.confirm/.error/.hideLoading; motor SweetAlert2 en cplus/js/core/alerts.js",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarParafiscales.php:139 include 'cplus/views/partials/form-head.php' → header.gc-form-head con gc-form-logo/gc-history",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "No hay campo-password, textarea, seleccion-busqueda (selects simples de catálogo), seleccion-multiple-desplegable (el multiselect de usuarios no es un dropdown, es una lista fija con buscador/filtro), radio-si-no, carga-logo-imagen, campo-validado (no se encontró clase gc-help en esta vista), campo-horario, opciones-acordeon ni pestanas-internas."
+    },
+    {
+      "view": "mostrarDeclaraciones.php",
+      "agregar": 114,
+      "moduleName": "Declaraciones (listado)",
+      "formLocation": "El CRUD principal NO vive aquí: incluir.php?agregar=141 -> cplus/views/formularioDeclaraciones.php (enlace en mostrarDeclaraciones.php:133/141). Esta vista es un listado de 2 DataTables (#informe/#informe2) pero SÍ trae 3 formularios propios embebidos en modales inline (Duplicar declaración, Frecuencias por sucursal, Parametrización) con markup PHP+JS directamente en el archivo.",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarDeclaraciones.php:190 input#docbusqueda type=text form-control + label; :212 input#cod_busqueda; :806 input#param_id (form-label + form-control); :829 input#param_valor; :833 input#param_sucursal; también generado por JS en filaSucursal() (:602-606, .frec-frecuencia/.frec-cantidad/.frec-vr con form-control)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarDeclaraciones.php:201 select#residuo_busqueda2.form-select; :218 select#estadobusqueda.form-select; :228 select#activobusqueda.form-select; :810 select#param_atributo.form-select",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/mostrarDeclaraciones.php:165 select#clientebusqueda class=\"form-select chosen-select\" (plugin jQuery Chosen añade buscador interno al select), activado en :897 $('.chosen-select').chosen(...)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "seleccion-multiple-desplegable",
+          "evidence": "cplus/views/mostrarDeclaraciones.php:182-183 select#sucursalbusqueda[multiple] con data-gc-multiselect data-gc-placeholder=\"Seleccionar sucursales\"",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-multiple-busqueda",
+          "evidence": "cplus/views/mostrarDeclaraciones.php:396 select#dup_clientes.form-select[multiple] dentro del modal Duplicar, inicializado con chosen() en :446 (multiselect + buscador vía jQuery Chosen)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "radio-si-no",
+          "evidence": "cplus/views/mostrarDeclaraciones.php:529-536 patrón gc-question/gc-yes-no explícito (input.btn-check + label.btn, opciones SI/NO) en el modal de Frecuencias (frec_igualar)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarDeclaraciones.php:400 input#dup_todos.form-check-input; :415 input#dup_copiar_facturacion.form-check-input (modal Duplicar)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarDeclaraciones.php: múltiples llamadas CplusAlerts.warning/success/error/confirm (líneas 476, 494, 500, 727-733, 737, 741, 867, 881, 887); CplusAlerts envuelve SweetAlert2 (window.Swal.fire) en cplus/js/core/alerts.js:89,115,146",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Vista de listado (2 DataTables) con filtros; el formulario CRUD completo de la entidad vive en formularioDeclaraciones.php (agregar=141). No tiene textarea, acordeón, pestañas, campos de fecha/hora/password, carga de PDF/logo ni campo-validado propios; esos componentes sí podrían existir en el formulario principal (ver esa vista aparte). El grep de gc-help/flatpickr/materialize/gc-upload/gc-schedule/nav-tabs/accordion sobre este archivo no arrojó resultados."
+    },
+    {
+      "view": "formularioDeclaraciones.php",
+      "agregar": 141,
+      "moduleName": "Formulario declaración (CRUD residuo/servicio)",
+      "formLocation": "cplus/views/formularioDeclaraciones.php (formulario único #formularioRegistrar, POST multipart a proxies BFF); lógica condicional en cplus/js/entities/declaraciones/form.js; encabezado estándar incluido desde cplus/views/partials/form-head.php:43 (<header class=\"gc-form-head\">)",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/formularioDeclaraciones.php:380-381 input#nombre.form-control (form-label + required); múltiples inputs text/number con form-label+form-control: :386 cod_interno, :408 frecuencia, :414 cantidad_promedio, :479 otro_riesgo, :565 otro_embalaje, :581 otro_material, :588 presentacion, :593 tipo_sellado, :643 color, :648 olor, :655 densidad, :735 serial, :765 precio",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/formularioDeclaraciones.php:537 textarea#texto1.form-control; :541 textarea#texto2.form-control; :890 textarea#observaciones.form-control; :895 textarea#motivo.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/formularioDeclaraciones.php:431 select#tipo_residuo.form-select; :458 select#peligroso; :501 select#corrienteA; :512 select#corrienteY; :523 select#numero_un; :551 select#tipo_embalaje; :570 select#material_embalaje; :614 select#estado_fisico; :625 select#inflamable; :633 select#estupefaciente; :661 select#densidad_metrica; :770 select#id_metrica_precio; :810 select#forma_pago; :869 select#estado",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/formularioDeclaraciones.php:300 select#id_cliente.form-select.chosen-select (jQuery Chosen añade búsqueda interna), activado en :944 $('.chosen-select').chosen(...)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "seleccion-multiple-busqueda",
+          "evidence": "cplus/views/formularioDeclaraciones.php:469 select#ids_riesgos.form-select[multiple size=5]; :484 select#sistema_etiqueta[multiple]; :687 select#manejos_actuales.form-select[multiple size=10] (select nativo multiple, sin buscador; no confirma buscador salvo por chosen no aplicado aquí)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "radio-si-no",
+          "evidence": "cplus/views/formularioDeclaraciones.php:796-806 patrón gc-question/gc-yes-no explícito (ver_precio0/ver_precio1, input.btn-check + label.btn, NO/SI) en sección Precio",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/formularioDeclaraciones.php:340 input#selectAll (sucursales, form-check-input); :350 input.sucursal-checkbox[name=ids_sucursales[]]; :421 input#programar_recurrencia.form-check-input; :841 input[name=ids_inventario[]].form-check-input; :882 input#activar_declaracion.form-check-input; :911 input#checkboxThreeInput.form-check-input",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "carga-pdf",
+          "evidence": "cplus/views/formularioDeclaraciones.php:730 input#hoja_seguridad type=\"file\" accept=\"application/pdf\" (form-control), validado en cplus/js/entities/declaraciones/form.js:496-513 wirePdf() (límite 2MB + extensión .pdf)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/formularioDeclaraciones.php:251 include 'cplus/views/partials/form-head.php' -> partials/form-head.php:43 <header class=\"gc-form-head\">, gc-form-logo (:44), gc-history con \"Creado por\"/\"Último cambio\" (:57-67)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "opciones-acordeon",
+          "evidence": "cplus/views/formularioDeclaraciones.php:285 <div class=\"accordion\" id=\"accDeclaracion\"> con 8 accordion-item/accordion-button/accordion-collapse (secciones 1 a 8, líneas 288-903); no usa clases gc-business-*/gc-unit-* del catálogo, es acordeón Bootstrap 5 estándar",
+          "confidence": "media"
+        },
+        {
+          "componentId": "campo-validado",
+          "evidence": "cplus/views/formularioDeclaraciones.php no tiene gc-help/gc-help-button; NO reportado (no encontrado)",
+          "confidence": "media"
+        }
+      ],
+      "notes": "Formulario extenso de 8 secciones en acordeón (espeja el legacy administradorDeclaraciones.php). Sin campo-fecha (no hay flatpickr/date), sin campo-hora, sin campo-password, sin carga-logo-imagen, sin campo-horario ni pestañas internas (grep de flatpickr/materialize/gc-upload/gc-logo-preview/gc-password/gc-schedule/nav-tabs no arrojó resultados en este archivo). No se listó campo-validado como presente porque no hay evidencia de gc-help/gc-help-button; se deja fuera de 'components' pese a aparecer en la nota de exclusión."
+    },
+    {
+      "view": "mostrarCategoriasDeclarado.php",
+      "agregar": 115,
+      "moduleName": "Categorías del declarado",
+      "formLocation": "cplus/views/mostrarCategoriasDeclarado.php mismo archivo: formulario #formularioRegistrar embebido en un div#adicionar (alta/edición/ver en la misma vista, sin modal ni JS aparte); encabezado vía include 'cplus/views/partials/form-head.php'",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarCategoriasDeclarado.php:140-142 input#nombre.form-control con label.form-label y span.gc-required",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarCategoriasDeclarado.php:146-147 textarea#descripcion.form-control rows=2",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarCategoriasDeclarado.php:151-154 select#activo.form-select con opciones Activo/Inactivo",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarCategoriasDeclarado.php:128 include 'cplus/views/partials/form-head.php' -> gc-form-head/gc-form-logo/gc-history (mismo partial que formularioDeclaraciones.php)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Módulo simple tipo catálogo (nombre/descripción/estado), listado + formulario en la misma vista sin modal. El listado (tabla#informe) es solo <thead>generado por GrincDataTable, sin componentes de catálogo propios. El JS del listado (cplus/js/entities/categorias_declarado/datatable.js) solo define acciones CRUD estándar de tabla (ver/editar/eliminar/toggle/traza vía CplusStandardActions), no genera markup de formulario adicional. No se encontró select con buscador, multiselect, radio-si-no, checkbox, carga de archivos, acordeón, pestañas ni SweetAlert2 en esta vista o su JS de listado."
+    },
+    {
+      "view": "mostrarManejoResiduo.php",
+      "agregar": 116,
+      "moduleName": "Manejo del residuo",
+      "formLocation": "cplus/views/mostrarManejoResiduo.php (formulario inline dentro de la misma vista, líneas 84-141; sin modal ni partial de formulario)",
+      "components": [
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarManejoResiduo.php:89 include 'cplus/views/partials/form-head.php'; el partial (cplus/views/partials/form-head.php:43,44,51,57-66) emite <header class=\"gc-form-head\">, gc-form-logo, gc-form-title y gc-history con 'Creado por:'/'Realizado por:'/'Último cambio:'",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarManejoResiduo.php:99-101 (nombre, form-label+form-control), 104-106 (codigo, form-label+form-control), 109-111 (factor_emision, type=number, form-label+form-control)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarManejoResiduo.php:114-116 <textarea name=\"descripcion\" class=\"form-control\" rows=\"2\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarManejoResiduo.php:120-124 <select name=\"activo\" class=\"form-select\"> con opciones Activo/Inactivo",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/manejo_residuo/datatable.js:6 usa CplusStandardActions.crud({entityKey:'manejo_residuo', agregarCase:116,...}); cplus/js/core/standard-actions.js:112-138 auto-registra toggle-status/delete contra CplusEntityActions; cplus/js/core/entity-actions.js:86-96 llama CplusAlerts.confirm/toast; cplus/js/core/alerts.js:89,115,146 son Swal.fire (SweetAlert2)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "No hay checkbox, radio-si-no, campo-fecha/hora, cargas de archivo, campo-validado (gc-help), acordeón, pestañas ni multiselect en este módulo. El formulario es simple: 4 campos + encabezado estándar. CplusStandardActions.crud() también gatea los botones editar/eliminar por isActive(row), pero eso es acción de tabla, no componente de formulario del catálogo."
+    },
+    {
+      "view": "mostrarElementosChequeo.php",
+      "agregar": 117,
+      "moduleName": "Elementos de chequeo",
+      "formLocation": "cplus/views/mostrarElementosChequeo.php (formulario inline, líneas 83-136; sin modal ni partial de formulario propio más allá del encabezado)",
+      "components": [
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarElementosChequeo.php:88 include 'cplus/views/partials/form-head.php' (mismo partial gc-form-head/gc-form-logo/gc-history que Manejo del residuo)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarElementosChequeo.php:96-98 <input name=\"nombre\" class=\"form-control\"> con <label class=\"form-label\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarElementosChequeo.php:100-103 <textarea name=\"descripcion\" class=\"form-control\" rows=\"2\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarElementosChequeo.php:105-111 <select name=\"estado\" class=\"form-select\"> con opciones Activo(1)/Inactivo(2)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarElementosChequeo.php:119-121 <input class=\"form-check-input\" type=\"checkbox\" id=\"gc_review_elementos\" data-gc-review-check> — checkbox de confirmación 'He revisado la información antes de guardar' que gatea #guardar (comentario línea 115-116: patrón gc-review de Formularios v3, gateado por gc-validate.js)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/elementos_chequeo/datatable.js:6 usa CplusStandardActions.crud({entityKey:'elementos_chequeo', agregarCase:117,...}); mismo wiring que Manejo del residuo hacia CplusEntityActions (cplus/js/core/entity-actions.js:86-96) y CplusAlerts/Swal.fire (cplus/js/core/alerts.js:89,115,146)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Es el único de los tres módulos con checkbox real en el formulario (patrón gc-review, no un checkbox de negocio de la entidad). No hay radio-si-no, campo-fecha/hora, cargas de archivo, campo-validado (gc-help), acordeón, pestañas ni multiselect."
+    },
+    {
+      "view": "mostrarZonas.php",
+      "agregar": 118,
+      "moduleName": "Zonas",
+      "formLocation": "cplus/views/mostrarZonas.php (formulario inline, líneas 177-283; encabezado estándar via partial, resto del markup es legacy propio de la vista, no un partial de formulario dedicado)",
+      "components": [
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarZonas.php:183 include 'cplus/views/partials/form-head.php' (mismo partial gc-form-head/gc-form-logo/gc-history)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarZonas.php:188-190 <input name=\"nombre\" class=\"form-control fw-bold\"> con <label class=\"form-label\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarZonas.php:193-194 <textarea name=\"descripcion\" class=\"form-control\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarZonas.php:202-216 <select name=\"id_pais\" class=\"form-select\"> (poblado por mostrarPaises()); 257-261 <select name=\"estado\" class=\"form-select\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarZonas.php:227 <input type=\"checkbox\" id=\"selectAll\" class=\"form-check-input cliente-checkbox\"> (TODAS) y 239-244 checkboxes por ciudad <input type=\"checkbox\" name=\"ids_ciudades[]\" class=\"form-check-input\"> generados en bucle PHP",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarZonas.php:149 CplusAlerts.warning(\"Estimado cliente, seleccione al menos una ciudad\", {title:\"INFORMACION\"}) dentro de validateSucursalSelection(); además cplus/js/entities/zonas/datatable.js:88-98 wirea zona:toggle-status/zona:delete contra CplusEntityActions (cplus/js/core/entity-actions.js:86-96) que usa CplusAlerts.confirm/toast → Swal.fire (cplus/js/core/alerts.js:89,115,146)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Zonas es el único de los tres que NO sigue el patrón cplus puro: usa test_input() legacy (línea 15-16), $_SESSION['base'] crudo, PDO directo para el show (líneas 36-41, comentario propio admite 'usamos PDO como fallback'), action apunta a '../Modules/App/Controllers/Api/ZonasController.php' (línea 179) en vez de un BFF write.php, e incluye includes/header.php (BS3 legacy chrome) en vez de includes/header_cplus.php como los otros dos. El checkbox de ciudades es una lista de checkboxes simple, NO el componente 'seleccion-multiple-desplegable' del catálogo (no hay data-gc-multiselect ni resumen 'Seleccionados:'). No hay radio-si-no, campo-fecha/hora, cargas de archivo, campo-validado (gc-help), acordeón, pestañas ni multiselect real."
+    },
+    {
+      "view": "mostrarVehiculos.php",
+      "agregar": 119,
+      "moduleName": "Mis vehículos",
+      "formLocation": "Formulario propio inline en cplus/views/mostrarVehiculos.php:104-325 (no modal, no partial de formulario); lógica JS en cplus/js/entities/vehiculos/form-manager.js; tabla/acciones en cplus/js/entities/vehiculos/datatable.js",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarVehiculos.php:116-122,170-181,230-260 <label> plano (sin clase form-label) + input class=\"form-control\"",
+          "confidence": "media"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarVehiculos.php:126,141,153,185 <select class=\"form-select\"> (id_metrica_capacidad, activo, id_metrica_volumen, clase_vehiculo)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-fecha",
+          "evidence": "cplus/js/entities/vehiculos/form-manager.js:53-58 flatpickr(sel,{enableTime:true,dateFormat:'Y-m-d H:i'}) sobre #fecha_tecnico/#fecha_seguro/#fecha_certi_sanitarios; campos en cplus/views/mostrarVehiculos.php:251,265,275",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "carga-pdf",
+          "evidence": "cplus/views/mostrarVehiculos.php:291-296 .file-drop-area + input type=\"file\" id=\"doc_vehiculo\"; validación tamaño/extensión PDF en cplus/js/entities/vehiculos/form-manager.js:62-76 y drag-drop UI :79-90. No usa clases gc-upload-*, es implementación propia legacy (no el componente estándar del catálogo)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarVehiculos.php:213-218 <input type=\"checkbox\" name=\"id_origen[]\"> sin clase form-check-input, estilizado vía css/checkbox.css (link en línea 92); no coincide con el patrón form-check-input estilizado del catálogo",
+          "confidence": "media"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/vehiculos/form-manager.js:67,73 CplusAlerts.warning(...); cplus/js/entities/vehiculos/datatable.js:71-79 CplusEntityActions.toggleStatus/delete; ambos envuelven Swal.fire (cplus/js/core/alerts.js:89,115,146)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarVehiculos.php:106 include cplus/views/partials/form-head.php; el partial define gc-form-head (línea 43), gc-form-logo (línea 44) y gc-history con \"Creado por\"/\"Realizado por\"/\"Último cambio\" (líneas 57-66)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Formulario más grande de los 3, con markup que mezcla labels legacy (sin form-label) y controles BS5 (form-control/form-select). No se encontró: textarea, radio-si-no (gc-yes-no), seleccion-busqueda/multiselect, campo-hora dedicado (el enableTime de flatpickr es parte del mismo control de fecha, no un widget de hora aparte), campo-password real (variable $clave definida pero sin input password en el markup), campo-validado (gc-help), campo-horario (gc-schedule), carga-logo-imagen (el logo del form-head es solo display, no upload), opciones-acordeon ni pestañas internas."
+    },
+    {
+      "view": "mostrarLineasNegocio.php",
+      "agregar": 120,
+      "moduleName": "Unidades de negocio / Líneas de servicio",
+      "formLocation": "Formulario inline en cplus/views/mostrarLineasNegocio.php:151-201; listado maestro-detalle en acordeón en el mismo archivo :216-316; JS de tabla/acciones en cplus/js/entities/lineas_negocio/datatable.js",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarLineasNegocio.php:164-166 <label for=\"nombre\" class=\"form-label\"> + <input class=\"form-control\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarLineasNegocio.php:169-171 <label class=\"form-label\"> + <textarea name=\"descripcion\" class=\"form-control\" rows=\"2\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarLineasNegocio.php:174-178 <label class=\"form-label\"> + <select name=\"estado\" class=\"form-select\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarLineasNegocio.php:346-360 CplusActionDispatcher.register(...) invoca CplusEntityActions.toggleStatus/delete; internamente usa CplusAlerts.confirm/toast (Swal.fire, cplus/js/core/alerts.js:89,115,146); flash script en :121-123",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarLineasNegocio.php:156 include cplus/views/partials/form-head.php (gc-form-head/gc-form-logo/gc-history)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "opciones-acordeon",
+          "evidence": "cplus/views/mostrarLineasNegocio.php:227 class=\"accordion gc-business-accordion\", :242 gc-business-unit, :244 gc-unit-toggle, :249 gc-unit-name, :250 gc-unit-code, :251 gc-unit-description, :260 accordion-collapse collapse data-bs-toggle=\"collapse\"",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Único de los 3 con acordeón maestro-detalle (unidades de negocio -> líneas de servicio) en vez de tabla plana; la tabla interna de líneas de servicio por unidad (líneas 280-304) es HTML estático server-rendered por el Gateway (accordion() del gateway), no instancia DataTable propia. No se encontró: campo-fecha/hora, carga de archivos, checkbox, radio-si-no, seleccion-busqueda/multiselect, campo-validado ni campo-horario."
+    },
+    {
+      "view": "mostrarCausales.php",
+      "agregar": 121,
+      "moduleName": "Causales de cancelación",
+      "formLocation": "Formulario inline en cplus/views/mostrarCausales.php:116-157 (sin form-manager.js dedicado); JS de tabla en cplus/js/entities/causales/datatable-constructor.js",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarCausales.php:124-127 <label for=\"nombre_causal\" class=\"form-label\"> + <input class=\"form-control\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarCausales.php:130-135 <label class=\"form-label\"> + <select name=\"activo\" class=\"form-select\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarCausales.php:138-139 <label class=\"form-label\"> + <textarea name=\"descripcion\" class=\"form-control\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarCausales.php:98-99 cplus_render_flash_script() dispara CplusAlerts al cargar (guardado/errores), que envuelve Swal.fire (cplus/js/core/alerts.js:89,115,146)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarCausales.php:120 include cplus/views/partials/form-head.php (gc-form-head/gc-form-logo/gc-history)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Formulario más simple de los 3 (solo texto + select + textarea). La tabla usa columnas legacy 'acciones0'..'acciones4' (cplus/js/entities/causales/datatable-constructor.js:20-24) en vez del patrón {type:'actions'}/CplusStandardActions.crud usado por vehiculos y lineas_negocio; no se encontró registro de CplusActionDispatcher/CplusEntityActions dentro de cplus/js/entities/causales/, por lo que no pude confirmar SweetAlert2 en las acciones de eliminar/activar-desactivar de esta vista (solo se confirma en el flash de guardado/error). No se encontró: campo-fecha/hora, carga de archivos, checkbox, radio-si-no, seleccion-busqueda/multiselect, campo-validado, campo-horario, acordeón ni pestañas internas."
+    },
+    {
+      "view": "mostrarClasificaciones.php",
+      "agregar": 122,
+      "moduleName": "Clasificación interna",
+      "formLocation": "Formulario inline en la propia vista cplus/views/mostrarClasificaciones.php:83-128 (id=\"adicionar\", form#formularioRegistrar, POST nativo a /cplus/bff/entities/clasificaciones/write.php). No hay modal ni form-manager JS propio: solo el DataTable en cplus/js/entities/clasificaciones/datatable.js.",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarClasificaciones.php:96-98 — label.form-label + input#nombre.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarClasificaciones.php:101-103 — textarea#descripcion.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarClasificaciones.php:107-110 — select#estado.form-select nativo (Activo/Inactivo)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarClasificaciones.php:88 include partials/form-head.php; cplus/views/partials/form-head.php:43-67 gc-form-head/gc-form-logo/gc-history + \"Creado por\"/\"Último cambio\"",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/clasificaciones/datatable.js:5-7 usa CplusStandardActions.crud, que auto-registra delete/toggle (cplus/js/core/standard-actions.js:121-138) contra cplus/js/core/entity-actions.js:86-95 (confirm) y :35-39 (toast), ambos delegando a Swal.fire en cplus/js/core/alerts.js:55,89,115,146",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Módulo simple (3 campos + estado): sin password, fecha/hora, password, uploads, acordeones, pestañas, multiselect, radio SI/NO ni campo-validado. La tabla no es componente del catálogo. Acción 152=crear/153=actualizar."
+    },
+    {
+      "view": "mostrarEstadosRecorrido.php",
+      "agregar": 123,
+      "moduleName": "Estados del recorrido",
+      "formLocation": "Formulario inline en la propia vista cplus/views/mostrarEstadosRecorrido.php:83-128 (id=\"adicionar\", form#formularioRegistrar, POST nativo a /cplus/bff/entities/estados_recorrido/write.php). Estructura idéntica a Clasificaciones; sin JS de formulario propio (solo cplus/js/entities/estados_recorrido/datatable.js para la tabla).",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarEstadosRecorrido.php:96-98 — label.form-label + input#nombre.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarEstadosRecorrido.php:101-103 — textarea#descripcion.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarEstadosRecorrido.php:107-110 — select#estado.form-select nativo (Activo/Inactivo)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarEstadosRecorrido.php:88 include partials/form-head.php; cplus/views/partials/form-head.php:43-67 gc-form-head/gc-form-logo/gc-history + \"Creado por\"/\"Último cambio\"",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/estados_recorrido/datatable.js:5-7 usa CplusStandardActions.crud, que auto-registra delete/toggle (cplus/js/core/standard-actions.js:121-138) contra cplus/js/core/entity-actions.js:86-95 (confirm) y :35-39 (toast), ambos delegando a Swal.fire en cplus/js/core/alerts.js:55,89,115,146",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Módulo gemelo de Clasificaciones (mismo template de vista). Sin password, fecha/hora, uploads, acordeones, pestañas, multiselect, radio SI/NO ni campo-validado. Acción 156=crear/157=actualizar."
+    },
+    {
+      "view": "mostrarRoles.php",
+      "agregar": 124,
+      "moduleName": "Roles",
+      "formLocation": "Formulario inline en cplus/views/mostrarRoles.php:94-199 (form#form-role-permissions), pero el submit y la matriz de permisos se orquestan desde cplus/js/entities/roles/form-manager.js (fetch + validación) y cplus/js/lib/RbacPermissionMatrix.js (renderiza acordeón/pestañas/checkboxes dentro del mismo form vía DOM). El listado va por cplus/js/entities/roles/datatable-constructor.js + datatable.js.",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarRoles.php:105-109 — label.form-label + input[name=name].form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarRoles.php:112-114 — textarea[name=description].form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarRoles.php:117-122 — select[name=activo].form-select (solo en modo creación)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarRoles.php:187-188 — input#gc_review_roles.form-check-input dentro de .form-check (patrón gc-review)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarRoles.php:96 include partials/form-head.php; cplus/views/partials/form-head.php:43-67 gc-form-head/gc-form-logo/gc-history + \"Creado por\"/\"Último cambio\"",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "pestanas-internas",
+          "evidence": "cplus/views/mostrarRoles.php:173 — ul.nav.nav-tabs.rbac-matrix__tabs#rbac-matrix-tabs; panes tab-pane generados en cplus/js/lib/RbacPermissionMatrix.js:389,670",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "opciones-acordeon",
+          "evidence": "cplus/js/lib/RbacPermissionMatrix.js:414-416 accordion.className='accordion gc-business-accordion' + data-gc-business-guide; :471-477 article.gc-business-unit; :488 span.gc-unit-toggle (renderizado dentro de #rbac-matrix-panes de mostrarRoles.php:174)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/roles/form-manager.js:46-59 showSwal()->CplusAlerts.toast/error, :192-199 CplusAlerts.showLoading/hideLoading; cplus/js/entities/roles/datatable-constructor.js:50,76 CplusAlerts.info/error; base Swal.fire en cplus/js/core/alerts.js:55,89,115,146",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Módulo más rico de los tres: matriz RBAC propia (RbacPermissionMatrix.js) con acordeón + pestañas + checkboxes de permisos (clases bespoke rbac-matrix__perm-check/category-select-all, NO form-check-input — se reportó 'checkbox' solo por el gc-review real de línea 188). El selector de módulo (mostrarRoles.php:153-167, role=\"radiogroup\") NO es radio-si-no del catálogo: son radios por nombre de módulo, no SI/NO, y no usan gc-yes-no. #filter_group_ids/#filter_status/#filter_role_name referenciados en datatable-constructor.js:25-44 no tienen markup correspondiente en la vista actual (código muerto) — no se reportan como seleccion-multiple ni select-simple de filtro. Sin campo-fecha/hora, password, uploads, campo-validado."
+    },
+    {
+      "view": "mostrarSolicitudes.php",
+      "agregar": 125,
+      "moduleName": "Solicitudes",
+      "formLocation": "No hay formulario de alta/edición de la solicitud dentro de esta vista: el CRUD real vive en el legacy (incluir.php?agregar=16, ver comentario cplus/views/mostrarSolicitudes.php:33-35 'BOMBA MAYOR aparte'). El único formulario presente aquí es el de FILTROS de búsqueda, inline en cplus/views/mostrarSolicitudes.php:171-251 (<form id=\"search\">).",
+      "components": [
+        {
+          "componentId": "campo-fecha",
+          "evidence": "cplus/views/mostrarSolicitudes.php:175,179,208 — <input type=\"date\" class=\"form-control\"> (fechabusqueda, fechabusqueda_hasta, fechaserviciobusqueda). Input nativo de fecha, no Flatpickr.",
+          "confidence": "media"
+        },
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarSolicitudes.php:202 — <input name=\"docbusqueda\" type=\"text\" class=\"form-control\"> con <label for=\"docbusqueda\">.",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarSolicitudes.php:213,223,235 — <select class=\"form-select\"> nativo (tipo, estadoSolBusqueda, manejobusqueda).",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/mostrarSolicitudes.php:185 — <select class=\"form-select chosen-select\" id=\"clientebusqueda\">, activado en línea 330 con $('.chosen-select').chosen(...). Es el plugin jQuery Chosen (legacy), no el widget gc-search-select del catálogo, pero cumple el mismo patrón 'select con buscador interno'.",
+          "confidence": "media"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarSolicitudes.php:110-112 invoca cplus_render_flash_script() (cplus/lib/flash.php:78-88) que emite window.CplusAlerts.flashFromSession — CplusAlerts es el wrapper de SweetAlert2 (cplus/js/core/alerts.js:18). Es el mecanismo compartido de flash, no una llamada directa de la entidad; el JS propio del módulo (datatable-constructor.js) no llama CplusAlerts.",
+          "confidence": "media"
+        }
+      ],
+      "notes": "Vista de solo LISTADO (DataTable server-side vía BFF entity=solicitudes) + un formulario de FILTROS, no un formulario CRUD de la entidad. 22 columnas (8 acciones + 14 datos) en cplus/views/mostrarSolicitudes.php:263-320, pintadas por cplus/js/entities/solicitudes/datatable-constructor.js vía GrincDataTable.init + CplusActionButtons.renderOne. No se encontraron: textarea, checkbox, radio-si-no, carga-pdf/imagen, campo-hora, campo-horario, campo-validado (no hay clase gc-help/gc-help-button en esta vista, a diferencia de otras vistas cplus que sí la usan), opciones-acordeon (el 'filters-card' usa un simple Bootstrap collapse, no un accordion multi-panel), pestañas internas, ni multiselect. Varios botones de acción (borrar/descartar/duplicar) hacen fallback a funciones globales legacy (window.aviso/avisoDesc/avisoDup) si existen — hueco documentado en el propio archivo (cplus/js/entities/solicitudes/datatable-constructor.js:302-310)."
+    },
+    {
+      "view": "mostrarResiduosInventariables.php",
+      "agregar": 126,
+      "moduleName": "Residuos inventariables",
+      "formLocation": "Formulario principal inline en la misma vista: cplus/views/mostrarResiduosInventariables.php:602-1014 (<form id=\"formularioRegistrar\" action=\"../Modules/App/Controllers/Api/ResiduosInventariablesController.php\">), más dos modales con sub-formularios: #exampleModal (relacionar sucursales/bodegas, líneas 692-793) y #modalDeclarados (relacionar declaraciones, líneas 794-994). Nota arquitectónica: esta vista NO declara $cplus_view=true y aún usa helpers legacy (verificarPermisos(), mostrarGrupos(), mostrarSubgrupos(), mostrarMetricas(), mostrarSucursalesAcopioRes(), mostrarBodegas(), mostrarClientesTodos(), mostrarClases(), mostrarCategoriasDeclarado(), mostrarInventario(), SQL inline con $bd) — es una migración parcial/hibrida, no un módulo cplus puro.",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarResiduosInventariables.php:612 (Nombre), 616 (Código), 807 (autocomplete_ / Buscar por declarado), 1083/1087 (modal duplicar: Código/Nombre) — <input type=\"text\" class=\"form-control\"> con <label>.",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarResiduosInventariables.php:687 — <textarea name=\"observacion\" id=\"observacion\" class=\"form-control\">.",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarResiduosInventariables.php:621 (estado), 630 (id_grupo), 641 (id_subgrupo), 652 (id_metrica), 665 (exclusivo_declaraciones), 713/722 (sucursal/bodega dentro del modal), 839/870/882 (residuo_busqueda2/nombrelinea/categoria_busqueda) — <select class=\"form-control\"> nativo (estilo BS3 legacy, sin plugin de búsqueda).",
+          "confidence": "media"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/mostrarResiduosInventariables.php:852 — <select name=\"nombrecliente\" class=\"form-control chosen-select\">, mismo patrón Chosen legacy que Solicitudes (no gc-search-select).",
+          "confidence": "media"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarResiduosInventariables.php:607 — include 'cplus/views/partials/form-head.php' (componente gc-form-head estándar: logo, título/subtítulo y bloque 'Creado por/Último cambio').",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarResiduosInventariables.php:108,112,116,177-204,199,251-264,292,326,466 — múltiples llamadas directas a CplusAlerts.toast/warning/confirm/success/error (SweetAlert2, cplus/js/core/alerts.js).",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Módulo grande con formulario CRUD real embebido (a diferencia de Solicitudes). No se encontraron: campo-password, campo-fecha, campo-hora, campo-horario, radio-si-no (el '¿Exclusivo en Declaraciones?' es un <select> Sí/No, no un radiogroup gc-yes-no), checkbox estilizado (los checkboxes 'seleccionar'/'check' de la tabla de declarados no llevan clase form-check-input, son checkboxes legacy planos), carga-pdf/carga-logo-imagen (el form tiene enctype=multipart/form-data pero no se encontró ningún <input type=\"file\">), campo-validado (no hay gc-help/gc-help-button ni bi-question-circle en esta vista), seleccion-multiple-desplegable/busqueda, opciones-acordeon, ni pestañas internas."
+    },
+    {
+      "view": "mostrarSucursales.php",
+      "agregar": 127,
+      "moduleName": "Sucursales",
+      "formLocation": "Formulario principal inline en la misma vista: cplus/views/mostrarSucursales.php:358-786 (<form id=\"formularioRegistrar\" action=\"/cplus/bff/entities/sucursales/proxies/store|update.php\">), con lógica cliente en cplus/js/entities/sucursales/form-manager.js. Listado por separado vía cplus/js/entities/sucursales/datatable.js (GrincDataTable.init con buildHead:true).",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarSucursales.php:376 (nombre), 411 (origen_nombre), 429 (nit_sucursal), 457 (codigo), 541 (direccion), 590/596 (latitud/longitud), 620 (contacto), 629 (email), 635 (telefono), 641 (celular), 649 (email_logplanta) — <input type=\"text\" class=\"form-control\"> con <label>.",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarSucursales.php:671 — <textarea name=\"observacion\" id=\"observacion\" rows=\"3\" class=\"form-control\">.",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarSucursales.php:384 (tipo), 437 (estado), 445 (clasificacion), 470 (id_asesor), 508 (id_clasificacion), 547 (pais), 559 (ciudad), 571 (id_zona) — <select class=\"form-select\"> nativo BS5.",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarSucursales.php:683 (aplica_acopio), 703 (declTodas), 711 (declaraciones[]) — <input type=\"checkbox\" class=\"form-check-input\">.",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-multiple-busqueda",
+          "evidence": "cplus/views/mostrarSucursales.php:697-700 — <div id=\"declaracionesBox\" data-gc-multiselect-box data-gc-search-placeholder=\"Buscar declaración...\">, consumido por cplus/js/core/gc-multiselect.js (modo caja, líneas 171-249: envuelve en trigger+dropdown+buscador). Comentario propio en la vista lo confirma: 'gc-multiselect modo caja... trigger + dropdown + buscador' (línea 693-696).",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-horario",
+          "evidence": "cplus/views/mostrarSucursales.php:788-803 — modal #modalHorarios con <h5 class=\"modal-title gc-schedule-title\">; filas por día (hr-dia/hr-estado/hr-rango) pintadas por cplus/js/entities/sucursales/form-manager.js:523-548 (pintarModal).",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-hora",
+          "evidence": "cplus/js/entities/sucursales/form-manager.js:461-462 — <input data-gc-timepicker=\"materialize\" class=\"hr-desde/hr-hasta form-control\">, inicializado con window.M.Timepicker.init(...) en form-manager.js:490 (Materialize Timepicker, cargado vía cplus/js/dist/materialize.min.js en mostrarSucursales.php:821).",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/mostrarSucursales.php:407-418 (#origenPicker/#origen_buscar/#origenResults) — buscador type-ahead custom (no <select>), resuelto por AJAX en cplus/js/entities/sucursales/form-manager.js:106-152 (buscarOrigen/seleccionarOrigen). Mismo patrón funcional ('select con buscador interno') pero implementado como input+lista custom, no como select[data-gc-search-select].",
+          "confidence": "media"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarSucursales.php:362 — include 'cplus/views/partials/form-head.php' (gc-form-head: logo, título/subtítulo, bloque 'Creado por/Último cambio').",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarSucursales.php:326 (window.CplusAlerts.warning en alerta_int) y cplus/js/entities/sucursales/form-manager.js:413,666,675-677 — llamadas directas a CplusAlerts (SweetAlert2).",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Módulo más maduro y completo de los 3 (piloto REQ-1026, con Gateway/BFF/runtime cplus reales, sin SQL/legacy). No se encontraron: campo-password, campo-fecha (no hay Flatpickr ni input date en el formulario, solo 'fecha_ingreso' como columna de solo lectura en el listado), radio-si-no (no hay gc-yes-no), carga-pdf/carga-logo-imagen (no hay ningún <input type=\"file\">, el logo del encabezado es una <img> fija, no un uploader), campo-validado (los íconos bi-info-circle en líneas 370/425/627 son tooltips Bootstrap con atributo title, NO usan la clase gc-help/gc-help-button que sí existe y se usa en otras vistas cplus como mostrarDatos.php/mostrarBodegas.php — se excluye por no-inventar), opciones-acordeon y pestañas internas (no se encontraron clases accordion ni nav-tabs). cplus/js/entities/sucursales/cargues.js y datatable-constructor.js pertenecen a otra vista (mostrarCarguesSucursales.php) y a un constructor deprecado respectivamente; no se usan en mostrarSucursales.php (confirmado: datatable.js reemplaza explícitamente a datatable-constructor.js, comentario línea 8)."
+    },
+    {
+      "view": "mostrarProveedores.php",
+      "agregar": 128,
+      "moduleName": "Proveedores",
+      "formLocation": "cplus/views/mostrarProveedores.php:54-343 (formulario inline #adicionar, no modal); helper de encabezado en cplus/views/partials/form-head.php",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarProveedores.php:67-68 label+input#nombre form-control; también 79-96, 164-260 (multiples input text/email con form-label implícito via <label>)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarProveedores.php:129 <textarea id=\"descripcion_servicio\" class=\"form-control\">; 330 <textarea id=\"observaciones\" class=\"form-control\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarProveedores.php:72 <select id=\"activo\" class=\"form-select\">; 86 #tipo_id; 182 #pais; 191 #ciudad",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-multiple-desplegable",
+          "evidence": "cplus/views/mostrarProveedores.php:102-110 <select name=\"tipo_proveedor[]\" multiple class=\"form-select\" size=\"8\">; 114-116 #ids_manejos multiple; poblados vía JS en cplus/js/entities/proveedores/datatable-constructor.js:208 fillSelect(#ids_manejos). Es multiselect nativo con size=8, no hay wrapper 'gc-multiselect' ni resumen 'Seleccionados:' — no cumple el patrón gc-multiselect exacto del catálogo, se reporta como select nativo múltiple (variante básica)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "campo-hora",
+          "evidence": "cplus/views/mostrarProveedores.php:291,298,312,319 inputs readonly #horarioD/#horarioH/#horarioFD/#horarioFH dentro de fieldset 'rotacion' (horario entrada/salida); no se ve inicializador Materialize/timepicker en el JS del módulo (datatable-constructor.js solo hace bindSupplier de esos valores), por lo que el picker real probablemente lo activa un script global no propio del módulo — reportado con confianza media",
+          "confidence": "media"
+        },
+        {
+          "componentId": "campo-horario",
+          "evidence": "cplus/views/mostrarProveedores.php:284-326 dos <fieldset class=\"rotacion\"> (L-V y S-D) con legend + grid de horario entrada/salida — patrón de grupo de horarios",
+          "confidence": "media"
+        },
+        {
+          "componentId": "carga-pdf",
+          "evidence": "cplus/views/mostrarProveedores.php:123 <input type=\"file\" name=\"licencia\" id=\"licencia\" class=\"form-control\" placeholder=\"Archivo PDF\">; manejado en cplus/js/entities/proveedores/datatable-constructor.js:281-287,336,370-375 (readFileAsBase64). No usa clases gc-upload-*, es un input file plano",
+          "confidence": "media"
+        },
+        {
+          "componentId": "carga-logo-imagen",
+          "evidence": "cplus/views/mostrarProveedores.php:139-156 div.demo-wrap.upload-demo con input.input_type_image#upload (croppie.js incluido línea 29) — carga de firma/imagen con preview #upload-demo; no usa clases gc-upload/gc-logo-preview del catálogo estándar, es el widget legacy croppie",
+          "confidence": "media"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarProveedores.php:57 include 'cplus/views/partials/form-head.php' que emite <header class=\"gc-form-head\"> con gc-form-logo/gc-form-title/gc-history (Creado por/Último cambio) en cplus/views/partials/form-head.php:43-68",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/proveedores/datatable-constructor.js:116,135,353,364,398 CplusAlerts.info/success/error, que envuelve Swal.fire en cplus/js/core/alerts.js:89,115,146",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Ledger (cplus/MIGRATION_LEDGER.md:55) confirma: 'vista cplus actual es CRUD form, no listado DataTable' — el módulo mezcla formulario completo + tabla en la misma vista (no hay modal separado). No se encontró seleccion-busqueda, seleccion-multiple-busqueda, radio-si-no, checkbox, campo-password, campo-validado, campo-fecha (flatpickr), opciones-acordeon ni pestanas-internas en esta vista/JS."
+    },
+    {
+      "view": "mostrarServiciosAdicionales.php",
+      "agregar": 129,
+      "moduleName": "Solicitudes adicionales",
+      "formLocation": "cplus/views/mostrarServiciosAdicionales.php:83-140 (formulario inline #adicionar, con include de encabezado estandar en línea 88)",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarServiciosAdicionales.php:96-98 label.form-label + input#nombre.form-control; 100-103 label.form-label + input#abreviacion.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarServiciosAdicionales.php:113-115 <textarea name=\"descripcion\" id=\"descripcion\" class=\"form-control\" rows=\"2\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarServiciosAdicionales.php:107-110 <select id=\"disponible\" class=\"form-select\"> (Sí/No); 119-122 <select id=\"estado\" class=\"form-select\"> (Activo/Inactivo)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarServiciosAdicionales.php:88 include 'cplus/views/partials/form-head.php' -> gc-form-head/gc-form-logo/gc-history en cplus/views/partials/form-head.php:43-68",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarServiciosAdicionales.php:53-54 cplus_render_flash_script() (cplus/lib/flash.php) que emite alertas post-guardado; el JS de la entidad (cplus/js/entities/servicios_adicionales/datatable.js) usa CplusStandardActions.crud (línea 6) cuyos handlers estándar de eliminar/toggle disparan CplusAlerts/Swal.fire (cplus/js/core/alerts.js:89,115,146), no hay llamada directa a Swal en el JS propio del módulo",
+          "confidence": "media"
+        }
+      ],
+      "notes": "Formulario muy simple (5 campos), sin uploads, sin fechas/horas, sin multiselect, sin acordeón/pestañas, sin radio-si-no ni checkbox. El select 'disponible' con Sí/No es un <select> nativo, no un radiogroup gc-yes-no, así que NO se reporta como radio-si-no."
+    },
+    {
+      "view": "mostrarClientes.php",
+      "agregar": 130,
+      "moduleName": "Mis clientes",
+      "formLocation": "NINGUNO en cplus: la vista solo tiene un formulario de FILTROS de búsqueda (cplus/views/mostrarClientes.php:68-115, form id=\"search\"); confirmado por cplus/MIGRATION_LEDGER.md:59,74 — 'Formulario crear/editar en legacy (Modules/App ClientesController)', el CRUD real vive fuera de cplus",
+      "components": [
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarClientes.php:89-93 <select id=\"estadobusqueda\" class=\"form-select\">; 97-101 <select id=\"categoriabusqueda\" class=\"form-select\"> — ambos dentro del formulario de filtros, no de un formulario de alta",
+          "confidence": "media"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/mostrarClientes.php:77,83,105 <select class=\"form-select chosen-select\"> en #id_clasificacionbusqueda, #id_asesorbusqueda, #ciudadbusqueda — clase 'chosen-select' indica un select con buscador (plugin Chosen), equivalente funcional al patrón seleccion-busqueda aunque no usa la clase gc-select-search del catálogo",
+          "confidence": "media"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/clientes/datatable-constructor.js usa CplusStandardActions.crud (línea 33) para acciones toggle/eliminar/traza, cuyos handlers estándar disparan CplusAlerts/Swal.fire (cplus/js/core/alerts.js:89,115,146); no hay llamada Swal directa en este archivo",
+          "confidence": "media"
+        }
+      ],
+      "notes": "Este módulo es un LISTADO puro en cplus (DataTable vía cplus/js/entities/clientes/datatable-constructor.js), sin formulario de creación/edición propio: los botones 'editar'/'ver' del datatable (líneas 36-41) enlazan a incluir.php?agregar=130&actualizar=ID, pero el CRUD real sigue en código legacy (Modules/App ClientesController), fuera del alcance de cplus/views. Por tanto NO se reporta campo-texto/textarea/carga-pdf/carga-logo-imagen/campo-fecha/campo-hora/campo-horario/encabezado-formulario/opciones-acordeon/pestanas-internas para este módulo: no existen en la vista cplus. El único formulario presente es el de filtros de búsqueda (form#search, mostrarClientes.php:68), que solo aporta select-simple y seleccion-busqueda (chosen-select)."
+    },
+    {
+      "view": "mostrarGrupo.php",
+      "agregar": 131,
+      "moduleName": "Grupos/Subgrupos",
+      "formLocation": "cplus/views/mostrarGrupo.php — formulario inline en div#adicionar (líneas 91-153), sin modal ni partial separado; encabezado vía cplus/views/partials/form-head.php",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarGrupo.php:104-106 (label.form-label + input#nombre.form-control) y :109-111 (input#codigo.form-control)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarGrupo.php:115-123 (select#id_padre.form-select) y :127-130 (select#estado.form-select)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarGrupo.php:134-135 (textarea#descripcion.form-control)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarGrupo.php:96 include partials/form-head.php; el partial (cplus/views/partials/form-head.php:43-68) emite header.gc-form-head, div.gc-form-logo, div.gc-history con 'Creado por'/'Realizado por'/'Último cambio'",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarGrupo.php:62 cplus_render_flash_script() -> cplus/lib/flash.php:81 llama window.CplusAlerts.flashFromSession; cplus/js/entities/grupos/datatable.js:6 usa CplusStandardActions.crud({entityKey:'grupos',...}) cuyo handler de borrado (cplus/js/core/entity-actions.js:86-90 CplusAlerts.confirm) dispara Swal.fire en cplus/js/core/alerts.js:89/115/146",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Formulario simple de 5 campos (nombre, codigo, id_padre, estado, descripcion). No hay campo-fecha/hora, radio-si-no, checkbox, cargas de archivo, campo-validado, acordeones ni pestañas en la vista ni en el JS del módulo. La tabla (#informe) es solo listado DataTable estándar, no es un componente del catálogo."
+    },
+    {
+      "view": "mostrarDestinoAliado.php",
+      "agregar": 132,
+      "moduleName": "Destinos/Aliados",
+      "formLocation": "cplus/views/mostrarDestinoAliado.php — formulario inline en div#adicionar (líneas 83-136); encabezado vía cplus/views/partials/form-head.php",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarDestinoAliado.php:96-98 (input#nombre.form-control) y :109-111 (input#identificacion.form-control)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarDestinoAliado.php:102-106 (select#tipo_id.form-select con opciones NIT/CC/CE) y :115-118 (select#estado.form-select)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarDestinoAliado.php:88 include partials/form-head.php (mismo partial gc-form-head/gc-form-logo/gc-history que Grupos)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarDestinoAliado.php:54 cplus_render_flash_script() -> flash.php:81 CplusAlerts.flashFromSession; cplus/js/entities/destino_aliados/datatable.js:6 CplusStandardActions.crud({entityKey:'destino_aliados',...}) -> entity-actions.js:86-90 CplusAlerts.confirm -> alerts.js Swal.fire",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Formulario de 4 campos (nombre, tipo_id, identificacion, estado); sin textarea, sin campo-fecha/hora, radio-si-no, checkbox, cargas de archivo, campo-validado, acordeones ni pestañas. Tabla #informe es DataTable estándar (no es componente del catálogo)."
+    },
+    {
+      "view": "mostrarConfiguracionesSistema.php",
+      "agregar": 133,
+      "moduleName": "Configuraciones del sistema",
+      "formLocation": "No aplica: el módulo es un hub de navegación (grid de .config-card que enlaza a incluir.php?agregar=N de otros módulos), sin formulario propio de captura de datos ni tabla DataTable.",
+      "components": [
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/views/mostrarConfiguracionesSistema.php:146 onclick=\"alertaNoTienePermisos(...)\" en las cards con perm_alerts (Sucursales id=127, Cargues id=146/147); la función está definida en includes/menu_cplus.php:285-287 y delega a window.CplusAlerts.error(...), que en cplus/js/core/alerts.js llama Swal.fire",
+          "confidence": "media"
+        }
+      ],
+      "notes": "Vista sin formulario ni DataTable: es un grid estático de tarjetas (.config-card) generadas por PHP que enlazan a otras vistas (agregar=N). El input#cplusConfigSearch (líneas 126-127) es solo un filtro cliente sobre las cards (JS local líneas 246-264), no un campo de un formulario de datos, por eso no se reporta como campo-texto (regla explícita del catálogo). No existe carpeta cplus/js/entities/ para este módulo. No se encontraron select, textarea, checkbox, radio, fechas, horas, cargas, acordeones, pestañas ni encabezado-formulario (no hay form-head.php aquí)."
+    },
+    {
+      "view": "mostrarTipoVehiculos.php",
+      "agregar": 137,
+      "moduleName": "Tipos de vehículos",
+      "formLocation": "cplus/views/mostrarTipoVehiculos.php:118-167 (form inline #adicionar, no modal); encabezado vía include cplus/views/partials/form-head.php:123",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarTipoVehiculos.php:134-137 label.form-label + input#nombre.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarTipoVehiculos.php:142-143 <textarea name=\"descripcion\" class=\"form-control\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarTipoVehiculos.php:147-150 <select id=\"activo\" class=\"form-select\"> (nativo, opciones Activo/Inactivo); también select#f_tv_estado:191 en filtros",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarTipoVehiculos.php:123 include partials/form-head.php -> cplus/views/partials/form-head.php:43-68 header.gc-form-head, div.gc-form-logo, div.gc-history con 'Creado por'/'Último cambio'",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/tipo_vehiculos/datatable.js:5-12 CplusStandardActions.crud(...) -> cplus/js/core/standard-actions.js:121-134 auto-registra 'tipo_vehiculos:delete'/'toggle-status' delegando a cplus/js/core/entity-actions.js:86-96 CplusAlerts.confirm/toast (SweetAlert2, ver cplus/js/core/alerts.js:55,89,115,146 Swal.fire); además cplus/js/lib/GrincDataTable.js:183-234 CplusAlerts.error/info en carga y export Excel",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Vista con FORMULARIO real de alta/edición (no solo tabla). El select de filtros (#f_tv_estado, línea 191) es el mismo patrón select-simple, no se duplicó como componente aparte. No se encontró: campo-password, campo-fecha/hora, seleccion-busqueda, multiselect (simple o con búsqueda), radio-si-no, checkbox, carga-pdf/logo, campo-validado (solo hay .gc-help como texto de ayuda estático línea 138, sin .gc-help-button/popover), campo-horario, acordeón ni pestañas internas."
+    },
+    {
+      "view": "mostrarInformeGeneral.php",
+      "agregar": 138,
+      "moduleName": "Informe general",
+      "formLocation": "cplus/views/mostrarInformeGeneral.php:72-138 (form#igFiltrosForm de filtros+acción; NO es un CRUD de alta/edición). JS propio en cplus/js/entities/informe_general/datatable.js (sin DataTables).",
+      "components": [
+        {
+          "componentId": "campo-fecha",
+          "evidence": "cplus/views/mostrarInformeGeneral.php:81-82 y 86-87 <input type=\"date\" name=\"fecha_desde|fecha_hasta\" class=\"form-control\"> (input nativo HTML5, sin Flatpickr/data-gc-flatpickr)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarInformeGeneral.php:91-98 <select id=\"cliente_id\" class=\"form-select\"> nativo con opciones desde Catalogs::clientes()",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/informe_general/datatable.js:65,69,127,183,190 llamadas directas CplusAlerts.warning/error/info/toast (wrapper SweetAlert2 en cplus/js/core/alerts.js:55,89,115,146 Swal.fire)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Módulo sin DataTables (historial de jobs pintado a mano por JS, cplus/js/entities/informe_general/datatable.js:231-255) y sin encabezado estándar gc-form-head (no incluye partials/form-head.php). El <select multiple size=\"3\"> de sucursales (línea 102) es un multiselect NATIVO poblado por JS (loadSucursales, datatable.js:85-105); no tiene gc-multiselect/data-gc-multiselect ni resumen 'Seleccionados:', por lo que NO se reporta como seleccion-multiple-desplegable/busqueda del catálogo. No hay campo-texto (ningún input type=text), textarea, checkbox, radio, password, uploads, campo-validado (no hay .gc-help ni .gc-help-button), campo-horario, acordeón ni pestañas."
+    },
+    {
+      "view": "mostrarMetrica.php",
+      "agregar": 139,
+      "moduleName": "Métricas",
+      "formLocation": "cplus/views/mostrarMetrica.php:132-197 (form inline #adicionar, no modal); encabezado vía include cplus/views/partials/form-head.php:137",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarMetrica.php:148-153 (nombre), 157-162 (codigo), 166-171 (abreviacion) — label.form-label + input.form-control",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarMetrica.php:176-179 <select id=\"estado\" class=\"form-select\"> nativo (1=Activo,2=Inactivo)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarMetrica.php:137 include partials/form-head.php -> cplus/views/partials/form-head.php:43-68 header.gc-form-head/gc-form-logo/gc-history",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/metricas/datatable.js:30-48 CplusStandardActions.crud(...) -> cplus/js/core/standard-actions.js:121-134 auto-registra 'metricas:delete'/'toggle-status' delegando a cplus/js/core/entity-actions.js:86-96 CplusAlerts.confirm/toast (SweetAlert2, cplus/js/core/alerts.js:55,89,115,146 Swal.fire); además cplus/js/lib/GrincDataTable.js:183-234 CplusAlerts.error/info",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Vista con FORMULARIO real de alta/edición. No hay textarea (a diferencia de Tipos de vehículo), ni campo-password, campo-fecha/hora, seleccion-busqueda, multiselect, radio-si-no, checkbox, carga-pdf/logo, campo-validado (solo .gc-help texto estático líneas 154/163/172, sin botón/popover), campo-horario, acordeón ni pestañas. Sin card de 'Filtros de búsqueda' (línea 200: búsqueda vive en el toolbar V2 del shell JS de la tabla)."
+    },
+    {
+      "view": "mostrarManifiestos.php",
+      "agregar": 140,
+      "moduleName": "Manifiestos",
+      "formLocation": "No existe formulario CRUD propio en cplus: crear/editar sigue en los formularios legacy administradorManifiestosF.php/FD.php (ver comentario en cplus/views/mostrarManifiestos.php:159-168 y 651-661; botón 'Nuevo manifiesto' queda deshabilitado). Los únicos <form>/inputs propios de cplus son los MODALES de mutación (anular individual/masivo, revivir, firmar, correo, adicionar servicios, compartir), todos inline en cplus/views/mostrarManifiestos.php:419-649 y cableados por cplus/js/entities/manifiestos/actions.js.",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarManifiestos.php:538-539 y 542-543 — modal Firmar MF: <label class=\"form-label\"> + <input class=\"form-control\"> para firmar_nombre/firmar_cc; también compartir_url:635-637",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-fecha",
+          "evidence": "cplus/views/mostrarManifiestos.php:188-194 — input type=\"date\" class=\"form-control\" (fechabusqueda/fechabusqueda_hasta) en el form de filtros. Es input date nativo, no Flatpickr",
+          "confidence": "media"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarManifiestos.php:437-438 (anular_motivo), 481-482 (masivo_motivo), 512 (revivir_observacion) — <textarea class=\"form-control\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarManifiestos.php:433 y 477 — <select class=\"form-select\"> vacíos (anular_causal/masivo_causal), poblados desde JS en cplus/js/entities/manifiestos/actions.js:176-190 (llenarCausales inyecta <option>)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/mostrarManifiestos.php:200 — <select class=\"form-select chosen-select\" id=\"clientebusqueda\"> (jQuery Chosen da buscador interno; no es la clase gc-select-search del catálogo)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "seleccion-multiple-busqueda",
+          "evidence": "cplus/views/mostrarManifiestos.php:217 — <select name=\"sucursalbusqueda[]\" class=\"form-select chosen-select\" multiple> (Chosen multi-select con buscador)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "checkbox",
+          "evidence": "cplus/views/mostrarManifiestos.php:444,448,453 (anular_rev/anular_frec/anular_correo) y :485 (masivo_correo) — <input class=\"form-check-input\" type=\"checkbox\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/manifiestos/actions.js:98-112 (notifyOk/notifyWarn/notifyErr delegan a window.CplusAlerts.toast/warning/error) sobre cplus/js/core/alerts.js:89,115 (window.Swal.fire)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Vista es un DataTable con 2 listados (#informe/#informe2) más los modales de mutación; no hay formulario de alta/edición migrado a cplus (gap explícito documentado en la propia vista). Todos los componentes reportados salen del form#search de filtros y de los 7 modales BS5."
+    },
+    {
+      "view": "mostrarRutas.php",
+      "agregar": 142,
+      "moduleName": "Rutas",
+      "formLocation": "No existe formulario CRUD propio en cplus: crear/editar ruta es el wizard legacy (botón 'Nueva ruta' enlaza a incluir.php?agregar=17, cplus/views/mostrarRutas.php:130-133; acción Editar navega igual vía legacyEditHref). Los <form>/inputs propios de cplus viven en los MODALES 'Ver ruta' (solo lectura), 'Asignar recursos' (selects) y 'Fletes' (inputs en tabla), inline en cplus/views/mostrarRutas.php:303-436, cableados por cplus/js/entities/rutas/datatable-constructor.js.",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarRutas.php:183-187 — <label for=\"codigo\">(sin clase form-label) + <input class=\"form-control\"> del filtro 'Código de ruta'",
+          "confidence": "media"
+        },
+        {
+          "componentId": "campo-fecha",
+          "evidence": "cplus/views/mostrarRutas.php:153-160 — input type=\"date\" class=\"form-control\" (fecha_desde/fecha_hasta) en form#search; input nativo, no Flatpickr",
+          "confidence": "media"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarRutas.php:380,384,388,392 — <select class=\"form-select\"> vacíos (asg_vehiculo/asg_conductor/asg_auxiliar/asg_responsable) en el modal 'Asignar recursos', poblados por JS",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "seleccion-busqueda",
+          "evidence": "cplus/views/mostrarRutas.php:166 — <select class=\"form-select chosen-select\" id=\"cliente_id\"> (jQuery Chosen)",
+          "confidence": "media"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/rutas/datatable-constructor.js:299,308-320,334,377,380,399-407 (CplusAlerts.error/confirm/success/info) y cplus/js/entities/rutas/calendar.js:101-184 (CplusAlerts.confirm/success/error/warning en reprogramación drag&drop), sobre cplus/js/core/alerts.js (Swal.fire)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "El calendario FullCalendar (cplus/js/entities/rutas/calendar.js) es un widget de terceros sin campos de formulario propios del catálogo (solo dispara alertas). El modal Fletes usa <input> sueltos dentro de <table> (encabezados de columna hacen de label), por eso no se reporta como 'campo-texto' adicional; ya cubierto por la evidencia del filtro 'codigo'."
+    },
+    {
+      "view": "mostrarRiesgos.php",
+      "agregar": 143,
+      "moduleName": "Riesgos",
+      "formLocation": "cplus/views/mostrarRiesgos.php:139-189 — form#formularioRegistrar inline en la misma vista (patrón crear/editar/consultar por querystring ?actualizar=N[&ver=1]); usa el partial cplus/views/partials/form-head.php como encabezado.",
+      "components": [
+        {
+          "componentId": "campo-texto",
+          "evidence": "cplus/views/mostrarRiesgos.php:155-159 — <label for=\"nombre\" class=\"form-label\"> + <input class=\"form-control\" required> (nombre del riesgo)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "cplus/views/mostrarRiesgos.php:162-164 — <textarea name=\"descripcion\" class=\"form-control\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "cplus/views/mostrarRiesgos.php:167-172 — <select name=\"estado\" class=\"form-select\"> con opciones Activo/Inactivo hardcodeadas",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "cplus/views/mostrarRiesgos.php:144 (include 'cplus/views/partials/form-head.php') + cplus/views/partials/form-head.php:43-68 (header.gc-form-head, .gc-form-logo, .gc-history con 'Creado por'/'Realizado por'/'Último cambio')",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/riesgos/datatable.js:24-58 (CplusStandardActions.crud registra acciones toggle/eliminar) → cplus/js/core/standard-actions.js:121-141 (auto-registro riesgos:delete/toggle-status hacia CplusEntityActions) → cplus/js/core/entity-actions.js:36-46,86-97 (window.CplusAlerts.toast/error/confirm) sobre Swal.fire en cplus/js/core/alerts.js",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Único de los 3 módulos con formulario CRUD propio ya migrado a cplus (create/update/view). Tiene una función JS 'valorCheckbox' (líneas 100-106) sin ningún <input type=checkbox> en el markup que la dispare — el campo 'estado' real es un <select> — por lo que NO se reporta 'checkbox' (parece código residual sin uso). No se encontraron: campo-password, campo-hora, seleccion-multiple-*, radio-si-no, carga-pdf, carga-logo-imagen, campo-validado, campo-horario, opciones-acordeon, pestanas-internas."
+    },
+    {
+      "view": "mostrarTutoriales.php",
+      "agregar": 145,
+      "moduleName": "Tutoriales",
+      "formLocation": "No aplica: el modulo no tiene formulario de captura/edicion. Es un catalogo de video-tutoriales (acordeon + buscador) pintado client-side por cplus/js/entities/tutoriales/tutoriales.js sobre datos del BFF (cplus/bff/entities/tutoriales/catalog.php). El unico <input> de la vista es el buscador (cplus/views/mostrarTutoriales.php:77-78), sin form-label asociado.",
+      "components": [
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/tutoriales/tutoriales.js:45-54 (toast()/showLoading()/hideLoading() delegan a window.CplusAlerts); motor confirmado SweetAlert2 en cplus/js/core/alerts.js:18,55 ('Motor actual: SweetAlert2 (window.Swal)', hasSwal2() -> window.Swal.fire)",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Vista sin DataTable ni formulario propio (solo lectura + navegacion). El acordeon de categorias (cplus/js/entities/tutoriales/tutoriales.js:163-192, clases tut-cat/tut-cat-head/tut-cat-body) es una implementacion a medida (NO usa las clases Bootstrap accordion/collapse ni gc-business-*/gc-unit-* del catalogo 'opciones-acordeon'), por lo que NO se reporta como ese componente. El input de busqueda (mostrarTutoriales.php:77) es form-control sin form-label, por lo que tampoco se reporta como 'campo-texto' (no hay formulario de captura en este modulo)."
+    },
+    {
+      "view": "mostrarCarguesSucursales.php",
+      "agregar": 146,
+      "moduleName": "Cargue sucursales",
+      "formLocation": "cplus/views/mostrarCarguesSucursales.php, form inline id=\"formularioCargue\" (lineas 125-165). No hay form-manager.js separado; cplus/js/entities/sucursales/cargues.js solo agrega comportamiento accesorio (catalogos, validacion de extension, guard de doble submit).",
+      "components": [
+        {
+          "componentId": "select-simple",
+          "evidence": "mostrarCarguesSucursales.php:131 <select name=\"client_id\" id=\"client_id\" class=\"form-select chosen-select\">; la clase chosen-select es residual/inerte: gc-search-select.js (cplus/js/core/gc-search-select.js:5,235) solo auto-inicializa selects con atributo data-gc-search-select, ausente aqui, y no hay libreria jQuery Chosen vendorizada en cplus/js — el select se comporta como <select> nativo.",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-texto",
+          "evidence": "mostrarCarguesSucursales.php:139-142 <label>Tipo de cargue</label> + <input type=\"text\" class=\"form-control\" value=\"Sucursales\" readonly>. Coincide con el patron generico label+form-control, pero el <label> no lleva la clase form-label del catalogo (patron BS3 .form-group, no el BS5 gc-forms).",
+          "confidence": "media"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/sucursales/cargues.js:62-64 (window.CplusAlerts.warning en validacion de extension .xlsx) y :74-76 (window.CplusAlerts.showLoading en submit); motor SweetAlert2 confirmado en cplus/js/core/alerts.js:18,55",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "El input 'Su clave' (mostrarCarguesSucursales.php:150-154, type=\"password\") es un password nativo SIN clases gc-password-* ni resumen de requisitos (compara con el patron real en design-library/data/componentes.js:67-83), por lo que NO se reporta como 'campo-password'. El input 'archivo' (linea 146, type=\"file\", accept=\".xlsx\") es un file input nativo sin gc-upload-*/preview, por lo que NO se reporta como 'carga-pdf' ni 'carga-logo-imagen'. No hay encabezado-formulario (no se incluye cplus/views/partials/form-head.php en esta vista)."
+    },
+    {
+      "view": "mostrarMesaAyuda.php",
+      "agregar": 148,
+      "moduleName": "Mesa de ayuda",
+      "formLocation": "cplus/views/mostrarMesaAyuda.php: dos <form> inline en la misma vista — #mesaAyudaFilters (filtros, lineas 74-101) y #maFormCalificar (calificacion, dentro del modal #maModalCalificar, lineas 194-227). Ambos manejados por cplus/js/entities/mesa_ayuda/mesa-ayuda.js sin form-manager.js separado.",
+      "components": [
+        {
+          "componentId": "campo-fecha",
+          "evidence": "mostrarMesaAyuda.php:78,82 <input type=\"date\" class=\"form-control\" id=\"maDesde\"/\"maHasta\">; auto-mejorado a Flatpickr por cplus/js/core/gc-dates.js:31-37 (querySelectorAll('input[type=\"date\"]') -> window.flatpickr(el,...) en TODA vista cplus, auto-init global)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "mostrarMesaAyuda.php:86-89 <select class=\"form-select\" id=\"maSolicitud\"> y :91-94 id=\"maEtapa\"; poblados via JS nativo (rebuildFilterOptions, cplus/js/entities/mesa_ayuda/mesa-ayuda.js:107-132), sin buscador ni multiselect",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-texto",
+          "evidence": "mostrarMesaAyuda.php:97-98 <label class=\"form-label\" for=\"maDetalle\">Detalle</label> + <input type=\"text\" class=\"form-control\" id=\"maDetalle\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "mostrarMesaAyuda.php:211-212 <label class=\"form-label\" for=\"maComentario\">Comentario</label> + <textarea class=\"form-control\" id=\"maComentario\" name=\"comentario\" rows=\"4\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/mesa_ayuda/mesa-ayuda.js:36-46 (toast/showLoading/hideLoading via window.CplusAlerts) y :275,283 (toast de error tras rate.php); motor SweetAlert2 confirmado en cplus/js/core/alerts.js:18,55",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "El radiogroup de calificacion (mostrarMesaAyuda.php:200-206, name=\"calificacion\", 5 estrellas) es un radio nativo SIN la clase gc-yes-no del catalogo (compara con design-library/data/componentes.js:594-606, patron SI/NO con btn-check); no corresponde al componente 'radio-si-no' del catalogo y no hay otro id de radio generico en la lista, por lo que no se reporta. No hay encabezado-formulario (module-header es un <h1> simple, sin incluir cplus/views/partials/form-head.php); no hay campo-validado (no hay gc-help-button/popover, solo texto y badges)."
+    },
+    {
+      "view": "mostrarBodegas.php",
+      "agregar": 149,
+      "moduleName": "Bodegas de inventario",
+      "formLocation": "cplus/views/mostrarBodegas.php, form inline id=\"formularioRegistrar\" data-gc-validate (lineas 209-311); encabezado via include('cplus/views/partials/form-head.php') en la linea 213.",
+      "components": [
+        {
+          "componentId": "encabezado-formulario",
+          "evidence": "mostrarBodegas.php:213 include 'cplus/views/partials/form-head.php'; el partial (cplus/views/partials/form-head.php:43-68) emite <header class=\"gc-form-head\"> + <div class=\"gc-form-logo\"> + <div class=\"gc-history\"> con 'Creado por'/'Realizado por'/'Ultimo cambio' (lineas 58-66)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "campo-texto",
+          "evidence": "mostrarBodegas.php:224-228 <label for=\"nombre\" class=\"form-label\">...Nombre</label> + <input type=\"text\" id=\"nombre\" class=\"form-control\"...> y :232-236 (campo Codigo, misma estructura form-label+form-control)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "select-simple",
+          "evidence": "mostrarBodegas.php:241-242 <select name=\"id_sucursal\" id=\"id_sucursal\" class=\"form-select\"> y :274-275 <select name=\"estado\" id=\"estado\" class=\"form-select\"> (opciones estaticas, sin buscador)",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "textarea",
+          "evidence": "mostrarBodegas.php:290-291 <label for=\"observacion\" class=\"form-label\">Observacion</label> + <textarea name=\"observacion\" id=\"observacion\" class=\"form-control\" rows=\"2\">",
+          "confidence": "alta"
+        },
+        {
+          "componentId": "alertas-librerias",
+          "evidence": "cplus/js/entities/bodegas/datatable.js:293-306 (CplusActionDispatcher.register('bodegas:delete') -> window.CplusEntityActions.delete con confirm); cplus/js/core/entity-actions.js:86-87 (opts.confirm -> window.CplusAlerts.confirm) y :36-46 (toast/error); motor SweetAlert2 confirmado en cplus/js/core/alerts.js:18,55",
+          "confidence": "alta"
+        }
+      ],
+      "notes": "Los <div class=\"gc-help\"> del formulario (mostrarBodegas.php:229,237) son solo texto de ayuda estatico bajo el campo, SIN boton '?' ni popover (compara con el patron real 'campo-validado' en design-library/data/componentes.js:874-888, que exige gc-help-button + data-bs-toggle=\"popover\"); por eso NO se reporta como 'campo-validado'. El atributo data-gc-validate del <form> (linea 209) activa validacion de requeridos (gc-validate.js) pero no es en si un componente visual del catalogo. No hay campo-fecha/hora, checkbox, radio, upload, multiselect, acordeon ni pestanas en este modulo; la tabla/DataTable (id=\"informe\") no cuenta como componente del catalogo."
+    }
+  ]
+}

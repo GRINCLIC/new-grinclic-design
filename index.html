@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Biblioteca interna Bootstrap - Grinclic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <link href="assets/grinclic-forms.css" rel="stylesheet">
+  <style>
+    /* Extensiones del visor (biblioteca viva) — no tocar grinclic-forms.css de la diseñadora */
+    .gc-doc-badges{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex:none}
+    .gc-badge-verified{background:#dcefe2;color:#1e7e34;border:1px solid #b7dfc4}
+    .gc-badge-diseno{background:#ececec;color:#666;border:1px solid #ddd}
+    .gc-variant-pills{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+    .gc-variant-pill{border:1px solid #cdd6cf;background:#fff;border-radius:999px;padding:5px 14px;font-size:.85rem;cursor:pointer}
+    .gc-variant-pill.active{background:#1e7e34;border-color:#1e7e34;color:#fff}
+    .gc-variant-description{color:#5a6b5e;font-size:.9rem;margin:6px 0 0}
+    .gc-variant-example{margin-top:10px}
+    .gc-impl{margin-top:16px;border:1px solid var(--gc-soft);border-radius:8px;background:#fbfcfd;padding:12px;font-size:.84rem;line-height:1.45}
+    .gc-impl-title{font-size:.95rem;margin:0 0 4px;color:var(--gc-strong)}
+    .gc-impl-intro{color:#475569;margin:0 0 10px}
+    .gc-impl-catalog{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--gc-soft)}
+    .gc-impl-catalog strong{color:var(--gc-green-dark)}
+    .gc-impl-catalog-link{border:1px solid var(--gc-soft);background:#fff;color:var(--gc-green-dark);border-radius:999px;padding:3px 12px;font-size:.8rem;cursor:pointer}
+    .gc-impl-catalog-link:hover{border-color:var(--gc-green-dark)}
+    .gc-impl-item{display:grid;grid-template-columns:128px minmax(0,1fr);gap:8px;padding:8px 0;color:#475569}
+    .gc-impl-item + .gc-impl-item{border-top:1px solid var(--gc-soft)}
+    .gc-impl-module{color:var(--gc-green-dark);font-weight:600}
+    .gc-impl-data{display:flex;flex-direction:column;gap:3px;min-width:0}
+    .gc-impl-url{font-size:.82rem;word-break:break-all}
+    .gc-impl-file{font-size:.78rem;background:#eef2f6;border:1px solid var(--gc-soft);border-radius:4px;padding:2px 6px;align-self:flex-start;color:#334155}
+    .gc-impl-detail{font-size:.82rem;color:#64748b}
+    @media (max-width:720px){.gc-impl-item{grid-template-columns:1fr;gap:3px}}
+    .gc-gallery-main{display:flex;align-items:center;gap:10px}
+    .gc-gallery-image{flex:1;min-width:0;max-height:60vh;object-fit:contain;border:1px solid #e3e8e4;border-radius:8px;background:#fafbfa;cursor:zoom-in}
+    .gc-gallery-arrow{border:1px solid #cdd6cf;background:#fff;border-radius:50%;width:36px;height:36px;font-size:1.2rem;line-height:1;cursor:pointer;flex:none}
+    .gc-gallery-counter{text-align:center;color:#5a6b5e;font-size:.85rem;margin:8px 0}
+    .gc-gallery-thumbs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+    .gc-gallery-thumb{width:84px;height:56px;object-fit:cover;border:2px solid transparent;border-radius:6px;cursor:pointer;opacity:.7}
+    .gc-gallery-thumb.active{border-color:#1e7e34;opacity:1}
+    .gc-gallery-loading{color:#5a6b5e;padding:20px 0}
+    .gc-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1080;align-items:center;justify-content:center;gap:16px;padding:24px}
+    .gc-lightbox.open{display:flex}
+    .gc-lightbox-image{max-width:calc(100vw - 140px);max-height:calc(100vh - 60px);object-fit:contain}
+  </style>
+</head>
+<body>
+  <div class="gc-page">
+    <div class="gc-catalog-layout">
+      <aside class="gc-catalog-sidebar">
+        <div class="gc-catalog-brand">
+          <div class="gc-brand-mark gc-brand-mark--grinclic"><img src="assets/logo-grinclic.svg" alt="Logo Grinclic"><!-- Reemplaza este src por tu propio SVG de Grinclic o de la marca interna de la biblioteca. --></div>
+          <div>
+            <strong>Biblioteca</strong>
+            <span>Formularios Bootstrap</span>
+          </div>
+        </div>
+        <input type="search" id="componentSearch" class="form-control form-control-sm mb-3" placeholder="Buscar componente…" autocomplete="off" aria-label="Buscar componente">
+        <div id="componentNav"></div>
+      </aside>
+
+      <main class="gc-doc-card" id="componentDoc" aria-live="polite"></main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="assets/grinclic-forms.js"></script>
+  <script src="data/componentes.js"></script>
+  <script src="data/mockups.js"></script>
+  <script>
+    (function(){
+      var components = window.GC_COMPONENTS || [];
+      var groupLabels = ["Campos","Bloques","Advertencias","Organización","Formularios"];
+      var nav = document.getElementById("componentNav");
+      var doc = document.getElementById("componentDoc");
+      var activeId = components[0] ? components[0].id : "";
+      var searchQuery = "";
+      var activeVariant = 0;
+      var galleryImages = [];
+      var galleryIndex = 0;
+      var galleryToken = 0; // invalida callbacks de sondeo obsoletos al cambiar de módulo
+
+      function normalizeText(value){
+        return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      }
+
+      function escapeHtml(value){
+        return String(value == null ? "" : value).replace(/[&<>"']/g, function(char){
+          return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char];
+        });
+      }
+
+      function renderMockupNav(){
+        var modules = window.GC_MOCKUPS || [];
+        if(!modules.length) return "";
+        return '<section class="gc-nav-group">' +
+          '<h2 class="gc-nav-heading">Módulos migrados</h2>' +
+          '<div class="gc-component-nav">' +
+          modules.map(function(mod){
+            return '<button class="gc-component-link ' + (activeId === "mockup:" + mod.folder ? "active" : "") + '" type="button" data-mockup="' + mod.folder + '">' + escapeHtml(mod.name) + '</button>';
+          }).join("") +
+          '</div></section>';
+      }
+
+      function renderNav(){
+        nav.innerHTML = groupLabels.map(function(group){
+          var query = normalizeText(searchQuery);
+          var items = components.filter(function(item){
+            return item.group === group && (!query || normalizeText(item.name).indexOf(query) !== -1);
+          });
+          if(!items.length) return "";
+          return '<section class="gc-nav-group">' +
+            '<h2 class="gc-nav-heading">' + group + '</h2>' +
+            '<div class="gc-component-nav">' +
+            items.map(function(item){
+              return '<button class="gc-component-link ' + (item.id === activeId ? "active" : "") + '" type="button" data-component="' + item.id + '">' + item.name + '</button>';
+            }).join("") +
+            '</div></section>';
+        }).join("") + renderMockupNav();
+
+        nav.querySelectorAll("[data-component]").forEach(function(button){
+          button.addEventListener("click", function(){
+            activeId = button.dataset.component;
+            activeVariant = 0;
+            renderNav();
+            renderDoc();
+          });
+        });
+
+        nav.querySelectorAll("[data-mockup]").forEach(function(button){
+          button.addEventListener("click", function(){
+            activeId = "mockup:" + button.dataset.mockup;
+            renderNav();
+            renderGallery(button.dataset.mockup);
+          });
+        });
+      }
+
+      function renderBody(item){
+        return '<div class="gc-code-panel">' +
+          '<button class="gc-copy-code" type="button" data-gc-copy="#snippetCode">Copiar</button>' +
+          '<pre><code id="snippetCode">' + escapeHtml(item.snippet || "") + '</code></pre>' +
+          '</div>';
+      }
+
+      function renderInstruction(item){
+        var accessibility = item.accessibility ? '<div class="gc-instruction-line"><strong>Accesibilidad:</strong><span>' + escapeHtml(item.accessibility) + '</span></div>' : '';
+        var note = item.note ? '<div class="gc-instruction-line"><strong>Nota:</strong><span>' + item.note + '</span></div>' : '';
+        return '<div class="gc-instruction-box">' +
+          '<div class="gc-instruction-line"><strong>Dependencias:</strong><span>' + escapeHtml(item.deps || "Bootstrap CSS + grinclic-forms.css") + '</span></div>' +
+          '<div class="gc-instruction-line"><strong>Uso recomendado:</strong><span>' + escapeHtml(item.use || "") + '</span></div>' +
+          '<div class="gc-instruction-line"><strong>Evitar:</strong><span>' + escapeHtml(item.avoid || "") + '</span></div>' +
+          accessibility + note +
+          '</div>';
+      }
+
+      function renderVerifiedBadge(item){
+        return item.verified
+          ? '<span class="gc-badge gc-badge-verified">Verificado cplus</span>'
+          : '<span class="gc-badge gc-badge-diseno">Diseño</span>';
+      }
+
+      function renderVariantPills(item){
+        if(!item.variants || !item.variants.length) return "";
+        return '<div class="gc-variant-pills">' + item.variants.map(function(variant, index){
+          return '<button type="button" class="gc-variant-pill' + (index === activeVariant ? " active" : "") + '" data-variant="' + index + '">' + escapeHtml(variant.name) + '</button>';
+        }).join("") + '</div>';
+      }
+
+      var GC_APP_BASE = window.GC_APP_BASE || "https://dev.grinclic.com/incluir.php?agregar=";
+
+      function renderImplementations(item){
+        var impls = item.implementations || [];
+        var catalogRefs = (item.catalogExamples || []).map(function(id){
+          var target = components.find(function(c){ return c.id === id; });
+          return target ? '<button type="button" class="gc-impl-catalog-link" data-impl-catalog="' + id + '">' + escapeHtml(target.name) + '</button>' : "";
+        }).join("");
+        if(!impls.length && !catalogRefs) return "";
+        var catalogRow = catalogRefs
+          ? '<div class="gc-impl-catalog"><strong>Verlo ya usado en esta biblioteca:</strong>' + catalogRefs + '</div>'
+          : "";
+        return '<section class="gc-impl">' +
+          '<h2 class="gc-impl-title">Ejemplos de implementación</h2>' +
+          '<p class="gc-impl-intro">Dónde ver este componente ya usado: en los formularios de esta biblioteca (sin salir) o en los módulos reales de Grinclic (vista y archivo fuente para tomar la clase).</p>' +
+          catalogRow +
+          impls.map(function(impl){
+            var url = GC_APP_BASE + impl.agregar;
+            return '<div class="gc-impl-item">' +
+              '<span class="gc-impl-module">' + escapeHtml(impl.module) + '</span>' +
+              '<div class="gc-impl-data">' +
+                '<a class="gc-impl-url" href="' + url + '" target="_blank" rel="noopener">' + url + '</a>' +
+                '<code class="gc-impl-file">' + escapeHtml(impl.file) + '</code>' +
+                (impl.detail ? '<span class="gc-impl-detail">' + escapeHtml(impl.detail) + '</span>' : '') +
+              '</div></div>';
+          }).join("") + '</section>';
+      }
+
+      function renderPreview(item, group){
+        if(item.preview){
+          return '<div class="gc-preview-inner">' + item.preview + '</div>';
+        }
+        if(item.states){
+          var stateLabels = {
+            enabled:"En el caso en que el campo esté habilitado, debe verse así.",
+            error:"En el caso en que el campo tenga error, debe verse así.",
+            disabled:"En el caso en que el campo esté inhabilitado, debe verse así."
+          };
+          var stateOrder = ["enabled","error","disabled"].filter(function(key){ return Boolean(item.states[key]); });
+          var gridClass = (group || item.group) === "Campos" ? "gc-state-grid" : "gc-state-grid gc-state-grid-block";
+          return '<div class="' + gridClass + '">' +
+            stateOrder.map(function(key){
+              return '<article class="gc-state-shell"><div class="gc-state-instruction">' + stateLabels[key] + '</div><div class="gc-state-example">' + item.states[key] + '</div></article>';
+            }).join("") +
+            '</div>';
+        }
+        return '<div class="gc-preview-inner">' + (item.snippet || "") + '</div>';
+      }
+
+      function renderDoc(){
+        var item = components.find(function(component){ return component.id === activeId; }) || components[0];
+        if(!item) return;
+
+        var hasVariants = item.variants && item.variants.length;
+        if(hasVariants && activeVariant >= item.variants.length) activeVariant = 0;
+        var current = hasVariants ? item.variants[activeVariant] : item;
+        var variantIntro = hasVariants && current.description ? '<p class="gc-variant-description">' + current.description + '</p>' : "";
+        var exampleLink = current.example ? '<div class="gc-variant-example"><a class="btn btn-success btn-sm" href="' + current.example + '" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Ver ejemplo completo</a></div>' : "";
+
+        doc.innerHTML = '<header class="gc-doc-header">' +
+          '<div class="gc-doc-title"><h1>' + item.name + '</h1><p>' + item.description + '</p>' + renderInstruction(item) + '</div>' +
+          '<div class="gc-doc-badges"><span class="gc-badge">Bootstrap</span>' + renderVerifiedBadge(item) + '</div>' +
+          '</header>' +
+          renderVariantPills(item) +
+          variantIntro +
+          '<section class="gc-preview">' + renderPreview(current, item.group) + '</section>' +
+          exampleLink +
+          renderImplementations(item) +
+          '<section class="gc-doc-body"><h2 class="gc-code-title">Código HTML para copiar</h2>' + renderBody(current) + '</section>';
+
+        doc.querySelectorAll("[data-variant]").forEach(function(button){
+          button.addEventListener("click", function(){
+            activeVariant = Number(button.dataset.variant);
+            renderDoc();
+          });
+        });
+
+        doc.querySelectorAll("[data-impl-catalog]").forEach(function(button){
+          button.addEventListener("click", function(){
+            activeId = button.dataset.implCatalog;
+            activeVariant = 0;
+            renderNav();
+            renderDoc();
+            window.scrollTo(0, 0);
+          });
+        });
+
+        window.GrinclicForms.init(doc);
+      }
+
+      function probeMockups(folder, done){
+        var found = [];
+        function tryExt(base, exts, cb){
+          if(!exts.length) return cb(null);
+          var img = new Image();
+          img.onload = function(){ cb(base + exts[0]); };
+          img.onerror = function(){ tryExt(base, exts.slice(1), cb); };
+          img.src = base + exts[0];
+        }
+        (function tryIndex(i){
+          var base = "mockups/" + folder + "/" + String(i).padStart(2, "0");
+          tryExt(base, [".png", ".jpg"], function(src){
+            if(src){ found.push(src); tryIndex(i + 1); }
+            else { done(found); }
+          });
+        })(1);
+      }
+
+      function renderGallery(folder){
+        var mod = (window.GC_MOCKUPS || []).find(function(entry){ return entry.folder === folder; });
+        if(!mod) return;
+        var token = ++galleryToken;
+        doc.innerHTML = '<header class="gc-doc-header">' +
+          '<div class="gc-doc-title"><h1>' + escapeHtml(mod.name) + '</h1>' +
+          '<p>Mockups de cómo quedó el módulo en cplus. Para agregar más, guarda imágenes numeradas en mockups/' + escapeHtml(folder) + '/ (01.png, 02.png…) y refresca.</p></div>' +
+          '<span class="gc-badge">Módulo migrado</span></header>' +
+          '<div class="gc-gallery-loading">Cargando imágenes…</div>' +
+          '<div id="galleryHost"></div>';
+        probeMockups(folder, function(images){
+          if(token !== galleryToken) return; // el usuario ya navegó a otro módulo
+          galleryImages = images;
+          galleryIndex = 0;
+          var loading = doc.querySelector(".gc-gallery-loading");
+          if(!images.length){
+            if(loading) loading.textContent = "Sin imágenes aún. Crea mockups/" + folder + "/01.png y refresca.";
+            return;
+          }
+          if(loading) loading.remove();
+          updateGallery();
+        });
+      }
+
+      function updateGallery(){
+        var host = document.getElementById("galleryHost");
+        if(!host) return;
+        host.innerHTML = '<div class="gc-gallery">' +
+          '<div class="gc-gallery-main">' +
+            '<button type="button" class="gc-gallery-arrow" data-gallery-step="-1" aria-label="Anterior">&#8249;</button>' +
+            '<img class="gc-gallery-image" data-gallery-open src="' + galleryImages[galleryIndex] + '" alt="Mockup ' + (galleryIndex + 1) + '">' +
+            '<button type="button" class="gc-gallery-arrow" data-gallery-step="1" aria-label="Siguiente">&#8250;</button>' +
+          '</div>' +
+          '<div class="gc-gallery-counter">' + (galleryIndex + 1) + ' / ' + galleryImages.length + '</div>' +
+          '<div class="gc-gallery-thumbs">' +
+            galleryImages.map(function(src, index){
+              return '<img class="gc-gallery-thumb' + (index === galleryIndex ? " active" : "") + '" data-gallery-index="' + index + '" src="' + src + '" alt="Miniatura ' + (index + 1) + '">';
+            }).join("") +
+          '</div></div>';
+
+        host.querySelectorAll("[data-gallery-step]").forEach(function(button){
+          button.addEventListener("click", function(){ stepGallery(Number(button.dataset.galleryStep)); });
+        });
+        host.querySelectorAll("[data-gallery-index]").forEach(function(thumb){
+          thumb.addEventListener("click", function(){
+            galleryIndex = Number(thumb.dataset.galleryIndex);
+            updateGallery();
+          });
+        });
+        host.querySelector("[data-gallery-open]").addEventListener("click", openLightbox);
+      }
+
+      function stepGallery(delta){
+        if(!galleryImages.length) return;
+        galleryIndex = (galleryIndex + delta + galleryImages.length) % galleryImages.length;
+        updateGallery();
+        var lightboxImage = document.querySelector("#gcLightbox.open .gc-lightbox-image");
+        if(lightboxImage) lightboxImage.src = galleryImages[galleryIndex];
+      }
+
+      function ensureLightbox(){
+        var box = document.getElementById("gcLightbox");
+        if(box) return box;
+        box = document.createElement("div");
+        box.id = "gcLightbox";
+        box.className = "gc-lightbox";
+        box.innerHTML =
+          '<button type="button" class="gc-gallery-arrow" data-gallery-step="-1" aria-label="Anterior">&#8249;</button>' +
+          '<img class="gc-lightbox-image" alt="Mockup ampliado">' +
+          '<button type="button" class="gc-gallery-arrow" data-gallery-step="1" aria-label="Siguiente">&#8250;</button>';
+        box.addEventListener("click", function(event){
+          if(event.target === box) box.classList.remove("open");
+        });
+        box.querySelectorAll("[data-gallery-step]").forEach(function(button){
+          button.addEventListener("click", function(){ stepGallery(Number(button.dataset.galleryStep)); });
+        });
+        document.body.appendChild(box);
+        return box;
+      }
+
+      function openLightbox(){
+        var box = ensureLightbox();
+        box.querySelector(".gc-lightbox-image").src = galleryImages[galleryIndex];
+        box.classList.add("open");
+      }
+
+      document.addEventListener("keydown", function(event){
+        var box = document.getElementById("gcLightbox");
+        if(event.key === "Escape" && box) box.classList.remove("open");
+        if(event.target && event.target.tagName === "INPUT") return; // no robar flechas al buscador
+        if(!galleryImages.length || String(activeId).indexOf("mockup:") !== 0) return;
+        if(event.key === "ArrowLeft") stepGallery(-1);
+        if(event.key === "ArrowRight") stepGallery(1);
+      });
+
+      document.getElementById("componentSearch").addEventListener("input", function(){
+        searchQuery = this.value.trim();
+        renderNav();
+      });
+
+      renderNav();
+      renderDoc();
+
+      function runSelftest(){
+        var results = [];
+        function check(name, condition){ results.push((condition ? "OK " : "FAIL ") + name); }
+
+        check("normalizeText quita acentos", normalizeText("Acordeón") === "acordeon");
+
+        searchQuery = "acordeon";
+        renderNav();
+        check("buscador filtra", nav.querySelectorAll("[data-component]").length < components.length);
+        searchQuery = "";
+        renderNav();
+
+        check("nav muestra Módulos migrados", nav.querySelectorAll("[data-mockup]").length >= 1);
+
+        activeId = "opciones-acordeon";
+        activeVariant = 0;
+        renderDoc();
+        check("acordeón muestra 2 pills", doc.querySelectorAll("[data-variant]").length === 2);
+        check("badge de estado visible", Boolean(doc.querySelector(".gc-badge-verified, .gc-badge-diseno")));
+        check("ejemplos de implementación visibles", doc.querySelectorAll(".gc-impl-item").length >= 1);
+        check("enlace interno a formularios visible", doc.querySelectorAll("[data-impl-catalog]").length >= 1);
+        var firstSnippet = (doc.querySelector("#snippetCode") || {}).textContent || "";
+        activeVariant = 1;
+        renderDoc();
+        check("cambiar variante cambia snippet", ((doc.querySelector("#snippetCode") || {}).textContent || "") !== firstSnippet);
+
+        var selftestFolder = ((window.GC_MOCKUPS || [])[0] || {}).folder || "demo";
+        probeMockups(selftestFolder, function(images){
+          check("galería '" + selftestFolder + "' detecta " + images.length + " imágenes (esperado ≥1)", images.length >= 1);
+          var failed = results.filter(function(line){ return line.indexOf("FAIL") === 0; });
+          var banner = document.createElement("div");
+          banner.id = "gcSelftest";
+          banner.textContent = failed.length
+            ? "SELFTEST FAIL: " + failed.join(" | ")
+            : "SELFTEST OK (" + results.length + " checks) | " + results.join(" | ");
+          document.body.appendChild(banner);
+        });
+      }
+      if(location.search.indexOf("selftest") !== -1) runSelftest();
+    })();
+  </script>
+</body>
+</html>
