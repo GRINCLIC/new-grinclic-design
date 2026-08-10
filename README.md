@@ -98,10 +98,14 @@ implementations: [
 
 ## Changelog
 
-- **v1.4 (2026-08-05)** — Barrido completo de patrones generales cplus: el catálogo pasa de 24 a 34
+- **v1.5 (2026-08-10)** — Verde primario del visor unificado a `#328539`, el mismo de
+  `.erp-btn-primary`: `gc-module-btn` deja su verde propio y `assets/grinclic-forms.css` suma el
+  espejo visor del kit `erp-btn`. El acordeón de unidades de negocio gana la columna «Acciones» y
+  paridad con el mockup.
+- **v1.4 (2026-08-05)** — Barrido completo de patrones generales cplus: el catálogo pasa de 24 a 37
   entradas con `boton`, `botonera-formulario`, `acciones-de-fila`, `modal`, `tabla-listado`,
   `filtros-listado`, `loader-overlay`, `estado-vacio`, `encabezado-modulo` y `badge-estado`, cada una
-  contrastada contra `cplus/scss/` y vistas productivas (`verified: true` sube de 11 a 21). Los grupos
+  contrastada contra `cplus/scss/` y vistas productivas (`verified: true` sube de 11 a 24). Los grupos
   del visor pasan de 5 a 8: `Advertencias` se renombra `Feedback` y se agregan `Acciones`, `Listados` y
   `Modales`. El buscador ahora indexa nombre, id y descripción (antes solo nombre) y el selftest crece de
   9 a 13 checks. `assets/grinclic-forms.css` suma 11 secciones "Espejo visor" que replican estilos
