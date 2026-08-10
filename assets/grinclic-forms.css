@@ -37,21 +37,20 @@ a{color:var(--gc-green-dark)}
 }
 .gc-form-head{
   display:grid;
-  grid-template-columns:auto minmax(0,1fr) auto;
-  gap:14px;
-  align-items:center;
+  grid-template-columns:minmax(0,1fr) minmax(0,auto);
+  gap:18px 32px;
+  align-items:start;
   padding:18px;
   border-bottom:1px solid var(--gc-soft);
   background:linear-gradient(180deg,#fff 0%,#fbfcfd 100%);
 }
-.gc-form-logo{width:70px;height:70px;border:1px solid var(--gc-soft);border-radius:var(--gc-radius);background:#fff;display:grid;place-items:center;overflow:hidden;padding:8px}
-.gc-form-logo--demo{background:#fff}
-.gc-logo-img{display:block;max-width:100%;max-height:100%;object-fit:contain}
 .gc-demo-logo{width:54px;height:54px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gc-green),var(--gc-green-dark));color:#fff;font-size:.72rem;font-weight:800;letter-spacing:.05em;line-height:1}
-.gc-form-title h1,.gc-form-title h2{font-size:1.5rem;margin:0 0 4px}
-.gc-form-title p{margin:0;color:var(--gc-muted);font-size:.86rem}
-.gc-history{display:flex;flex-direction:column;gap:4px;align-items:flex-end;color:#667085;font-size:.78rem;text-align:right}
-.gc-last-change{color:var(--gc-orange)}
+.gc-form-title h1,.gc-form-title h2{margin:0 0 8px;color:var(--gc-strong);font-size:1.5rem;line-height:1.15;letter-spacing:-.02em}
+.gc-form-title p{margin:0;max-width:42rem;color:var(--gc-muted);font-size:.95rem;line-height:1.42}
+.gc-meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,244px));column-gap:32px;row-gap:14px;align-items:start;justify-self:end}
+.gc-meta-cell{display:grid;gap:6px;justify-items:end;width:100%;padding-bottom:12px;border-bottom:1px solid var(--gc-soft);text-align:right}
+.gc-meta-cell__label{color:var(--gc-muted);font-size:.72rem;font-weight:500;line-height:1.15;letter-spacing:.04em;text-transform:uppercase}
+.gc-meta-cell__value{max-width:100%;color:var(--gc-strong);font-size:.94rem;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
 .gc-form-section{padding:18px;border-bottom:1px solid var(--gc-soft)}
 .gc-form-section:last-child{border-bottom:0}
 .gc-section-title{font-size:1rem;margin:0 0 14px;display:flex;align-items:center;gap:8px}
@@ -320,11 +319,14 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
   .gc-state-grid{grid-template-columns:1fr}
 }
 @media (max-width:900px){
-  .gc-form-head{grid-template-columns:1fr}
-  .gc-history{align-items:flex-start;text-align:left}
+  .gc-form-head{grid-template-columns:minmax(0,1fr)}
+  .gc-meta-grid{column-gap:18px;row-gap:12px}
   .gc-question{align-items:stretch;flex-direction:column}
   .gc-review-actions{justify-content:stretch}
   .gc-review-actions .btn{width:100%}
+}
+@media (max-width:575.98px){
+  .gc-meta-grid{grid-template-columns:minmax(0,1fr);justify-self:stretch}
 }
 
 
@@ -667,14 +669,21 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
 .gc-selected-summary{font-weight:600}
 .gc-selected-summary::first-letter{text-transform:none}
 
-/* Mantener el grupo de horarios en disposición horizontal dentro del visor, respetando responsive. */
-.gc-state-example .gc-schedule-groups.row > [class*="col-"]{flex:0 0 auto;width:50%}
-.gc-state-example .gc-schedule-groups .row > [class*="col-"]{flex:0 0 auto;width:50%}
+/* Mantener el grupo de horarios en disposición horizontal dentro del visor, respetando responsive.
+   Se declara para los DOS contenedores del visor: .gc-state-example (entradas con states) y
+   .gc-preview-inner (entradas con preview o solo snippet, como gc-formulario-clientes, que usa
+   gc-schedule-groups y antes no recibía ninguna de estas reglas). Solo demo, no existe en producción. */
+.gc-state-example .gc-schedule-groups.row > [class*="col-"],
+.gc-preview-inner .gc-schedule-groups.row > [class*="col-"]{flex:0 0 auto;width:50%}
+.gc-state-example .gc-schedule-groups .row > [class*="col-"],
+.gc-preview-inner .gc-schedule-groups .row > [class*="col-"]{flex:0 0 auto;width:50%}
 @media (max-width: 991.98px){
-  .gc-state-example .gc-schedule-groups.row > [class*="col-"]{width:100%}
+  .gc-state-example .gc-schedule-groups.row > [class*="col-"],
+  .gc-preview-inner .gc-schedule-groups.row > [class*="col-"]{width:100%}
 }
 @media (max-width: 767.98px){
-  .gc-state-example .gc-schedule-groups .row > [class*="col-"]{width:100%}
+  .gc-state-example .gc-schedule-groups .row > [class*="col-"],
+  .gc-preview-inner .gc-schedule-groups .row > [class*="col-"]{width:100%}
 }
 
 /* SweetAlert2: acciones más compactas y consistentes. */
@@ -817,7 +826,11 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
 .gc-unit-code,.gc-unit-description{font-size:.9rem;color:#374151}.gc-unit-code{font-weight:600}
 .gc-unit-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0;flex-wrap:wrap}
 .gc-business-unit-body{padding:18px;background:#fff}
-.gc-empty-accordion-note{margin:0;color:#64748b;font-size:.86rem;background:#fbfcfd;border:1px dashed #cbd5e1;border-radius:10px;padding:12px 14px}
+/* Espejo visor: nota de bloque vacío. Valores EFECTIVOS de la cascada de producción, no los de la regla base:
+   cplus/scss/_gc-accordion.scss:128-136 define la clase y cplus/scss/_lineas_negocio.scss:168-175 la sobrescribe
+   sin scope, importándose después (cplus/scss/main.scss:39 y :53), así que gana el override.
+   Solo demo, no copiar a producción. */
+.gc-empty-accordion-note{margin:0;color:#575756;font-size:.9rem;background:#fbfcfd;border:1px dashed #cbd5e1;border-radius:10px;padding:16px 4px}
 
 .gc-business-units-guide .erp-card{background:var(--screen-white);border:1px solid var(--screen-border);border-radius:var(--screen-radius);box-shadow:var(--screen-shadow)}
 .gc-business-units-guide .table-card{overflow:hidden}
@@ -869,13 +882,15 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
 .gc-module-title{display:flex;align-items:center;gap:12px;min-width:0}
 .gc-module-title i{font-size:1.55rem;color:var(--gc-green-dark)}
 .gc-module-title h1{margin:0;color:var(--screen-primary);font-family:Montserrat,Inter,sans-serif;font-size:1.95rem;font-weight:800;line-height:1.15}
-.gc-module-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gc-green);color:#fff!important;border:1px solid var(--gc-green);border-radius:14px;padding:12px 18px;font-weight:800;font-size:1rem;box-shadow:0 8px 18px rgba(62,152,54,.16);text-decoration:none}
-.gc-module-btn:hover{background:var(--gc-green-dark);border-color:var(--gc-green-dark)}
+/* Mismo verde de accion que .erp-btn-primary: dos botones "Nuevo" con verdes distintos
+   en la misma pantalla era la divergencia que reporto el usuario el 2026-08-10. */
+.gc-module-btn{display:inline-flex;align-items:center;gap:8px;background:#328539;color:#fff!important;border:1px solid #328539;border-radius:14px;padding:12px 18px;font-weight:800;font-size:1rem;box-shadow:0 8px 18px rgba(50,133,57,.16);text-decoration:none}
+.gc-module-btn:hover{background:#006b15;border-color:#006b15}
 .gc-business-guide-header{margin-bottom:18px}
 .gc-business-guide-header p{margin-top:8px}
 .gc-unit-column-labels{background:transparent;border:none;padding:0 16px 8px 46px;color:#8b95a7;font-weight:700;font-size:.76rem;text-transform:none}
 .gc-business-unit-head{grid-template-columns:minmax(200px,max-content) max-content minmax(180px,1fr) max-content;gap:14px}
-.gc-business-unit-head:not(.collapsed-row){background:var(--gc-soft-green)}
+.gc-business-unit-head:not(.collapsed-row){background:#fff}
 .gc-unit-name strong{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gc-unit-code,.gc-unit-description{white-space:nowrap}
 .gc-unit-description{color:#4b5563;overflow:hidden;text-overflow:ellipsis;max-width:320px}
@@ -1102,7 +1117,8 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
 .gc-unit-actions{width:max-content !important;display:flex !important;align-items:center !important;justify-content:flex-start !important;gap:12px !important;flex-wrap:nowrap !important}
 .gc-unit-actions .actions-group{display:inline-flex;align-items:center;gap:0 !important;white-space:nowrap}
 .gc-create-business-btn{min-width:170px !important;padding-inline:14px !important}
-.gc-business-unit-head:not(.collapsed-row){background:var(--gc-soft-green)!important}
+/* Fila abierta en blanco, como el mockup demo/01.png: el estado lo comunican el chevron y el separador. */
+.gc-business-unit-head:not(.collapsed-row){background:#fff!important}
 
 /* El texto principal del ejemplo completo va en negro, como la referencia. */
 .gc-business-units-guide--standalone .gc-module-title h1{color:#111827 !important}
@@ -1363,7 +1379,7 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
 
 /* v30 lógica visual del acordeón de unidades de negocio */
 .gc-business-unit-head{transition:background-color .18s ease,border-color .18s ease;}
-.gc-business-unit-head.is-open{background:var(--gc-soft-green)!important;border-bottom-color:#e5e7eb!important;}
+.gc-business-unit-head.is-open{background:#fff!important;border-bottom-color:#e5e7eb!important;}
 .gc-business-unit-head.collapsed-row{background:#fff!important;border-bottom-color:transparent!important;}
 .gc-unit-toggle i{transition:transform .18s ease;}
 .gc-unit-toggle:focus-visible{outline:3px solid rgba(62,152,54,.18);outline-offset:2px;}
@@ -1724,11 +1740,14 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
   padding-bottom:10px !important;
   background:transparent !important;
 }
-.gc-business-units-guide .gc-unit-column-labels::after,
-.gc-business-units-guide--standalone .gc-unit-column-labels::after{
-  content:"";
+/* La quinta columna la ocupa la etiqueta "Acciones", como en el mockup demo/01.png.
+   Antes era un ::after vacio que solo reservaba el ancho. */
+.gc-business-units-guide .gc-unit-label-actions,
+.gc-business-units-guide--standalone .gc-unit-label-actions{
   grid-column:5;
   min-width:318px;
+  justify-self:end;
+  text-align:right;
 }
 .gc-business-units-guide .gc-unit-label-title,
 .gc-business-units-guide .gc-unit-column-labels > span:nth-child(1),
@@ -1792,3 +1811,271 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
   .gc-business-units-guide .gc-business-unit-head > .gc-unit-actions,
   .gc-business-units-guide--standalone .gc-business-unit-head > .gc-unit-actions{grid-column:2 !important;grid-row:4 !important;justify-self:start !important;justify-content:flex-start !important;flex-wrap:wrap !important;white-space:normal !important;width:100% !important;}
 }
+
+/* === Espejo visor: kit erp-btn — fuente cplus/scss/_components.scss:494-597 y :849-880. Variables resueltas desde cplus/scss/_variables.scss (--screen-primary = #1b7f4d, --screen-border = #c4c4c4). Solo demo, no copiar a producción. === */
+.erp-btn{border:0;border-radius:10px;padding:11px 16px;font-size:.9rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;transition:.2s ease;text-decoration:none;white-space:nowrap;font-weight:700}
+.erp-btn:disabled,.erp-btn[disabled]{opacity:.45;filter:grayscale(.5);box-shadow:none;cursor:not-allowed}
+/* Espejo de cplus/scss/_components.scss: verde de accion del mockup demo/01.png. */
+.erp-btn-primary{background:#328539;color:#fff;box-shadow:0 8px 18px rgba(50,133,57,.22)}
+.erp-btn-primary:hover:not(:disabled){background:#006b15;color:#fff}
+.erp-btn-secondary{background:#fff;color:#1f2937;border:1px solid #c4c4c4}
+.erp-btn-secondary:hover{background:#f3f4f6;color:#1f2937}
+.erp-btn-excel{background:#fff;color:#1f2937;border:1px solid #c4c4c4}
+.erp-btn-excel i{color:#16803c}
+.erp-btn-excel:hover{background:#f3f4f6;color:#1f2937}
+.erp-btn-icon{width:38px;height:38px;border-radius:8px;border:1px solid #c4c4c4;background:#fff;color:#1f2937;display:inline-grid;place-items:center;cursor:pointer;transition:.15s ease;padding:0;flex-shrink:0}
+.erp-btn-icon i{font-size:1.05rem}
+.erp-btn-icon:hover{background:#f3f4f6;border-color:#1b7f4d}
+.erp-btn-icon:focus-visible{outline:0;box-shadow:0 0 0 3px rgba(22,128,60,.18)}
+.erp-btn-icon.erp-btn-excel i{color:#16803c}
+.table-tool-btn{min-height:38px;padding:8px 12px;font-size:.86rem;border-radius:10px}
+.module-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;position:relative;z-index:10}
+.module-header h1,.section-title{margin:0;color:#111827;font-family:'Montserrat',sans-serif;font-size:1.65rem;font-weight:700;display:inline-flex;align-items:center;gap:12px}
+.section-title-icon{font-size:1.6rem;color:#1b7f4d}
+.module-actions{display:flex;align-items:center;gap:12px}
+
+/* === Espejo visor: acciones de fila (.actions-cell, .actions-group, .icon-action, .icon-action-placeholder) — fuente cplus/scss/_components.scss:623-682; columna .table-actions — fuente cplus/scss/_datatables.scss:48-70. Variables resueltas a literal: --screen-primary-dark = #1b7f4d, --screen-danger-text = #e3600e (cplus/scss/_variables.scss:24, 88, 150, 212, 247, 254). Solo demo, no copiar a producción. === */
+.actions-cell{width:1%;padding-left:8px !important;padding-right:8px !important;white-space:nowrap}
+.table-actions{width:1% !important;min-width:168px !important;white-space:nowrap !important;text-align:left !important;padding:6px 8px !important;vertical-align:middle !important}
+th.table-actions{text-align:center !important}
+.actions-group{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;margin:0}
+.icon-action{width:26px;height:26px;border-radius:6px;border:1px solid transparent;background:transparent;color:#1b7f4d;display:inline-grid;place-items:center;cursor:pointer;transition:.2s ease;margin:0;font-size:.82rem}
+.icon-action:hover{background:#eef7ee;border-color:#d8ead8}
+.icon-action.delete{color:#e3600e}
+.icon-action.delete:hover{background:#fff1f2;border-color:#fecdd3}
+.icon-action-placeholder{display:inline-grid;width:26px;height:26px;border:1px solid transparent;border-radius:6px;background:transparent;pointer-events:none;visibility:hidden}
+
+/* === Espejo visor: modal C+ estático — fuente cplus/views/mostrarSucursales.php:787-801 (markup canónico).
+   Solo el contenedor de demostración: los botones del footer reutilizan el espejo global del kit erp-btn
+   ya presente en este archivo (líneas 1796-1810). Solo demo, no copiar a producción. === */
+.gc-modal-static{background:#eef1f5;border:1px solid var(--gc-soft);border-radius:12px;padding:22px}
+.gc-modal-static .gc-modal-static-frame{max-width:620px;margin:0 auto}
+.gc-modal-static--lg .gc-modal-static-frame{max-width:860px}
+.gc-modal-static .modal-content{box-shadow:0 18px 44px rgba(15,23,42,.18)}
+
+/* === Espejo visor: skin del modal de trazabilidad — fuente cplus/scss/_base.scss:278-424, donde las reglas
+   cuelgan del id #myModalT. Aquí se reescriben como clase .gc-modal-trace porque el preview no debe declarar
+   ese id. Variables resueltas: --grinc-primary = #1b7f4d, --grinc-primary-dark = #275420,
+   --grinc-white = #ffffff (cplus/scss/_variables.scss:24, :25, :84). Omitido a propósito el min-width:940px de
+   #myModalT #trazainfo table (_base.scss:351): en el ancho del visor forzaría scroll horizontal permanente.
+   Solo demo, no copiar a producción. === */
+.gc-modal-trace .modal-content{border:none;border-radius:16px;overflow:hidden;box-shadow:0 24px 70px rgba(15,23,42,.28);background:#fff}
+.gc-modal-trace .modal-header{min-height:120px;align-items:center;padding:26px 36px;border-bottom:1px solid rgba(27,127,77,.16);background-color:#d8ecd6;background-image:linear-gradient(90deg,rgba(232,247,232,.52),rgba(198,235,200,.48));color:#0f3f1d}
+.gc-modal-trace .modal-header .modal-title{margin:0;color:#0d3f1d;font-size:1.45rem;font-weight:800;line-height:1.2}
+.gc-modal-trace .modal-header .btn-close{filter:none;opacity:.72}
+.gc-modal-trace .modal-header .btn-close:hover{opacity:1}
+.gc-modal-trace .modal-body{padding:28px 36px 24px;background:#fff}
+.gc-modal-trace .table-responsive{max-height:min(56vh,520px);overflow:auto;border:1px solid #e2e8f0;border-radius:10px;background:#fff}
+.gc-modal-trace table{width:100%;margin:0;border-collapse:separate;border-spacing:0;color:#0f172a;font-size:.92rem}
+.gc-modal-trace table thead th{position:sticky;top:0;z-index:2;background:#dcdcdc;color:#000;font-weight:800;text-align:left;padding:14px 16px;border:0;border-bottom:1px solid #c7c7c7;white-space:nowrap}
+.gc-modal-trace table tbody td{padding:18px 16px;border:0;border-bottom:1px solid #e5e7eb;vertical-align:middle;line-height:1.45;background:#fff;overflow-wrap:anywhere}
+.gc-modal-trace table tbody td.tc-center{text-align:center}
+.gc-modal-trace table tbody tr:last-child td{border-bottom:0}
+.gc-modal-trace table tbody tr:hover td{background:#fbfcfd}
+.gc-modal-trace .modal-footer{padding:18px 36px 26px;background:#fff;border-top:1px solid #eef2f7;justify-content:flex-end}
+.gc-modal-trace .modal-footer .btn{min-width:150px;min-height:44px;border-radius:10px;font-weight:800;color:#ffffff;background:#1b7f4d;border-color:#1b7f4d;box-shadow:0 8px 18px rgba(62,152,54,.18)}
+.gc-modal-trace .modal-footer .btn:hover,.gc-modal-trace .modal-footer .btn:focus{color:#ffffff;background:#275420;border-color:#275420}
+
+/* === Espejo visor: tabla de listado CPlus (shell V2) — fuente cplus/scss/_components.scss:473-491, 706-790 +
+   cplus/scss/_datatables.scss:89-141, 188-222, 229-244, 275-287, 333-355, 400-454 + cplus/css/main.css:20512-20516
+   (td.dataTables_empty, DataTables compilado). Variables --screen-* resueltas a literal desde
+   cplus/scss/_variables.scss:246-258 y $grinc-* de las líneas 24-109: --screen-primary/-dark = #1b7f4d,
+   --screen-border = #c4c4c4, --screen-muted = #575756, --screen-success-bg = #e8f7ee, --screen-danger-bg = #fdeaea,
+   --screen-danger-text = #e3600e, --screen-thead-bg = #DCDCDC, --screen-row-hover = #fbfdff, --screen-radius = 14px.
+   En producción los selectores son .dataTable/.dataTables_wrapper; aquí se cuelgan de .standard-table porque el
+   preview no ejecuta DataTables. El kit erp-btn (líneas 1796-1811) y las acciones de fila (líneas 1817-1826) ya
+   tienen espejo global en este archivo y no se repiten. Solo demo, no copiar a producción. === */
+.gc-table-listado-preview{font-family:Inter,system-ui,sans-serif;color:#1f2937;width:100%}
+.gc-table-listado-preview .erp-card{background:#fff;border:1px solid #c4c4c4;border-radius:14px;box-shadow:0 10px 25px rgba(15,23,42,.06)}
+.gc-table-listado-preview .erp-card.table-card{overflow:hidden}
+.gc-table-listado-preview .table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-bottom:1px solid #c4c4c4}
+.gc-table-listado-preview .table-toolbar .card-title{margin:0;font-size:1.05rem;color:#1b7f4d;font-family:Montserrat,sans-serif;font-weight:700}
+.gc-table-listado-preview .table-toolbar .text-muted{color:#575756!important}
+.gc-table-listado-preview .table-toolbar-actions{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+.gc-table-listado-preview .dataTables_filter{float:none;text-align:left;margin:0;position:relative}
+.gc-table-listado-preview .dataTables_filter::before{content:"\f52a";font-family:"bootstrap-icons";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#6b7280;pointer-events:none;font-size:.95rem;z-index:1}
+.gc-table-listado-preview .dataTables_filter label{margin:0}
+.gc-table-listado-preview .dataTables_filter input[type="search"]{width:240px;height:38px;padding:6px 14px 6px 36px;border:1px solid #c4c4c4;border-radius:10px;background:#fff;font-size:.9rem;color:#1f2937;transition:.15s ease;appearance:none;margin:0}
+.gc-table-listado-preview .dataTables_filter input[type="search"]::placeholder{color:#9ca3af}
+.gc-table-listado-preview .dataTables_filter input[type="search"]:hover{border-color:#c7d2da}
+.gc-table-listado-preview .dataTables_filter input[type="search"]:focus{outline:none;border-color:#3e9836;box-shadow:0 0 0 3px rgba(62,152,54,.14)}
+.gc-table-listado-preview .standard-table{width:100%;margin:0;border:0;border-collapse:collapse}
+.gc-table-listado-preview .standard-table thead th{background-color:#DCDCDC;color:#000;font-family:Montserrat,sans-serif;font-weight:700;border:0;border-bottom:1px solid #c4c4c4;padding:13px 14px;font-size:.82rem;vertical-align:middle;text-align:left;text-transform:none;white-space:nowrap}
+.gc-table-listado-preview .standard-table tbody td{padding:13px 14px;border:0;border-bottom:1px solid #edf0f5;vertical-align:middle;font-size:.9rem;color:#1f2937}
+.gc-table-listado-preview .standard-table tbody tr:hover{background-color:#fbfdff}
+.gc-table-listado-preview .standard-table td.dataTables_empty{text-align:center}
+.gc-table-listado-preview .th-content{display:inline-flex;align-items:center;gap:7px;width:100%;min-width:0}
+.gc-table-listado-preview .th-title{display:inline-block;white-space:nowrap}
+.gc-table-listado-preview .column-filter-btn{position:relative;width:20px;height:20px;padding:0;border:0;border-radius:6px;background:transparent;color:#4b5563;opacity:.58;display:inline-grid;place-items:center;cursor:pointer;line-height:1;flex-shrink:0;transition:color .18s ease,opacity .18s ease,background .18s ease}
+.gc-table-listado-preview .column-filter-btn i{font-size:.78rem;line-height:1}
+.gc-table-listado-preview .column-filter-btn:hover,.gc-table-listado-preview .column-filter-btn:focus,.gc-table-listado-preview .column-filter-btn[aria-expanded="true"]{color:#1b7f4d;opacity:1;background:rgba(27,127,77,.06);outline:none}
+.gc-table-listado-preview .column-filter-btn.is-active{color:#b77900;opacity:1;background:transparent}
+.gc-table-listado-preview .column-filter-btn.is-active::after{content:"";position:absolute;top:2px;right:2px;width:5px;height:5px;border-radius:50%;background:#e3600e;box-shadow:0 0 0 1.5px #DCDCDC}
+.gc-table-listado-preview .table-id{width:60px!important;min-width:60px;text-align:center!important}
+.gc-table-listado-preview .table-nombre{width:220px!important;min-width:200px}
+.gc-table-listado-preview .table-codigo{width:120px!important;min-width:120px}
+.gc-table-listado-preview .table-fecha{width:130px!important;min-width:130px;text-align:center!important}
+.gc-table-listado-preview .table-descripcion{width:auto!important;min-width:250px}
+.gc-table-listado-preview .table-estado{width:100px!important;min-width:100px!important}
+.gc-table-listado-preview .table-truncate{max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gc-table-listado-preview .badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 10px;font-size:.76rem;font-weight:800;white-space:nowrap}
+.gc-table-listado-preview .badge.bg-success{background-color:#e8f7ee!important;color:#1b7f4d!important}
+.gc-table-listado-preview .badge.bg-secondary{background-color:#fdeaea!important;color:#e3600e!important}
+.gc-table-listado-preview .table-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;color:#4b5563;font-size:.82rem}
+.gc-table-listado-preview .table-footer .pagination{display:flex;align-items:center;gap:6px;margin:0}
+.gc-table-listado-preview .page-btn{width:34px;height:34px;border-radius:8px;border:1px solid #c4c4c4;background:#fff;color:#1f2937;cursor:pointer;transition:.15s ease}
+.gc-table-listado-preview .page-btn:hover:not(:disabled):not(.active){background:#f3f4f6}
+.gc-table-listado-preview .page-btn.active{background:#1b7f4d;color:#fff;border-color:#1b7f4d}
+.gc-table-listado-preview .page-btn:disabled{opacity:.45;cursor:not-allowed}
+@media (max-width:640px){.gc-table-listado-preview .table-toolbar,.gc-table-listado-preview .table-footer{flex-direction:column;align-items:stretch}.gc-table-listado-preview .table-footer .pagination{justify-content:center;flex-wrap:wrap}.gc-table-listado-preview .dataTables_filter input[type="search"]{width:100%;min-width:0}}
+
+/* === Espejo visor: filtros de listado (filters-card) — fuente cplus/scss/_components.scss:882-1046, con el
+   bloque .form-group de :933-965 (que en producción cuelga de .standard-screen, contenedor que el visor no monta,
+   por eso aquí se ancla a .filters-card). Variables resueltas a literal desde cplus/scss/_variables.scss:
+   --grinc-white = #ffffff (:84), --screen-border = #c4c4c4 (:98, :222), --grinc-border-radius = 8px (:113),
+   --screen-radius = 14px (:256), --screen-shadow = 0 10px 25px rgba(15,23,42,.06) (:255),
+   --screen-primary = #1b7f4d (:24, :150, :246), $grinc-green = #3e9836 (:87). El kit erp-btn ya tiene espejo
+   global en este archivo (líneas 1796-1811) y no se repite. .form-card se deja fuera a propósito: comparte
+   selector en el SCSS pero pertenece a otra entrada. Solo demo, no copiar a producción. === */
+.gc-filters-demo{overflow-x:auto}
+.filters-card{background:#ffffff;border:1px solid #c4c4c4;border-radius:14px;box-shadow:0 10px 25px rgba(15,23,42,.06);padding:22px;margin-bottom:20px}
+.filters-card-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:0}
+.filters-title-desktop{margin:0 0 18px;font-size:1.05rem;color:#1b7f4d;font-weight:800}
+.filters-title-mobile{display:none}
+.filters-grid{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:14px;align-items:end;min-width:0}
+.filters-grid .form-group{min-width:0}
+.filters-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:22px}
+.filters-card .form-group{display:flex;flex-direction:column;gap:0}
+.filters-card .form-group label{display:block;font-size:.82rem;font-weight:800;color:#1f2937;margin-bottom:8px}
+.filters-card .form-group .form-control,
+.filters-card .form-group .form-select{width:100%;min-height:40px;border:1px solid #c4c4c4;border-radius:8px;padding:10px 12px;background-color:#ffffff;color:#111827;font-size:.92rem}
+.filters-card .form-group .form-control:focus,
+.filters-card .form-group .form-select:focus{border-color:#3e9836;box-shadow:0 0 0 3px rgba(62,152,54,.14);outline:none}
+@media (max-width:767.98px){
+  .filters-title-desktop{display:none!important}
+  .filters-card{padding:12px!important}
+  .filters-card-header{margin-bottom:10px!important}
+  .filters-title-mobile{width:100%;display:flex!important;align-items:center;justify-content:space-between;gap:10px;background:transparent;border:0;padding:0;margin:0;color:#1b7f4d;font-size:15px;font-weight:800;text-align:left;cursor:pointer}
+  .filters-title-mobile span{display:inline-flex;align-items:center;gap:8px}
+  .filters-title-mobile i{color:#1b7f4d}
+  .filters-title-mobile .filters-toggle-icon{font-size:.8rem;transition:transform .2s ease}
+  .filters-title-mobile[aria-expanded="true"] .filters-toggle-icon{transform:rotate(180deg)}
+  .filters-collapse:not(.show){display:none}
+  .filters-grid{grid-template-columns:1fr!important;gap:10px!important}
+  .filters-actions{flex-direction:column!important;gap:10px!important;align-items:stretch!important;margin-top:18px!important}
+  .filters-actions .erp-btn{width:100%!important}
+}
+/* Sin esta regla el preview saldría vacío: el markup productivo lleva .collapse sin .show y Bootstrap lo deja en display:none. Fuente: cplus/scss/_components.scss:1041. */
+@media (min-width:768px){
+  .filters-collapse{display:block!important;height:auto!important;visibility:visible!important}
+}
+/* === Espejo visor: fila vacía de DataTables — fuente cplus/css/main.css:20512-20516 y :20620-20623 (compilado de node_modules/datatables.net-bs5/css/dataTables.bootstrap5.css, importado en cplus/scss/main.scss:32). El visor no carga la hoja de DataTables, así que sin esto la celda dataTables_empty saldría alineada a la izquierda. Solo demo, no copiar a producción. === */
+table.dataTable td.dataTables_empty,
+table.dataTable th.dataTables_empty{text-align:center}
+
+/* === Espejo visor: encabezado de módulo (listado) — fuente cplus/scss/_components.scss:806-819 (.standard-screen)
+   y :1048-1074 (responsive de .module-header). El bloque base .module-header / .section-title /
+   .section-title-icon / .module-actions ya existe en este archivo (líneas 1812-1815) y no se repite; aquí solo
+   se añaden el contenedor y los dos breakpoints. Omitida a propósito la regla de tipografía
+   .standard-screen h1,h2,h3 (_components.scss:810-818): el espejo de la línea 1813 ya fija Montserrat 700 sobre
+   .module-header h1 y .section-title. Solo demo, no copiar a producción. === */
+.standard-screen{max-width:1280px;margin:0 auto}
+@media (max-width:860px){
+  .module-header{align-items:flex-start;flex-direction:column}
+  .module-actions{width:100%;justify-content:flex-end}
+}
+@media (max-width:640px){
+  .module-header h1,.section-title{font-size:1.35rem}
+  .module-actions{flex-direction:column;align-items:stretch}
+  .module-actions .erp-btn{width:100%}
+}
+
+/* === Espejo visor: badge de estado — fuente cplus/scss/_components.scss:685-704 (.erp-badge y modificadores) y
+   cplus/scss/_datatables.scss:333-362 (.dataTable .badge / #informe .badge) + :189-192 (.table-estado).
+   Variables resueltas a literal desde cplus/scss/_variables.scss: --screen-success-bg = #e8f7ee (:251),
+   --screen-success-text = #1b7f4d (:252, :150, :24), --screen-danger-bg = #fdeaea (:253),
+   --screen-danger-text = #e3600e (:254, :88). En este archivo el kit erp-badge existía SOLO bajo
+   .gc-business-units-guide (línea 832), que conserva mayor especificidad y no cambia. .table-estado se espeja sin
+   !important (producción sí lo lleva) porque en el visor no hay DataTables compitiendo por el ancho.
+   Solo demo, no copiar a producción. === */
+.erp-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 10px;font-size:.76rem;font-weight:800;white-space:nowrap}
+.erp-badge-success{background:#e8f7ee;color:#1b7f4d}
+.erp-badge-danger{background:#fdeaea;color:#e3600e}
+.dataTable .badge,#informe .badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 10px;font-size:.76rem;font-weight:800;white-space:nowrap}
+.dataTable .badge.bg-success,#informe .badge.bg-success{background-color:#e8f7ee!important;color:#1b7f4d!important}
+.dataTable .badge.bg-secondary,#informe .badge.bg-secondary{background-color:#fdeaea!important;color:#e3600e!important}
+.dataTable .badge.bg-danger,#informe .badge.bg-danger{background-color:#fdeaea!important;color:#e3600e!important}
+.table-estado{width:100px;min-width:100px}
+/* Contenedor exclusivo del preview del catálogo (no existe en producción): separa las píldoras. */
+.gc-badge-estado-demo{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* === Espejo visor: grupo de horarios (clases hr-*) — fuente cplus/scss/_sucursales.scss:80-133, donde todo el
+   bloque está anidado bajo #modalHorarios. Aquí se desanida porque los estados del catálogo arrancan en
+   div.modal-body#horariosBody, sin ese ancestro, y con el scope original no aplicaría ninguna regla.
+   La variable --bs-border-color se deja con su fallback literal #f0f0f0, igual que el SCSS.
+   Solo demo, no copiar a producción. === */
+.hr-dia{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.35rem 0;border-bottom:1px solid var(--bs-border-color,#f0f0f0)}
+.hr-dia .hr-label{width:5.5rem;font-weight:600}
+.hr-dia .hr-estado{width:8.5rem}
+.hr-dia .hr-rangos{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center}
+.hr-dia .hr-rango{display:inline-flex;align-items:center;flex-wrap:wrap;gap:.25rem}
+.hr-dia .hr-rango .hr-desde,.hr-dia .hr-rango .hr-hasta{width:6.5rem;padding:.15rem .35rem}
+.hr-dia .hr-rango .gc-help{min-width:100%}
+.hr-dia .hr-add{padding:0 .5rem;line-height:1.4}
+
+/* === Espejo visor: caja informativa gc-info-box — fuente cplus/scss/_gc-forms.scss:452-463 (compilado en cplus/css/main.css:24876-24886). Corrige, NO duplica, la regla base de esta hoja (línea 151), que viene de la biblioteca formularios_v2, donde el bloque nace oculto y lo abre grinclic-forms.js con is-open. En cplus ese toggle no se adoptó: la caja es un callout estático siempre visible, y el SCSS lo declara así en su comentario de las líneas 448-451. El resto de valores (borde #ffd5c2, fondo, color #62301f, radio, padding, line-height) ya coinciden con producción; --grinc-danger-bg = #fff1ed y --grinc-border-radius = 8px, resueltos desde cplus/scss/_variables.scss:94 y :113, equivalen a --gc-danger y --gc-radius de esta hoja. Solo demo, no copiar a producción. === */
+.gc-info-box{display:block;margin-bottom:18px}
+
+/* === Espejo visor: alerta estática Bootstrap (.alert + .alert-danger|warning|info|success) — fuente
+   cplus/css/main.css:4889-4906 (regla .alert) y :4942-4969 (los cuatro modificadores), compilado de
+   node_modules/bootstrap/scss/bootstrap importado en cplus/scss/main.scss:28. cplus/scss NO define ninguna
+   regla .alert propia: lo único que cambia respecto al Bootstrap de fábrica son los tokens, porque
+   cplus/scss/_variables.scss:120-127 sobrescribe $success/$danger/$warning/$info (a #5cb85c/#d9534f/#f0ad4e/
+   #5bc0de, definidos en :35/:42/:46/:49) y $border-radius (a 8px, :127 sobre $grinc-border-radius de :117)
+   ANTES del import. El visor carga Bootstrap 5.3.3 de CDN (index.html:10) con la paleta de fábrica, así que
+   sin esto el preview saldría con los rojos y ámbares de Bootstrap y un radio de 0.375rem.
+   Los 12 colores se copian literalmente del compilado (cplus/css/main.css:166-169, :174-177, :182-185), con
+   decimales incluidos, para que el contraste contra producción sea carácter a carácter.
+   Se omite --bs-alert-link-color a propósito: ninguna de las 24 alertas de producción contiene un .alert-link.
+   Solo demo, no copiar a producción. === */
+.alert{--bs-alert-border-radius:8px}
+.alert-success{--bs-alert-color:rgb(36.8, 73.6, 36.8);--bs-alert-bg:rgb(222.4, 240.8, 222.4);--bs-alert-border-color:rgb(189.8, 226.6, 189.8)}
+.alert-info{--bs-alert-color:rgb(36.4, 76.8, 88.8);--bs-alert-bg:rgb(222.2, 242.4, 248.4);--bs-alert-border-color:rgb(189.4, 229.8, 241.8)}
+.alert-warning{--bs-alert-color:rgb(96, 69.2, 31.2);--bs-alert-bg:rgb(252, 238.6, 219.6);--bs-alert-border-color:rgb(249, 222.2, 184.2)}
+.alert-danger{--bs-alert-color:rgb(86.8, 33.2, 31.6);--bs-alert-bg:rgb(247.4, 220.6, 219.8);--bs-alert-border-color:rgb(239.8, 186.2, 184.6)}
+/* rbac-matrix__hint solo anula el margin-bottom de la alerta (cplus/scss/_rbac-matrix.scss:56-58,
+   compilado en cplus/css/main.css:27153-27155). */
+.rbac-matrix__hint{margin:0}
+
+/* === Espejo visor: filtros por columna con embudo (estilo V5) — fuente cplus/scss/_datatables.scss:89-186
+   (.th-content, .th-title, .column-filter-btn con sus estados, .column-filter-popover y su cabecera,
+   .column-filter-control y .column-filter-actions). El markup del embudo lo genera cplus/js/lib/GrincDataTable.js:341-349
+   y el del popover cplus/js/core/column-filters.js:47-73.
+   Variables resueltas a literal desde cplus/scss/_variables.scss: --screen-primary-dark = #1b7f4d,
+   --screen-primary = #1b7f4d, --screen-border = #c4c4c4, --screen-muted = #575756, --screen-thead-bg = #dcdcdc.
+   Desvío deliberado: en producción .column-filter-popover es position:fixed y nace con display:none, porque lo
+   coloca el JavaScript bajo el embudo pulsado. El visor no ejecuta DataTables ni column-filters.js, así que dentro
+   de .gc-demo-colfilter se muestra estático y visible para poder documentarlo. Solo demo, no copiar a producción. === */
+.gc-demo-colfilter{width:100%;overflow-x:auto}
+.gc-demo-colfilter .table{width:100%;margin:0;border-collapse:collapse;font-family:Inter,system-ui,sans-serif}
+.gc-demo-colfilter thead th{background-color:#dcdcdc!important;color:#000!important;font-family:Montserrat,sans-serif;font-weight:700;border:0;border-bottom:1px solid #c4c4c4;padding:13px 14px;font-size:.82rem;vertical-align:middle;text-align:left;white-space:nowrap}
+.gc-demo-colfilter tbody td{padding:13px 14px;border:0;border-bottom:1px solid #edf0f5;vertical-align:middle;font-size:.9rem;color:#1f2937}
+.gc-demo-colfilter .th-content{display:inline-flex;align-items:center;gap:7px;width:100%;min-width:0}
+.gc-demo-colfilter .th-title{display:inline-block;white-space:nowrap}
+.column-filter-btn{position:relative;width:20px;height:20px;padding:0;border:0;border-radius:6px;background:transparent;color:#4b5563;opacity:.58;display:inline-grid;place-items:center;cursor:pointer;line-height:1;flex-shrink:0;transition:color .18s ease,opacity .18s ease,background .18s ease}
+.column-filter-btn i{font-size:.78rem;line-height:1}
+.column-filter-btn:hover,.column-filter-btn:focus,.column-filter-btn[aria-expanded="true"]{color:#1b7f4d;opacity:1;background:rgba(27,127,77,.06);outline:none}
+.column-filter-btn.is-active{color:#b77900;opacity:1;background:transparent}
+.column-filter-btn.is-active:hover,.column-filter-btn.is-active:focus{color:#9a6500;background:rgba(250,197,0,.10)}
+.column-filter-btn.is-active::after{content:"";position:absolute;top:2px;right:2px;width:5px;height:5px;border-radius:50%;background:#e3600e;box-shadow:0 0 0 1.5px #dcdcdc}
+.gc-demo-colfilter .column-filter-popover{position:static;display:block;width:310px;max-width:100%;margin:6px auto;background:#fff;border:1px solid #c4c4c4;border-radius:14px;box-shadow:0 18px 42px rgba(15,23,42,.16);padding:12px}
+.gc-demo-colfilter .column-filter-popover::before{display:none}
+.column-filter-popover-header{position:relative;z-index:1;margin-bottom:10px}
+.column-filter-popover-header strong{display:block;color:#1f2937;font-size:.92rem;font-weight:800;margin-bottom:2px}
+.column-filter-popover-header span{display:block;color:#575756;font-size:.74rem;line-height:1.25}
+.column-filter-control{width:100%;min-height:36px;border:1px solid #c4c4c4;border-radius:9px;background:#fff;color:#111827;font-size:.86rem;padding:8px 10px;outline:none}
+.column-filter-control:focus{border-color:#1b7f4d;box-shadow:0 0 0 3px rgba(27,127,77,.14)}
+.column-filter-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.column-filter-actions .erp-btn{min-height:34px;padding:7px 12px;font-size:.8rem;border-radius:8px}
+.gc-demo-colfilter-code{padding:14px 16px;background:#fff;border:1px solid var(--gc-soft);border-radius:10px}
+.gc-demo-colfilter-code p{margin:0;color:#41564a;font-size:.9rem}

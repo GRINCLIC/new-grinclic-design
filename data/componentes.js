@@ -6,12 +6,10 @@ window.GC_COMPONENTS = [
       { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Nombre, cédula, cargo, teléfono, dirección (líneas 310-603)" },
       { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Nombre, NIT, código, dirección, latitud/longitud (líneas 376-596)" },
       { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Nombre y código interno (líneas 155-167) — el ejemplo más simple" },
-      { module: "Métricas", agregar: 139, file: "cplus/views/mostrarMetrica.php", detail: "Nombre, código y abreviación (líneas 148-171)" },
-      { module: "Mesa de ayuda", agregar: 148, file: "cplus/views/mostrarMesaAyuda.php", detail: "Campo Detalle del filtro (líneas 97-98)" },
     ],
     group:"Campos",
     name:"Campo de texto y número",
-    description:"Campo base para textos cortos y valores numéricos sin flechas del navegador. Desde este componente se muestra el estilo de etiqueta obligatoria que aplica también a los siguientes campos.",
+    description:"Campo base para textos cortos y valores numéricos sin flechas del navegador.",
     use:"Usarlo para nombres, códigos, cargos, teléfonos, identificaciones y datos de una línea. Para valores numéricos usa type=\"text\" con inputmode=\"numeric\" para evitar controles de incremento.",
     avoid:"No usarlo para textos largos, fechas, horas o listas de opciones.",
     deps:"Bootstrap CSS + grinclic-forms.css",
@@ -66,20 +64,21 @@ window.GC_COMPONENTS = [
     id:"campo-password",
     catalogExamples: ["gc-formulario-usuarios","gc-formulario-configuraciones"],
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "(variante propia) input#clave con data-gc-rule=\"password\" y gc-password-summary/gc-password-rules-card, pero sin type=password (líneas 735-768)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "input#clave con data-gc-rule=\"password\", gc-password-summary y gc-password-rules-card, pero con type=\"text\" y la tarjeta armada en ul/li (líneas 734-767)" },
     ],
     group:"Campos",
     name:"Campo contraseña",
-    description:"Input protegido que siempre mantiene el valor oculto. Los requisitos se muestran como resumen compacto con opción Ver requisitos para evitar sobrecargar el formulario.",
-    use:"Usarlo para claves y configuraciones sensibles. No incluye ver/ocultar porque por política interna la contraseña debe verse siempre como caracteres ocultos.",
+    description:"Input protegido que mantiene el valor oculto. Los requisitos se muestran como resumen compacto con opción Ver requisitos para no sobrecargar el formulario.",
+    use:"Usarlo para claves y configuraciones sensibles. No incluye ver/ocultar porque por política interna la contraseña debe verse siempre como caracteres ocultos. La regla la aplica data-gc-rule=\"password\": gc-validate.js la resuelve contra Validators.password (mínimo 8 caracteres y al menos un número, una minúscula y una mayúscula).",
     avoid:"No repetir el listado completo debajo de cada campo cuando existan Nueva clave y Confirmar clave; documentarlo una sola vez en la sección.",
-    deps:"Bootstrap CSS + Bootstrap JS Collapse + grinclic-forms.css",
-    accessibility:"El botón Ver requisitos controla un panel colapsable mediante aria-controls y aria-expanded. El input mantiene aria-describedby hacia el resumen.",
+    deps:"Bootstrap CSS + Bootstrap JS Collapse + grinclic-forms.css. En producción la validación la ejecutan cplus/js/core/gc-validate.js y cplus/js/core/validators.js.",
+    accessibility:"El botón Ver requisitos controla el panel colapsable con aria-controls y aria-expanded, y la tarjeta lleva aria-label. El estado de error marca is-invalid en el control y añade un div.gc-help.is-invalid, y el resumen recibe la clase is-error.",
+    note:"Sin verificar a propósito: la única instancia productiva declara type=\"text\" y no type=\"password\". Mientras esa contradicción no se decida, el catálogo no puede declarar este patrón contrastado.",
     states:{
-      enabled:`<div class="mb-3 gc-password-field">
+      enabled:`<div class="mb-3">
   <label for="clave_demo" class="form-label"><span class="gc-required">*</span>Clave</label>
-  <input type="password" class="form-control" id="clave_demo" name="clave" placeholder="Ingresa la contraseña" required autocomplete="new-password" aria-describedby="clave_demo_summary">
-  <div id="clave_demo_summary" class="gc-password-summary">
+  <input type="password" class="form-control" id="clave_demo" name="clave" placeholder="Ingresa la contraseña" required autocomplete="new-password" data-gc-rule="password">
+  <div class="gc-password-summary">
     Debe tener mínimo 8 caracteres e incluir letra, mayúscula, minúscula y número.
     <button class="gc-inline-link" type="button" data-bs-toggle="collapse" data-bs-target="#clave_demo_rules" aria-expanded="false" aria-controls="clave_demo_rules">Ver requisitos</button>
   </div>
@@ -93,16 +92,16 @@ window.GC_COMPONENTS = [
     </div>
   </div>
 </div>`,
-      error:`<div class="mb-3 gc-password-field">
+      error:`<div class="mb-3">
   <label for="clave_error" class="form-label"><span class="gc-required">*</span>Clave</label>
-  <input type="password" class="form-control is-invalid" id="clave_error" name="clave" required aria-describedby="clave_error_help clave_error_summary" autocomplete="new-password">
-  <div id="clave_error_help" class="gc-help is-invalid">La clave no cumple los requisitos mínimos.</div>
-  <div id="clave_error_summary" class="gc-password-summary is-error">
+  <input type="password" class="form-control is-invalid" id="clave_error" name="clave" required autocomplete="new-password" data-gc-rule="password">
+  <div class="gc-help is-invalid" data-gc-error>La clave no cumple los requisitos mínimos.</div>
+  <div class="gc-password-summary is-error">
     Debe tener mínimo 8 caracteres e incluir letra, mayúscula, minúscula y número.
     <button class="gc-inline-link" type="button" data-bs-toggle="collapse" data-bs-target="#clave_error_rules" aria-expanded="false" aria-controls="clave_error_rules">Ver requisitos</button>
   </div>
   <div class="collapse" id="clave_error_rules">
-    <div class="gc-password-rules-card is-error" aria-label="Requisitos de contraseña">
+    <div class="gc-password-rules-card" aria-label="Requisitos de contraseña">
       <div class="gc-password-rule">Debe incluir al menos una letra.</div>
       <div class="gc-password-rule">Debe incluir al menos una letra en mayúscula.</div>
       <div class="gc-password-rule">Debe incluir al menos una letra en minúscula.</div>
@@ -116,10 +115,10 @@ window.GC_COMPONENTS = [
   <input type="password" class="form-control" id="clave_disabled" name="clave" value="No editable" disabled>
 </div>`
     },
-    snippet:`<div class="mb-3 gc-password-field">
+    snippet:`<div class="mb-3">
   <label for="clave" class="form-label"><span class="gc-required">*</span>Clave</label>
-  <input type="password" class="form-control" id="clave" name="clave" placeholder="Ingresa la contraseña" required autocomplete="new-password" aria-describedby="clave_summary">
-  <div id="clave_summary" class="gc-password-summary">
+  <input type="password" class="form-control" id="clave" name="clave" placeholder="Ingresa la contraseña" required autocomplete="new-password" data-gc-rule="password">
+  <div class="gc-password-summary">
     Debe tener mínimo 8 caracteres e incluir letra, mayúscula, minúscula y número.
     <button class="gc-inline-link" type="button" data-bs-toggle="collapse" data-bs-target="#clave_rules" aria-expanded="false" aria-controls="clave_rules">Ver requisitos</button>
   </div>
@@ -136,10 +135,10 @@ window.GC_COMPONENTS = [
   },
   {
     id:"campo-fecha",
+    catalogExamples: ["filtros-listado"],
     implementations: [
       { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/form-manager.js", detail: "Flatpickr fecha+hora sobre #fecha_licencia (líneas 1000-1004)" },
-      { module: "Mesa de ayuda", agregar: 148, file: "cplus/views/mostrarMesaAyuda.php", detail: "Inputs type=date auto-mejorados a Flatpickr por cplus/js/core/gc-dates.js (líneas 78-82)" },
-      { module: "Parafiscales", agregar: 144, file: "cplus/views/mostrarParafiscales.php", detail: "Vigencia desde/hasta con type=date (líneas 196-204)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "El markup real del campo: input type=text name=fecha_licencia id=fecha_licencia con class form-control y autocomplete=off, dentro de div.input-group.date#fecha; el picker lo monta el JS, no el atributo type (líneas 851-852, comentario en la 858)" },
       { module: "Mis vehículos", agregar: 119, file: "cplus/js/entities/vehiculos/form-manager.js", detail: "Flatpickr fecha+hora en fechas de vencimiento (líneas 53-58)" },
     ],
     group:"Campos",
@@ -150,6 +149,7 @@ window.GC_COMPONENTS = [
     deps:"Bootstrap CSS + grinclic-forms.css + grinclic-forms.js + Flatpickr CSS/JS",
     verified: true,
     accessibility:"Mantener label asociado y usar placeholder descriptivo. El valor enviado conserva formato YYYY-MM-DD o YYYY-MM-DD HH:mm.",
+    note:"El único módulo validado con selector de fecha es Usuarios (105): input de texto en <code>cplus/views/mostrarUsuarios.php:851-852</code> inicializado a mano con Flatpickr en <code>cplus/js/entities/usuarios/form-manager.js:1000-1004</code>. El otro camino, <code>input type=\"date\"</code> auto-mejorado por <code>cplus/js/core/gc-dates.js:33-36</code>, es infraestructura transversal pero hoy no lo consume ningún módulo validado; sus 13 ocurrencias productivas están todas en módulos sin terminar. El atributo <code>data-gc-flatpickr</code> del snippet es del visor: tiene 0 ocurrencias en cplus.",
     states:{
       enabled:`<div class="row g-3">
   <div class="col-md-6">
@@ -198,177 +198,133 @@ window.GC_COMPONENTS = [
     id:"campo-hora",
     catalogExamples: ["gc-formulario-clientes"],
     implementations: [
-      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/form-manager.js", detail: "data-gc-timepicker=\"materialize\" en horarios (líneas 461-462)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/form-manager.js", detail: "Inputs type=text con data-gc-timepicker=\"materialize\", maxlength 5 y aria-label, dentro del modal de horarios (líneas 460-463)" },
     ],
     group:"Campos",
     name:"Campo hora",
-    description:"Selector de hora visual tipo reloj con Materialize Timepicker, configurado en formato militar de 24 horas y sin digitación libre.",
-    use:"Usarlo para horas de entrada, salida o ventanas operativas cuando se requiere que el usuario seleccione desde un reloj visual.",
-    avoid:"No usar input type=time cuando se requiera una selección visual homogénea en escritorio y móvil.",
-    deps:"Bootstrap CSS + grinclic-forms.css + grinclic-forms.js + Materialize JS (Timepicker) + CSS aislado en grinclic-forms.css",
-    accessibility:"Mantener label asociado; el campo queda readonly para priorizar selección guiada.",
+    description:"Selector de hora visual tipo reloj con el Timepicker de Materialize en formato militar de 24 horas, sobre un input de texto que también admite digitación.",
+    use:"Usarlo para horas de entrada, salida o ventanas operativas.",
+    avoid:"No marcarlo readonly ni depender solo del reloj. No usarlo fuera de Sucursales sin montar antes el binder y el JS de Materialize: hoy no existe un binder global para data-gc-timepicker.",
+    deps:"Bootstrap CSS + grinclic-forms.css + Materialize JS (solo Timepicker, artefacto cplus/js/dist/materialize.min.js cargado por página). El enlace lo hace el propio módulo; en producción vive en cplus/js/entities/sucursales/form-manager.js.",
+    accessibility:"Cada hora necesita label asociado o aria-label. El input NO debe ser readonly: teclear la hora es la única ruta accesible por teclado. Al salir del campo el valor se normaliza a HH:MM de 24 horas.",
+    note:"Sin verificar: en producción no existe una clase gc-materialize-time ni un timepicker montado sobre el input.",
     states:{
       enabled:`<div class="mb-3">
   <label for="hora_entrada_demo" class="form-label"><span class="gc-required">*</span>Horario entrada</label>
-  <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_demo" name="hora_entrada" value="08:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly required>
+  <input type="text" class="form-control" id="hora_entrada_demo" name="hora_entrada" maxlength="5" value="08:00" data-gc-timepicker="materialize" required>
 </div>`,
       error:`<div class="mb-3">
   <label for="hora_entrada_error" class="form-label"><span class="gc-required">*</span>Horario entrada</label>
-  <input type="text" class="form-control gc-materialize-time timepicker is-invalid" id="hora_entrada_error" name="hora_entrada" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly required aria-describedby="hora_entrada_error_help">
-  <div id="hora_entrada_error_help" class="gc-help is-invalid">Selecciona una hora válida.</div>
+  <input type="text" class="form-control is-invalid" id="hora_entrada_error" name="hora_entrada" maxlength="5" value="" data-gc-timepicker="materialize" required>
+  <div class="gc-help is-invalid" data-gc-error>Falta la hora.</div>
 </div>`,
       disabled:`<div class="mb-3">
   <label for="hora_entrada_disabled" class="form-label">Horario entrada</label>
-  <input type="text" class="form-control" id="hora_entrada_disabled" name="hora_entrada" value="08:00" disabled>
+  <input type="text" class="form-control" id="hora_entrada_disabled" name="hora_entrada" maxlength="5" value="08:00" disabled>
 </div>`
     },
     snippet:`<div class="mb-3">
   <label for="hora_entrada" class="form-label"><span class="gc-required">*</span>Horario entrada</label>
-  <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada" name="hora_entrada" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly required>
+  <input type="text" class="form-control" id="hora_entrada" name="hora_entrada" maxlength="5" value="08:00" data-gc-timepicker="materialize" required>
 </div>`
   },
   {
     id:"campo-horario",
     catalogExamples: ["gc-formulario-clientes"],
     implementations: [
-      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Modal #modalHorarios con filas por día (líneas 788-803)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Modal #modalHorarios que hospeda las filas por día (líneas 786-801)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/form-manager.js", detail: "pintarModal() arma una fila hr-dia por día con select de estado y rangos hr-rango (líneas 523-548)" },
     ],
     group:"Bloques",
     name:"Grupo de horarios",
-    description:"Patrón Bootstrap para agrupar horarios por jornada, usando Materialize Timepicker como selector visual tipo reloj en formato militar.",
-    use:"Usarlo cuando un formulario necesita comparar horarios de lunes a viernes contra fines de semana.",
-    avoid:"No usarlo para una única hora aislada; en ese caso basta con el campo hora individual.",
-    deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js + Materialize JS (Timepicker) + CSS aislado en grinclic-forms.css",
-    accessibility:"Cada hora conserva label propio. El ícono acompaña el título, no reemplaza el texto. Cada hora se selecciona desde un reloj visual.",
+    description:"Bloque de horario de atención por día: una fila por jornada con estado Abierto, Abierto 24h o Cerrado y uno o varios rangos de hora, dentro de un modal.",
+    use:"Usarlo cuando un registro necesita horarios distintos por día y varios rangos en el mismo día. El estado del día gobierna la visibilidad de los rangos.",
+    avoid:"No usarlo para una única hora aislada; en ese caso basta con el campo hora individual. No reutilizar las clases hr-* fuera del modal: están scoped bajo #modalHorarios.",
+    deps:"Bootstrap CSS + Bootstrap JS Modal + Materialize JS (solo Timepicker) + el módulo de la entidad. Las clases hr-dia, hr-label, hr-estado, hr-rangos, hr-rango, hr-desde, hr-hasta y hr-add son propias de Sucursales.",
+    accessibility:"Cada input de hora lleva aria-label porque la fila no tiene espacio para un label visible. El estado del día es un select nativo. El título del modal acompaña el ícono, no lo reemplaza.",
+    note:"Sin verificar: producción no tiene el patrón de dos tarjetas lunes-viernes contra fin de semana; lo que existe es este modal por día.",
     states:{
-      enabled:`<div class="row g-3 gc-schedule-groups">
-  <div class="col-lg-6">
-    <section class="border rounded-3 p-3 bg-white gc-schedule-card">
-      <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario lunes a viernes</h3>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="hora_entrada_semana_demo" class="form-label">Horario entrada</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_semana_demo" name="hora_entrada_semana" value="14:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-        <div class="col-md-6">
-          <label for="hora_salida_semana_demo" class="form-label">Horario salida</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_salida_semana_demo" name="hora_salida_semana" value="15:58" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-      </div>
-    </section>
-  </div>
-  <div class="col-lg-6">
-    <section class="border rounded-3 p-3 bg-white gc-schedule-card">
-      <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario sábado y domingo</h3>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="hora_entrada_fin_demo" class="form-label">Horario entrada</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_fin_demo" name="hora_entrada_fin_semana" value="00:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-        <div class="col-md-6">
-          <label for="hora_salida_fin_demo" class="form-label">Horario salida</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_salida_fin_demo" name="hora_salida_fin_semana" value="00:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-      </div>
-    </section>
+      enabled:`<div class="modal-body" id="horariosBody">
+  <div class="hr-dia" data-dia="lun">
+    <span class="hr-label">Lunes</span>
+    <select class="hr-estado form-select">
+      <option value="abierto" selected>Abierto</option>
+      <option value="24h">Abierto 24h</option>
+      <option value="cerrado">Cerrado</option>
+    </select>
+    <span class="hr-rangos">
+      <span class="hr-rango">
+        <input type="text" maxlength="5" aria-label="Hora de entrada" data-gc-timepicker="materialize" class="hr-desde form-control" value="08:00"> -
+        <input type="text" maxlength="5" aria-label="Hora de salida" data-gc-timepicker="materialize" class="hr-hasta form-control" value="17:30">
+      </span>
+    </span>
+    <button type="button" class="hr-add erp-btn erp-btn-secondary" title="Agregar horario">+</button>
   </div>
 </div>`,
-      error:`<div class="row g-3 gc-schedule-groups">
-  <div class="col-lg-6">
-    <section class="border rounded-3 p-3 bg-white gc-schedule-card">
-      <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario lunes a viernes</h3>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="hora_entrada_semana_error" class="form-label">Horario entrada</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_semana_error" name="hora_entrada_semana" value="14:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-        <div class="col-md-6">
-          <label for="hora_salida_semana_error" class="form-label">Horario salida</label>
-          <input type="text" class="form-control gc-materialize-time timepicker is-invalid" id="hora_salida_semana_error" name="hora_salida_semana" value="15:58" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-          <div class="gc-help is-invalid">La salida debe ser posterior.</div>
-        </div>
-      </div>
-    </section>
-  </div>
-  <div class="col-lg-6">
-    <section class="border rounded-3 p-3 bg-white gc-schedule-card">
-      <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario sábado y domingo</h3>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="hora_entrada_fin_error" class="form-label">Horario entrada</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_fin_error" name="hora_entrada_fin_semana" value="00:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-        <div class="col-md-6">
-          <label for="hora_salida_fin_error" class="form-label">Horario salida</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_salida_fin_error" name="hora_salida_fin_semana" value="00:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-      </div>
-    </section>
+      error:`<div class="modal-body" id="horariosBody">
+  <div class="hr-dia" data-dia="lun">
+    <span class="hr-label">Lunes</span>
+    <select class="hr-estado form-select">
+      <option value="abierto" selected>Abierto</option>
+      <option value="24h">Abierto 24h</option>
+      <option value="cerrado">Cerrado</option>
+    </select>
+    <span class="hr-rangos">
+      <span class="hr-rango">
+        <input type="text" maxlength="5" aria-label="Hora de entrada" data-gc-timepicker="materialize" class="hr-desde form-control" value="08:00"> -
+        <input type="text" maxlength="5" aria-label="Hora de salida" data-gc-timepicker="materialize" class="hr-hasta form-control is-invalid" value="">
+        <div class="gc-help is-invalid" data-gc-error>Falta la hora.</div>
+      </span>
+    </span>
+    <button type="button" class="hr-add erp-btn erp-btn-secondary" title="Agregar horario">+</button>
   </div>
 </div>`,
-      disabled:`<div class="row g-3 gc-schedule-groups">
-  <div class="col-lg-6">
-    <section class="border rounded-3 p-3 bg-white gc-schedule-card">
-      <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario lunes a viernes</h3>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="hora_entrada_semana_disabled" class="form-label">Horario entrada</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_semana_disabled" name="hora_entrada_semana" value="14:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly disabled>
-        </div>
-        <div class="col-md-6">
-          <label for="hora_salida_semana_disabled" class="form-label">Horario salida</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_salida_semana_disabled" name="hora_salida_semana" value="15:58" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly disabled>
-        </div>
-      </div>
-    </section>
-  </div>
-  <div class="col-lg-6">
-    <section class="border rounded-3 p-3 bg-white gc-schedule-card">
-      <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario sábado y domingo</h3>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="hora_entrada_fin_disabled" class="form-label">Horario entrada</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_fin_disabled" name="hora_entrada_fin_semana" value="00:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly disabled>
-        </div>
-        <div class="col-md-6">
-          <label for="hora_salida_fin_disabled" class="form-label">Horario salida</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_salida_fin_disabled" name="hora_salida_fin_semana" value="00:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly disabled>
-        </div>
-      </div>
-    </section>
+      disabled:`<div class="modal-body" id="horariosBody">
+  <div class="hr-dia" data-dia="lun">
+    <span class="hr-label">Lunes</span>
+    <select class="hr-estado form-select" disabled>
+      <option value="abierto" selected>Abierto</option>
+      <option value="24h">Abierto 24h</option>
+      <option value="cerrado">Cerrado</option>
+    </select>
+    <span class="hr-rangos">
+      <span class="hr-rango">
+        <input type="text" maxlength="5" aria-label="Hora de entrada" class="hr-desde form-control" value="08:00" disabled> -
+        <input type="text" maxlength="5" aria-label="Hora de salida" class="hr-hasta form-control" value="17:30" disabled>
+      </span>
+    </span>
   </div>
 </div>`
     },
-    snippet:`<div class="row g-3 gc-schedule-groups">
-  <div class="col-lg-6">
-    <section class="border rounded-3 p-3 bg-white gc-schedule-card">
-      <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario lunes a viernes</h3>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="hora_entrada_semana" class="form-label">Horario entrada</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_semana" name="hora_entrada_semana" value="14:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-        <div class="col-md-6">
-          <label for="hora_salida_semana" class="form-label">Horario salida</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_salida_semana" name="hora_salida_semana" value="15:58" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
+    snippet:`<div class="modal fade" id="modalHorarios" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title gc-schedule-title"><i class="bi bi-clock"></i> Horario de atención</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="horariosBody">
+        <div class="hr-dia" data-dia="lun">
+          <span class="hr-label">Lunes</span>
+          <select class="hr-estado form-select">
+            <option value="abierto" selected>Abierto</option>
+            <option value="24h">Abierto 24h</option>
+            <option value="cerrado">Cerrado</option>
+          </select>
+          <span class="hr-rangos">
+            <span class="hr-rango">
+              <input type="text" maxlength="5" aria-label="Hora de entrada" data-gc-timepicker="materialize" class="hr-desde form-control" value="08:00"> -
+              <input type="text" maxlength="5" aria-label="Hora de salida" data-gc-timepicker="materialize" class="hr-hasta form-control" value="17:30">
+            </span>
+          </span>
+          <button type="button" class="hr-add erp-btn erp-btn-secondary" title="Agregar horario">+</button>
         </div>
       </div>
-    </section>
-  </div>
-  <div class="col-lg-6">
-    <section class="border rounded-3 p-3 bg-white gc-schedule-card">
-      <h3 class="h6 fw-bold mb-3 gc-schedule-title"><svg class="gc-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>Horario sábado y domingo</h3>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="hora_entrada_fin" class="form-label">Horario entrada</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_entrada_fin" name="hora_entrada_fin_semana" value="00:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
-        <div class="col-md-6">
-          <label for="hora_salida_fin" class="form-label">Horario salida</label>
-          <input type="text" class="form-control gc-materialize-time timepicker" id="hora_salida_fin" name="hora_salida_fin_semana" value="00:00" placeholder="Selecciona hora" data-gc-timepicker="materialize" readonly>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="erp-btn erp-btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="erp-btn erp-btn-primary" id="guardarHorarios">Guardar</button>
       </div>
-    </section>
+    </div>
   </div>
 </div>`
   },
@@ -376,10 +332,10 @@ window.GC_COMPONENTS = [
     id:"textarea",
     catalogExamples: ["gc-formulario-configuraciones","gc-formulario-roles"],
     implementations: [
-      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Observación con rows=3 (línea 671)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Observación con rows=3 (líneas 669-670)" },
       { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Descripción (líneas 171-173)" },
-      { module: "Mesa de ayuda", agregar: 148, file: "cplus/views/mostrarMesaAyuda.php", detail: "Comentario (líneas 211-212)" },
-      { module: "Bodegas de inventario", agregar: 149, file: "cplus/views/mostrarBodegas.php", detail: "Observación (líneas 290-291)" },
+      { module: "Manejo del residuo", agregar: 116, file: "cplus/views/mostrarManejoResiduo.php", detail: "Descripción con rows=3, la forma mayoritaria del catálogo maestro (línea 183)" },
+      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Descripción con rows=2, la variante corta (línea 102)" },
     ],
     group:"Campos",
     name:"Textarea",
@@ -388,6 +344,7 @@ window.GC_COMPONENTS = [
     avoid:"No usarlo para datos cortos que deben escanearse en columnas.",
     deps:"Bootstrap CSS + grinclic-forms.css",
     verified: true,
+    accessibility:"Mantén el label asociado por for/id. Para el modo consulta usa readonly y no disabled, así el contenido sigue siendo enfocable y leíble con teclado. El mensaje de error que inyecta GcValidate es un div gc-help is-invalid sin role=\"alert\" ni aria-describedby automático: si el error debe anunciarse, enlázalo a mano como hace el estado de error de esta entrada.",
     states:{
       enabled:`<div class="mb-3">
   <label for="descripcion_demo" class="form-label">Descripcion</label>
@@ -412,11 +369,11 @@ window.GC_COMPONENTS = [
     id:"select-simple",
     catalogExamples: ["gc-formulario-usuarios","gc-formulario-clientes"],
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Selects Estado y Tipo (líneas 427 y 468)" },
-      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Tipo, estado, clasificación, país, ciudad… (líneas 384-559)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Selects Estado y Módulo de acceso (líneas 426 y 467)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Tipo, estado, clasificación, país, ciudad… (líneas 382-559)" },
       { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Select Activo/Inactivo (líneas 176-181)" },
-      { module: "Métricas", agregar: 139, file: "cplus/views/mostrarMetrica.php", detail: "Select estado (líneas 176-179)" },
-      { module: "Mesa de ayuda", agregar: 148, file: "cplus/views/mostrarMesaAyuda.php", detail: "Filtros Solicitud y Etapa poblados por JS (líneas 86-94)" },
+      { module: "Riesgos", agregar: 143, file: "cplus/views/mostrarRiesgos.php", detail: "Select estado con name=estado, required y disabled en modo Ver (línea 167)" },
+      { module: "Tipos de vehículos", agregar: 137, file: "cplus/views/mostrarTipoVehiculos.php", detail: "Select estado con name=activo, required y disabled condicionado al modo Ver (línea 146)" },
     ],
     group:"Campos",
     name:"Select",
@@ -425,6 +382,7 @@ window.GC_COMPONENTS = [
     avoid:"No usarlo para catalogos muy largos.",
     deps:"Bootstrap CSS + grinclic-forms.css",
     verified: true,
+    accessibility:"Mantén el label asociado por for/id y deja como primera opción un valor vacío tipo Seleccione. El select nativo ya resuelve foco y teclado: solo cámbialo por un dropdown si necesitas búsqueda interna. En modo consulta producción aplica disabled, que saca el control del recorrido de foco y del envío del formulario; si el valor debe seguir viajando, acompáñalo de un input hidden.",
     states:{
       enabled:`<div class="mb-3">
   <label for="estado_demo" class="form-label"><span class="gc-required">*</span>Estado</label>
@@ -467,20 +425,21 @@ window.GC_COMPONENTS = [
     ],
     group:"Campos",
     name:"Seleccion con busqueda interna",
-    description:"Dropdown Bootstrap con filtro interno y valor oculto para envío al backend. Instructivo: para estandarizar este patrón, conserva la estructura data-gc-search-select, input hidden, botón gc-select-trigger y opciones data-gc-option; solo cambia labels, name y opciones.",
-    use:"Usarlo para ciudades, departamentos, clientes, usuarios o residuos extensos.",
-    avoid:"No usarlo para listas de dos o tres opciones.",
+    description:"Dropdown Bootstrap con filtro interno y valor oculto para envío al backend, pensado para catálogos largos. El markup de esta entrada es el espejo del visor: producción genera el suyo por JavaScript.",
+    use:"Usarlo para ciudades, departamentos, clientes, usuarios o residuos extensos. En una vista CPlus lo único que se escribe es el select con data-gc-search-select; el resto lo genera cplus/js/core/gc-search-select.js.",
+    avoid:"No usarlo para listas de dos o tres opciones. No copiar el markup del snippet a una vista CPlus: producción no entiende data-gc-option, data-gc-search-input ni data-gc-search-label.",
     deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
-    verified: true,
+    accessibility:"El disparador es un button con aria-haspopup=\"listbox\" y el aria-expanded que alterna Bootstrap; dentro del menú las flechas recorren los .dropdown-item y Enter selecciona. Limitaciones reales: el menú no declara role=\"listbox\" ni role=\"option\", al abrir el foco se queda en el disparador en vez del buscador, el cambio de selección no se anuncia por región viva y el label no nombra al button, así que añádele aria-label.",
+    note:"<strong>Sin verificar.</strong> El contrato del snippet (<code>data-gc-option</code>, <code>data-gc-search-input</code>, <code>data-gc-search-label</code> e input hidden) solo lo entiende el JS del visor. Producción escribe <code>&lt;select class=\"form-select\" data-gc-search-select&gt;</code> y <code>cplus/js/core/gc-search-select.js</code> genera el dropdown: wrapper <code>dropdown gc-search-select</code>, disparador <code>form-select text-start dropdown-toggle gc-select-trigger</code> y menú <code>dropdown-menu gc-search-menu w-100</code>, sin input hidden.",
     states:{
       enabled:`<div class="mb-3 gc-search-select" data-gc-search-select>
   <label class="form-label" for="departamento_value_demo">Departamento</label>
   <input type="hidden" id="departamento_value_demo" name="departamento" value="Antioquia">
-  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown">
+  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-expanded="false">
     <span data-gc-search-label>Antioquia</span>
   </button>
   <div class="dropdown-menu gc-search-menu">
-    <input class="form-control mb-2" type="search" placeholder="Buscar opcion..." data-gc-search-input>
+    <input class="form-control mb-2" type="search" placeholder="Buscar opcion..." aria-label="Buscar opción" data-gc-search-input>
     <button class="dropdown-item active" type="button" data-gc-option="Antioquia">Antioquia</button>
     <button class="dropdown-item" type="button" data-gc-option="Bogota D.C.">Bogota D.C.</button>
     <button class="dropdown-item" type="button" data-gc-option="Valle del Cauca">Valle del Cauca</button>
@@ -489,7 +448,7 @@ window.GC_COMPONENTS = [
       error:`<div class="mb-3 gc-search-select" data-gc-search-select>
   <label class="form-label" for="departamento_value_error">Departamento</label>
   <input type="hidden" id="departamento_value_error" name="departamento" value="">
-  <button class="btn dropdown-toggle gc-select-trigger is-invalid w-100" type="button" data-bs-toggle="dropdown">
+  <button class="btn dropdown-toggle gc-select-trigger is-invalid w-100" type="button" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-expanded="false">
     <span data-gc-search-label>Seleccione</span>
   </button>
   <div class="gc-help is-invalid">Selecciona una opcion valida.</div>
@@ -501,14 +460,17 @@ window.GC_COMPONENTS = [
   </button>
 </div>`
     },
-    snippet:`<div class="mb-3 gc-search-select" data-gc-search-select>
+    snippet:`<!-- En una vista CPlus se escribe SOLO esto y gc-search-select.js genera el resto:
+     <select name="departamento" class="form-select" data-gc-search-select id="departamento">…</select>
+     Lo de abajo es el espejo del visor (contrato data-gc-option / data-gc-search-input). -->
+<div class="mb-3 gc-search-select" data-gc-search-select>
   <label class="form-label" for="departamento_value">Departamento</label>
   <input type="hidden" id="departamento_value" name="departamento" value="Antioquia">
-  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown">
+  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-expanded="false">
     <span data-gc-search-label>Antioquia</span>
   </button>
   <div class="dropdown-menu gc-search-menu">
-    <input class="form-control mb-2" type="search" placeholder="Buscar opcion..." data-gc-search-input>
+    <input class="form-control mb-2" type="search" placeholder="Buscar opcion..." aria-label="Buscar opción" data-gc-search-input>
     <button class="dropdown-item active" type="button" data-gc-option="Antioquia">Antioquia</button>
     <button class="dropdown-item" type="button" data-gc-option="Bogota D.C.">Bogota D.C.</button>
     <button class="dropdown-item" type="button" data-gc-option="Cundinamarca">Cundinamarca</button>
@@ -520,53 +482,60 @@ window.GC_COMPONENTS = [
     id:"seleccion-multiple-desplegable",
     catalogExamples: ["gc-formulario-usuarios"],
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "(variante propia) lista de checkboxes gc-multiselect-menu con \"TODAS\" y contador, siempre visible (líneas 968-1019)" },
-      { module: "Proveedores", agregar: 128, file: "cplus/views/mostrarProveedores.php", detail: "(variante propia) select multiple nativo con size=8 (líneas 102-116)" },
+      { module: "Infraestructura CPlus (sin consumidor en módulo validado)", agregar: 127, file: "cplus/js/core/gc-multiselect.js", detail: "Fuente del patrón: construye disparador, menú de checkboxes y resumen a partir de un select[multiple][data-gc-multiselect]; el wrapper es dropdown gc-multiselect, el disparador form-select text-start dropdown-toggle gc-select-trigger y el menú dropdown-menu gc-multiselect-menu w-100. El único módulo que hoy lo carga en MODO CAJA es Sucursales (mostrarSucursales.php:696, buscador creado en gc-multiselect.js:246-257); el modo desplegable no tiene consumidor validado" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Usa el MODO CAJA, no el desplegable: div#id_sucursal_rel.suc-rel-container y div#suc_rel_cliente.suc-rel-container con data-gc-multiselect-box (ver la entrada Selección múltiple con búsqueda interna)" },
+      { module: "Proveedores", agregar: 128, file: "cplus/views/mostrarProveedores.php", detail: "(variante propia, NO usa el desplegable) select multiple nativo con size=8 y sin data-gc-multiselect (líneas 102-110)" },
     ],
     group:"Campos",
     name:"Seleccion multiple en desplegable",
-    description:"Dropdown con checkboxes reales y resumen de seleccion.",
-    use:"Usarlo para permisos, categorias o filtros multiples en espacios compactos.",
-    avoid:"No usarlo si las opciones deben estar siempre visibles para comparacion.",
-    deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
-    verified: true,
+    description:"Dropdown con checkboxes reales y resumen de selección. El markup de esta ficha es el espejo del visor: en producción lo genera cplus/js/core/gc-multiselect.js a partir de un <code>&lt;select multiple data-gc-multiselect&gt;</code>.",
+    use:"Usarlo para permisos, categorías o filtros múltiples en espacios compactos: en la vista solo se escribe el select con data-gc-multiselect y data-gc-placeholder. Aviso: el modo desplegable no tiene precedente productivo; cuando haga falta uno, usar el modo caja de Selección múltiple con búsqueda interna (Sucursales).",
+    avoid:"No usarlo si las opciones deben estar siempre visibles. No copiar data-gc-multiselect-summary ni gc-selected-summary a una vista CPlus: el resumen real es un span que gc-multiselect.js crea dentro del propio disparador.",
+    deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js. En producción: cplus/js/core/gc-multiselect.js.",
+    accessibility:"Cada opción es un checkbox real con label asociado por for/id: el menú se recorre con Tab y se marca con la barra espaciadora. El disparador necesita data-bs-auto-close=\"outside\"; sin él, un clic sobre label.form-check-label cierra el menú. Limitaciones reales: no hay región viva que anuncie el cambio, el disparador no declara aria-haspopup, el menú no expone roles de lista y el label no nombra al button, así que añádele aria-label.",
+    note:"<strong>Sin verificar.</strong> <code>data-gc-multiselect-summary</code> y <code>div.gc-selected-summary</code> no existen en producción: solo los entiende el JS del visor, y ningún módulo validado usa el modo desplegable. El markup real lo genera <code>gc-multiselect.js</code>: wrapper <code>dropdown gc-multiselect</code>, disparador <code>form-select text-start dropdown-toggle gc-select-trigger</code> y menú <code>dropdown-menu gc-multiselect-menu w-100</code>.",
     states:{
       enabled:`<div class="mb-3 dropdown" data-gc-multiselect>
   <label class="form-label">Permisos</label>
-  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown">Seleccionar permisos</button>
+  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">Seleccionar permisos</button>
   <div class="dropdown-menu gc-multiselect-menu">
-    <div class="form-check"><input class="form-check-input" type="checkbox" id="permiso_crear_demo" name="permisos[]" value="crear" checked><label class="form-check-label" for="permiso_crear_demo">Crear solicitudes</label></div>
-    <div class="form-check"><input class="form-check-input" type="checkbox" id="permiso_editar_demo" name="permisos[]" value="editar"><label class="form-check-label" for="permiso_editar_demo">Editar solicitudes</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" id="permiso_crear_demo" name="permisos[]" value="crear" checked><label class="form-check-label" for="permiso_crear_demo">Crear</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" id="permiso_editar_demo" name="permisos[]" value="editar"><label class="form-check-label" for="permiso_editar_demo">Editar</label></div>
   </div>
   <div class="gc-selected-summary" data-gc-multiselect-summary>Seleccionados: ninguno</div>
 </div>`,
       error:`<div class="mb-3 dropdown" data-gc-multiselect>
   <label class="form-label">Permisos</label>
-  <button class="btn dropdown-toggle gc-select-trigger is-invalid w-100" type="button" data-bs-toggle="dropdown">Seleccionar permisos</button>
+  <button class="btn dropdown-toggle gc-select-trigger is-invalid w-100" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">Seleccionar permisos</button>
   <div class="gc-help is-invalid">Selecciona al menos una opcion.</div>
 </div>`,
       disabled:`<div class="mb-3 dropdown">
   <label class="form-label">Permisos</label>
-  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" disabled>Crear solicitudes</button>
+  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" disabled>Crear</button>
 </div>`
     },
-    snippet:`<div class="mb-3 dropdown" data-gc-multiselect>
+    snippet:`<!-- En una vista CPlus se escribe SOLO esto y gc-multiselect.js genera el resto:
+     <select name="permisos[]" class="form-select" multiple data-gc-multiselect
+             data-gc-placeholder="Seleccionar permisos">…</select>
+     Lo de abajo es el espejo del visor. data-bs-auto-close="outside" es obligatorio:
+     sin él, un clic sobre label.form-check-label cierra el menú. -->
+<div class="mb-3 dropdown" data-gc-multiselect>
   <label class="form-label">Permisos</label>
-  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown">
+  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
     Seleccionar permisos
   </button>
   <div class="dropdown-menu gc-multiselect-menu">
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="permiso_crear" name="permisos[]" value="crear_solicitudes" checked>
-      <label class="form-check-label" for="permiso_crear">Crear solicitudes</label>
+      <input class="form-check-input" type="checkbox" id="permiso_crear" name="permisos[]" value="crear" checked>
+      <label class="form-check-label" for="permiso_crear">Crear</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="permiso_editar" name="permisos[]" value="editar_solicitudes">
-      <label class="form-check-label" for="permiso_editar">Editar solicitudes</label>
+      <input class="form-check-input" type="checkbox" id="permiso_editar" name="permisos[]" value="editar">
+      <label class="form-check-label" for="permiso_editar">Editar</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="permiso_aprobar" name="permisos[]" value="aprobar_solicitudes">
-      <label class="form-check-label" for="permiso_aprobar">Aprobar solicitudes</label>
+      <input class="form-check-input" type="checkbox" id="permiso_aprobar" name="permisos[]" value="aprobar">
+      <label class="form-check-label" for="permiso_aprobar">Aprobar</label>
     </div>
   </div>
   <div class="gc-selected-summary" data-gc-multiselect-summary>Seleccionados: ninguno</div>
@@ -575,20 +544,23 @@ window.GC_COMPONENTS = [
 
   {
     id:"seleccion-multiple-busqueda",
+    catalogExamples: ["gc-formulario-usuarios"],
     implementations: [
-      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "data-gc-multiselect-box con buscador interno para declaraciones (líneas 697-700)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "MODO CAJA: div#declaracionesBox.decl-box con data-gc-multiselect-box, filas label.decl-item y la casilla #declTodas; el buscador lo crea gc-multiselect.js:246-257 (líneas 696-702)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "MODO CAJA sobre dos campos: Sucursales de acopio (div#id_sucursal_rel.suc-rel-container) y Relacionar sucursales (div#suc_rel_cliente.suc-rel-container), ambos con data-gc-multiselect-box, filas div.form-check y la casilla TODAS sin name; form-manager.js repuebla la caja por innerHTML y el MutationObserver de gc-multiselect.js:279-281 rehace resumen y buscador" },
     ],
     group:"Campos",
     name:"Selección múltiple con búsqueda interna",
-    description:"Dropdown con checkboxes reales, búsqueda interna y resumen de selección. Instructivo: para estandarizar este patrón, conserva data-gc-multiselect, data-gc-multiselect-search, name[] y data-gc-multiselect-summary; solo cambia labels, opciones y valores.",
-    use:"Usarlo para listas múltiples medianas o largas, como sucursales de acopio, permisos o categorías operativas.",
-    avoid:"No usarlo para dos o tres opciones visibles; en ese caso basta con checkbox o selección múltiple simple.",
-    deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
-    verified: true,
+    description:"Dropdown con checkboxes reales, búsqueda interna y resumen de selección. Es el espejo del visor: en producción el buscador lo crea gc-multiselect.js y solo se muestra cuando hay más de 8 opciones.",
+    use:"Usarlo para listas múltiples largas, como sucursales o permisos. La vía general es el MODO CAJA del snippet: data-gc-multiselect-box sobre un contenedor de checkboxes; gc-multiselect.js le monta disparador, menú y buscador sin tocar names ni handlers. Es la única vía si la fila no cabe en un option o si otro JS repuebla la caja por innerHTML.",
+    avoid:"No usarlo para dos o tres opciones: basta un checkbox o la selección múltiple simple. No escribir gc-multiselect-menu en la caja: lo crea el JS y duplicarlo deja doble marco y doble scroll. No añadir contador propio: el disparador ya muestra «Seleccionados: N».",
+    deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js. En producción: cplus/js/core/gc-multiselect.js.",
+    accessibility:"Cada fila es un checkbox real con label asociado por for/id, así que el menú abierto se recorre con Tab y se marca con la barra espaciadora. Limitación real: el buscador se genera sin aria-label ni aria-controls y el filtrado oculta filas sin anunciar cuántas quedan al lector de pantalla; ponle aria-label al copiar el patrón. El label del campo tampoco queda asociado al disparador, que no declara aria-haspopup.",
+    note:"El bloque <strong>Estados</strong> es el espejo del visor: sirve para ver el resultado, no para copiarlo. Lo que se lleva a una vista CPlus es el <strong>snippet</strong>, con sus convenciones comentadas.",
     states:{
       enabled:`<div class="mb-3 dropdown" data-gc-multiselect>
   <label class="form-label">Sucursales de acopio</label>
-  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown">Seleccionar sucursales</button>
+  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">Seleccionar sucursales</button>
   <div class="dropdown-menu gc-multiselect-menu">
     <input class="form-control gc-multiselect-search" type="search" placeholder="Buscar sucursal..." data-gc-multiselect-search>
     <div class="form-check"><input class="form-check-input" type="checkbox" id="sucursal_principal_demo" name="sucursales[]" value="principal" checked><label class="form-check-label" for="sucursal_principal_demo">Sucursal principal</label></div>
@@ -599,7 +571,7 @@ window.GC_COMPONENTS = [
 </div>`,
       error:`<div class="mb-3 dropdown" data-gc-multiselect>
   <label class="form-label">Sucursales de acopio</label>
-  <button class="btn dropdown-toggle gc-select-trigger is-invalid w-100" type="button" data-bs-toggle="dropdown">Seleccionar sucursales</button>
+  <button class="btn dropdown-toggle gc-select-trigger is-invalid w-100" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">Seleccionar sucursales</button>
   <div class="gc-help is-invalid">Selecciona al menos una sucursal.</div>
 </div>`,
       disabled:`<div class="mb-3 dropdown">
@@ -607,108 +579,112 @@ window.GC_COMPONENTS = [
   <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" disabled>Sucursal principal</button>
 </div>`
     },
-    snippet:`<div class="mb-3 dropdown" data-gc-multiselect>
+    snippet:`<!-- MODO CAJA — esto es TODO lo que se escribe en una vista CPlus.
+     gc-multiselect.js (core, ya cargado) envuelve la caja en disparador + menú +
+     buscador sin tocar su contenido: names, ids, values y handlers siguen igual.
+     La caja NO lleva gc-multiselect-menu: ese menú lo crea el JS.
+     Instancia real: cplus/views/mostrarUsuarios.php (Sucursales de acopio). -->
+<div class="col-md-6">
   <label class="form-label">Sucursales de acopio</label>
-  <button class="btn dropdown-toggle gc-select-trigger w-100" type="button" data-bs-toggle="dropdown">
-    Seleccionar sucursales
-  </button>
-  <div class="dropdown-menu gc-multiselect-menu">
-    <input class="form-control gc-multiselect-search" type="search" placeholder="Buscar sucursal..." data-gc-multiselect-search>
+  <div id="id_sucursal_rel" class="suc-rel-container"
+       data-gc-multiselect-box
+       data-gc-placeholder="Seleccionar sucursales de acopio"
+       data-gc-search-placeholder="Buscar sucursal...">
+
+    <!-- Fila TODAS: checkbox SIN name. El JS la reconoce por eso, no la cuenta
+         en el resumen y la oculta mientras haya texto en el buscador. -->
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="sucursal_principal" name="sucursales[]" value="principal" checked>
-      <label class="form-check-label" for="sucursal_principal">Sucursal principal</label>
+      <input type="checkbox" id="selectAllSucursalesAcopio" class="form-check-input"
+             onchange="toggleSelectAllSucursalesAcopio()">
+      <label class="form-check-label" for="selectAllSucursalesAcopio">TODAS</label>
+    </div>
+
+    <!-- Filas reales: checkbox CON name. Solo estas cuentan para "Seleccionados: N". -->
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" name="id_sucursal_rel[]"
+             id="suc_acopio_item_1" value="1" checked>
+      <label class="form-check-label" for="suc_acopio_item_1">Sede Principal</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="sucursal_norte" name="sucursales[]" value="norte">
-      <label class="form-check-label" for="sucursal_norte">Sucursal norte</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="sucursal_sur" name="sucursales[]" value="sur">
-      <label class="form-check-label" for="sucursal_sur">Sucursal sur</label>
+      <input type="checkbox" class="form-check-input" name="id_sucursal_rel[]"
+             id="suc_acopio_item_2" value="2">
+      <label class="form-check-label" for="suc_acopio_item_2">Planta Demo Madrid</label>
     </div>
   </div>
-  <div class="gc-selected-summary" data-gc-multiselect-summary>Seleccionados: ninguno</div>
-</div>`
+</div>
+
+<!-- Si otro JS repuebla la caja (container.innerHTML = ...), no hay que hacer nada:
+     el MutationObserver de gc-multiselect.js rehace resumen, filtro y buscador.
+     Si la caja se CREA después del DOM ready: window.GcMultiselect.initBox(caja). -->`
   },
   {
     id:"radio-si-no",
     catalogExamples: ["gc-formulario-usuarios","gc-formulario-clientes"],
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "gc-question + gc-yes-no role=radiogroup: acceso al sistema y envío de correo (líneas 658-809)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "gc-question + gc-yes-no role=radiogroup: acceso al sistema (líneas 657-687)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Segundo uso del mismo patrón: envío de credenciales por correo (líneas 794-808)" },
     ],
     group:"Campos",
     name:"Radio SI/NO compacto",
-    description:"Decisión compacta con radios reales. Incluye variante binaria y variante con NO APLICA.",
-    use:"Usarlo para preguntas frecuentes de configuración. Cuando exista una excepción válida, usar la variante SI / NO / NO APLICA.",
-    avoid:"No usarlo para listas extensas ni opciones que requieren búsqueda.",
-    deps:"Bootstrap CSS + grinclic-forms.css",
-    accessibility:"Usa role radiogroup y valores explícitos SI, NO y NO_APLICA para que backend y lectores de pantalla reciban un valor claro.",
+    description:"Decisión binaria compacta con radios reales presentados como botones segmentados. La etiqueta y el grupo comparten la misma caja.",
+    use:"Usarlo para preguntas de configuración de respuesta cerrada. El orden es NO primero y SI después, igual que en producción. El value lo define el contrato del backend: en Usuarios son 0 y 1.",
+    avoid:"No usarlo para listas extensas ni opciones que requieren búsqueda. No envolver los input en .form-check: el patrón exige input.btn-check y label.btn como hijos directos de .gc-yes-no.",
+    deps:"Bootstrap CSS (btn-check) + grinclic-forms.css",
+    verified: true,
+    accessibility:"El contenedor usa role=\"radiogroup\" y aria-labelledby apuntando al id del label, de modo que el lector de pantalla anuncia la pregunta antes de las opciones. Los radios son nativos, así que las flechas del teclado ya recorren el grupo.",
+    note:"La variante triple con NO APLICA es propuesta del catálogo: <code>gc-yes-no--triple</code> no existe en el SCSS de producción y por eso no va en el snippet. <strong>El estado de error también es propuesta:</strong> ninguna instancia productiva lleva <code>required</code> y gc-validate omite los radios sin él, así que el grupo nunca se marca; de marcarse, el <code>div.gc-help.is-invalid[data-gc-error]</code> iría dentro de <code>.gc-yes-no</code>, detrás del input, y sin border-warning.",
     states:{
       enabled:`<div class="row g-3">
   <div class="col-lg-6">
     <div class="gc-question mb-3">
-      <label class="form-label" id="descarga_label_demo">Permitir descargar acta independiente del pago</label>
-      <div class="gc-yes-no" role="radiogroup" aria-labelledby="descarga_label_demo">
-        <input class="btn-check" type="radio" name="descarga_demo" id="descarga_no_demo" value="NO" checked>
-        <label class="btn" for="descarga_no_demo">NO</label>
-        <input class="btn-check" type="radio" name="descarga_demo" id="descarga_si_demo" value="SI">
-        <label class="btn" for="descarga_si_demo">SI</label>
+      <label class="form-label" id="acceder_sistema_label_demo">¿Deseas que el usuario acceda al sistema?</label>
+      <div class="gc-yes-no" role="radiogroup" aria-labelledby="acceder_sistema_label_demo">
+        <input class="btn-check" type="radio" name="acceder_sistema_demo" id="acceder_sistema_no_demo" value="0" checked>
+        <label class="btn" for="acceder_sistema_no_demo">NO</label>
+        <input class="btn-check" type="radio" name="acceder_sistema_demo" id="acceder_sistema_si_demo" value="1">
+        <label class="btn" for="acceder_sistema_si_demo">SI</label>
       </div>
     </div>
   </div>
   <div class="col-lg-6">
     <div class="gc-question mb-3">
-      <label class="form-label" id="aplica_label_demo">¿Aplica generación automática?</label>
-      <div class="gc-yes-no gc-yes-no--triple" role="radiogroup" aria-labelledby="aplica_label_demo">
-        <input class="btn-check" type="radio" name="aplica_demo" id="aplica_no_demo" value="NO" checked>
-        <label class="btn" for="aplica_no_demo">NO</label>
-        <input class="btn-check" type="radio" name="aplica_demo" id="aplica_si_demo" value="SI">
-        <label class="btn" for="aplica_si_demo">SI</label>
-        <input class="btn-check" type="radio" name="aplica_demo" id="aplica_na_demo" value="NO_APLICA">
-        <label class="btn" for="aplica_na_demo">NO APLICA</label>
+      <label class="form-label" id="enviarcorreo_label_demo">¿Desea comunicarle al usuario mediante correo electrónico sus credenciales?</label>
+      <div class="gc-yes-no" role="radiogroup" aria-labelledby="enviarcorreo_label_demo">
+        <input class="btn-check" type="radio" name="enviarcorreo_demo" id="enviarcorreo_no_demo" value="0">
+        <label class="btn" for="enviarcorreo_no_demo">NO</label>
+        <input class="btn-check" type="radio" name="enviarcorreo_demo" id="enviarcorreo_si_demo" value="1" checked>
+        <label class="btn" for="enviarcorreo_si_demo">SI</label>
       </div>
     </div>
   </div>
 </div>`,
       error:`<div class="gc-question mb-1 border-warning">
-  <label class="form-label" id="descarga_label_error">Permitir descargar acta independiente del pago</label>
-  <div class="gc-yes-no" role="radiogroup" aria-labelledby="descarga_label_error">
-    <input class="btn-check" type="radio" name="descarga_error" id="descarga_no_error" value="NO">
-    <label class="btn" for="descarga_no_error">NO</label>
-    <input class="btn-check" type="radio" name="descarga_error" id="descarga_si_error" value="SI">
-    <label class="btn" for="descarga_si_error">SI</label>
+  <label class="form-label" id="acceder_sistema_label_error">¿Deseas que el usuario acceda al sistema?</label>
+  <div class="gc-yes-no" role="radiogroup" aria-labelledby="acceder_sistema_label_error">
+    <input class="btn-check" type="radio" name="acceder_sistema_error" id="acceder_sistema_no_error" value="0">
+    <label class="btn" for="acceder_sistema_no_error">NO</label>
+    <input class="btn-check" type="radio" name="acceder_sistema_error" id="acceder_sistema_si_error" value="1">
+    <label class="btn" for="acceder_sistema_si_error">SI</label>
   </div>
 </div>
-<div class="gc-help is-invalid">Selecciona SI o NO.</div>`,
+<div class="gc-help is-invalid" data-gc-error>Selecciona SI o NO.</div>`,
       disabled:`<div class="gc-question mb-3">
-  <label class="form-label" id="descarga_label_disabled">Permitir descargar acta independiente del pago</label>
-  <div class="gc-yes-no" role="radiogroup" aria-labelledby="descarga_label_disabled">
-    <input class="btn-check" type="radio" name="descarga_disabled" id="descarga_no_disabled" value="NO" checked disabled>
-    <label class="btn" for="descarga_no_disabled">NO</label>
-    <input class="btn-check" type="radio" name="descarga_disabled" id="descarga_si_disabled" value="SI" disabled>
-    <label class="btn" for="descarga_si_disabled">SI</label>
+  <label class="form-label" id="acceder_sistema_label_disabled">¿Deseas que el usuario acceda al sistema?</label>
+  <div class="gc-yes-no" role="radiogroup" aria-labelledby="acceder_sistema_label_disabled">
+    <input class="btn-check" type="radio" name="acceder_sistema_disabled" id="acceder_sistema_no_disabled" value="0" checked disabled>
+    <label class="btn" for="acceder_sistema_no_disabled">NO</label>
+    <input class="btn-check" type="radio" name="acceder_sistema_disabled" id="acceder_sistema_si_disabled" value="1" disabled>
+    <label class="btn" for="acceder_sistema_si_disabled">SI</label>
   </div>
 </div>`
     },
-    snippet:`<div class="gc-question mb-3">
-  <label class="form-label" id="descarga_acta_label">Permitir descargar acta independiente del pago</label>
-  <div class="gc-yes-no" role="radiogroup" aria-labelledby="descarga_acta_label">
-    <input class="btn-check" type="radio" name="descarga_acta" id="descarga_acta_no" value="NO" checked>
-    <label class="btn" for="descarga_acta_no">NO</label>
-    <input class="btn-check" type="radio" name="descarga_acta" id="descarga_acta_si" value="SI">
-    <label class="btn" for="descarga_acta_si">SI</label>
-  </div>
-</div>
-
-<div class="gc-question mb-3">
-  <label class="form-label" id="aplica_acta_label">¿Aplica generación automática?</label>
-  <div class="gc-yes-no gc-yes-no--triple" role="radiogroup" aria-labelledby="aplica_acta_label">
-    <input class="btn-check" type="radio" name="aplica_acta" id="aplica_acta_no" value="NO" checked>
-    <label class="btn" for="aplica_acta_no">NO</label>
-    <input class="btn-check" type="radio" name="aplica_acta" id="aplica_acta_si" value="SI">
-    <label class="btn" for="aplica_acta_si">SI</label>
-    <input class="btn-check" type="radio" name="aplica_acta" id="aplica_acta_na" value="NO_APLICA">
-    <label class="btn" for="aplica_acta_na">NO APLICA</label>
+    snippet:`<div class="gc-question">
+  <label class="form-label" id="acceder_sistema_label">¿Deseas que el usuario acceda al sistema?</label>
+  <div class="gc-yes-no" role="radiogroup" aria-labelledby="acceder_sistema_label">
+    <input class="btn-check" type="radio" name="acceder_sistema" id="acceder_sistema" value="0" checked>
+    <label class="btn" for="acceder_sistema">NO</label>
+    <input class="btn-check" type="radio" name="acceder_sistema" id="acceder_sistema_aux" value="1">
+    <label class="btn" for="acceder_sistema_aux">SI</label>
   </div>
 </div>`
   },
@@ -718,7 +694,7 @@ window.GC_COMPONENTS = [
     implementations: [
       { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Seleccionar-todas + checkboxes por sucursal + gc-review (líneas 970-1064)" },
       { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "aplica_acopio y declaraciones[] (líneas 683-711)" },
-      { module: "Parafiscales", agregar: 144, file: "cplus/views/mostrarParafiscales.php", detail: "Select-all del listado de usuarios (línea 240)" },
+      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Checkbox gc-review de confirmación con data-gc-review-check, que gatea el submit #guardar (líneas 119-122)" },
       { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Checkbox gc-review de confirmación (líneas 187-188)" },
       { module: "Zonas", agregar: 118, file: "cplus/views/mostrarZonas.php", detail: "TODAS + checkboxes por ciudad (líneas 227-244)" },
     ],
@@ -743,7 +719,7 @@ window.GC_COMPONENTS = [
     </div>
     <div class="gc-review-actions">
       <button class="btn btn-outline-secondary" type="button">Cancelar</button>
-      <button class="btn btn-success" type="submit" id="btn_actualizar_demo">Actualizar</button>
+      <button class="btn btn-success" type="submit" id="btn_actualizar_demo">Guardar</button>
     </div>
   </div>
 </footer>`,
@@ -770,7 +746,7 @@ window.GC_COMPONENTS = [
     </div>
     <div class="gc-review-actions">
       <button class="btn btn-outline-secondary" type="button">Cancelar</button>
-      <button class="btn btn-success" type="submit" id="btn_actualizar" disabled>Actualizar</button>
+      <button class="btn btn-success" type="submit" id="btn_actualizar" disabled>Guardar</button>
     </div>
   </div>
 </footer>`
@@ -779,35 +755,36 @@ window.GC_COMPONENTS = [
     id:"carga-pdf",
     catalogExamples: ["gc-formulario-usuarios","gc-formulario-configuraciones"],
     implementations: [
-      { module: "Parafiscales", agregar: 144, file: "cplus/views/mostrarParafiscales.php", detail: "gc-upload-field + gc-upload-specs + preview (líneas 167-186)" },
+      { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "Archivo de licencia ambiental: div.gc-upload-field.mt-2 con label, input type=file class=form-control accept=\".pdf,application/pdf\" y aria-describedby, más div.gc-upload-specs con tipo y peso máximo (líneas 483-488). El visor del PDF ya cargado está diferido, así que esta instancia no trae la tarjeta gc-upload-preview (comentario en las líneas 489-490)" },
     ],
     group:"Campos",
     name:"Cargar archivo PDF",
     description:"Input file real para documentos PDF con especificaciones y enlace para ver el documento cargado en una ventana nueva.",
-    use:"Usarlo para soportes, parafiscales, certificados, licencias y anexos administrativos.",
+    use:"Usarlo para soportes, licencias, certificados y anexos administrativos en PDF.",
     avoid:"No usarlo sin aclarar tipo de archivo y peso máximo.",
     deps:"Bootstrap CSS + grinclic-forms.css",
     verified: true,
     accessibility:"El enlace de vista previa debe abrir en nueva ventana con texto claro y target=\"_blank\".",
+    note:"El <code>verified</code> cubre solo el núcleo del snippet: <code>gc-upload-field</code> + label + <code>input type=\"file\"</code> + <code>gc-upload-specs</code>, contrastado contra <code>cplus/views/mostrarDatos.php:483-488</code>. Divergencia: allí el contenedor lleva <code>mt-2</code> (cuelga de un textarea), no <code>mb-3</code>, y el peso máximo real es 4 MB. <strong>Las tarjetas <code>gc-upload-empty</code> y <code>gc-upload-preview</code> de los estados son propuesta del catálogo</strong>: en esa instancia el visor del PDF ya cargado está diferido y no hay endpoint en el API, así que hoy no tienen instancia productiva en ningún módulo validado.",
     states:{
       enabled:`<div class="row g-3">
   <div class="col-lg-6">
     <div class="mb-3 gc-upload-field">
-      <label for="parafiscales_demo_vacio" class="form-label">Adjuntar parafiscales</label>
-      <input class="form-control" type="file" id="parafiscales_demo_vacio" name="parafiscales" accept="application/pdf,.pdf" aria-describedby="parafiscales_demo_vacio_specs">
-      <div id="parafiscales_demo_vacio_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 15 MB.</div>
+      <label for="licencia_demo_vacio" class="form-label">Archivo licencia ambiental</label>
+      <input class="form-control" type="file" id="licencia_demo_vacio" name="licencia_archivo" accept=".pdf,application/pdf" aria-describedby="licencia_demo_vacio_specs">
+      <div id="licencia_demo_vacio_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 4 MB.</div>
       <div class="gc-upload-empty">Sin archivo adjunto. Cuando se cargue un PDF, aquí se mostrará su nombre y el acceso para verlo.</div>
     </div>
   </div>
   <div class="col-lg-6">
     <div class="mb-3 gc-upload-field">
-      <label for="parafiscales_demo" class="form-label">Adjuntar parafiscales</label>
-      <input class="form-control" type="file" id="parafiscales_demo" name="parafiscales" accept="application/pdf,.pdf" aria-describedby="parafiscales_demo_specs">
-      <div id="parafiscales_demo_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 15 MB.</div>
+      <label for="licencia_demo" class="form-label">Archivo licencia ambiental</label>
+      <input class="form-control" type="file" id="licencia_demo" name="licencia_archivo" accept=".pdf,application/pdf" aria-describedby="licencia_demo_specs">
+      <div id="licencia_demo_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 4 MB.</div>
       <div class="gc-upload-preview" aria-label="Documento PDF cargado">
         <span class="gc-upload-file-icon" aria-hidden="true">PDF</span>
         <div class="gc-upload-meta">
-          <strong>parafiscales_vigentes.pdf</strong>
+          <strong>licencia_ambiental_2026.pdf</strong>
           <span>Documento legible, vigente y sin contraseña.</span>
         </div>
         <a class="btn btn-outline-secondary btn-sm ms-auto" href="#" target="_blank" rel="noopener">Ver documento</a>
@@ -816,30 +793,32 @@ window.GC_COMPONENTS = [
   </div>
 </div>`,
       error:`<div class="mb-3 gc-upload-field">
-  <label for="parafiscales_error" class="form-label">Adjuntar parafiscales</label>
-  <input class="form-control is-invalid" type="file" id="parafiscales_error" name="parafiscales" accept="application/pdf,.pdf" aria-describedby="parafiscales_error_help parafiscales_error_specs">
-  <div id="parafiscales_error_help" class="gc-help is-invalid">Adjunta un archivo PDF válido.</div>
-  <div id="parafiscales_error_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 15 MB.</div>
+  <label for="licencia_error" class="form-label">Archivo licencia ambiental</label>
+  <input class="form-control is-invalid" type="file" id="licencia_error" name="licencia_archivo" accept=".pdf,application/pdf" aria-describedby="licencia_error_help licencia_error_specs">
+  <div id="licencia_error_help" class="gc-help is-invalid">Adjunta un archivo PDF válido.</div>
+  <div id="licencia_error_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 4 MB.</div>
 </div>`,
       disabled:`<div class="mb-3 gc-upload-field">
-  <label for="parafiscales_disabled" class="form-label">Adjuntar parafiscales</label>
-  <input class="form-control" type="file" id="parafiscales_disabled" name="parafiscales" accept="application/pdf,.pdf" disabled>
-  <div class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 15 MB.</div>
+  <label for="licencia_disabled" class="form-label">Archivo licencia ambiental</label>
+  <input class="form-control" type="file" id="licencia_disabled" name="licencia_archivo" accept=".pdf,application/pdf" disabled>
+  <div class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 4 MB.</div>
   <div class="gc-upload-preview" aria-label="Documento PDF registrado">
     <span class="gc-upload-file-icon" aria-hidden="true">PDF</span>
     <div class="gc-upload-meta">
-      <strong>soporte_registrado.pdf</strong>
+      <strong>licencia_ambiental_2026.pdf</strong>
       <span>Archivo registrado no editable.</span>
     </div>
     <a class="btn btn-outline-secondary btn-sm ms-auto disabled" href="#" aria-disabled="true">Ver documento</a>
   </div>
 </div>`
     },
-    snippet:`<div class="mb-3 gc-upload-field">
-  <label for="archivo_pdf" class="form-label">Adjuntar archivo PDF</label>
-  <input class="form-control" type="file" id="archivo_pdf" name="archivo_pdf" accept="application/pdf,.pdf" aria-describedby="archivo_pdf_specs">
-  <div id="archivo_pdf_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 15 MB.</div>
-  <div class="gc-upload-empty">Sin archivo adjunto. Cuando exista un PDF cargado, muestra el nombre del archivo y el botón para verlo.</div>
+    snippet:`<!-- Núcleo verificado contra cplus/views/mostrarDatos.php:483-488.
+     Las tarjetas gc-upload-empty y gc-upload-preview de los estados son
+     propuesta del catálogo: no tienen instancia en un módulo validado. -->
+<div class="mb-3 gc-upload-field">
+  <label for="licencia_archivo" class="form-label">Archivo licencia ambiental</label>
+  <input class="form-control" type="file" id="licencia_archivo" name="licencia_archivo" accept=".pdf,application/pdf" aria-describedby="licencia_archivo_specs">
+  <div id="licencia_archivo_specs" class="gc-upload-specs">Tipo permitido: PDF. Peso máximo: 4 MB.</div>
 </div>`
   },
   {
@@ -851,7 +830,7 @@ window.GC_COMPONENTS = [
     group:"Campos",
     name:"Cargar logo o imagen",
     description:"Input file para imagen o logo con especificaciones y vista previa en modal Bootstrap pequeño antes de confirmar la carga.",
-    use:"Usarlo para logos empresariales, firmas o imágenes institucionales. La vista previa debe permitir revisar cómo quedará visualmente antes de cargar o cancelar.",
+    use:"Usarlo para logos empresariales, firmas o imágenes institucionales.",
     avoid:"No usarlo para documentos PDF o soportes administrativos; para eso usa Cargar archivo PDF.",
     deps:"Bootstrap CSS + Bootstrap JS Modal + grinclic-forms.css + grinclic-forms.js",
     verified: true,
@@ -945,18 +924,19 @@ window.GC_COMPONENTS = [
   },
   {
     id:"campo-validado",
+    catalogExamples: ["gc-formulario-configuraciones"],
     implementations: [
       { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "(variante propia) gc-help como texto de ayuda estático bajo el campo, sin botón ? con popover (líneas 724-784)" },
-      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "(variante propia) gc-help estático bajo nombre y código (líneas 160-168)" },
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "(variante propia) gc-help estático bajo nombre (línea 159) y bajo código (línea 167)" },
     ],
     group:"Campos",
     name:"Campo con validación",
     description:"Input con mensaje de validación y ayuda contextual en globo. La ayuda aparece al lado del botón de interrogación como popover, sin abrir espacio debajo del campo.",
     use:"Usarlo para correos, URLs o datos con regla de formato verificable.",
     avoid:"No usarlo cuando no exista validación real o regla de negocio.",
-    deps:"Bootstrap CSS + Bootstrap JS Popover + grinclic-forms.css + grinclic-forms.js",
-    verified: true,
-    accessibility:"El botón de ayuda usa data-bs-toggle=\"popover\" y aria-label. El mensaje de validación se asocia al input con aria-describedby.",
+    deps:"Bootstrap CSS + grinclic-forms.css. El botón de ayuda con globo necesita además el Popover de Bootstrap JS, que CPlus no inicializa.",
+    accessibility:"El botón de ayuda usa data-bs-toggle=\"popover\" y aria-label. El aria-describedby del mensaje de validación hay que declararlo a mano en la vista: el div de error que inyecta GcValidate se crea sin id y sin role=\"alert\", así que el mensaje dinámico no queda asociado al control.",
+    note:"<strong>Sin verificar.</strong> El botón <code>gc-help-button</code> con <code>data-bs-toggle=\"popover\"</code> no tiene consumidor en cplus: ningún JS inicializa el Popover. Lo productivo es input + <code>div.gc-help</code> estático + <code>data-gc-validate</code> / <code>data-gc-rule</code>. En <code>cplus/js/core/gc-validate.js</code>, <code>data-gc-validate</code> va en el form y le añade <code>novalidate</code>; <code>data-gc-rule</code> va por campo y solo admite <code>email</code>, <code>nit</code> y <code>password</code>; el mensaje lo inserta GcValidate como <code>div.gc-help.is-invalid[data-gc-error]</code> detrás del control. Mismas reglas en PHP: <code>cplus/runtime/validators.php</code>.",
     states:{
       enabled:`<div class="mb-3">
   <label for="sitio_web_demo" class="form-label">Sitio web <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="right" data-bs-content="Incluye https:// para evitar enlaces incompletos." aria-label="Ver ayuda del sitio web">?</button></label>
@@ -973,71 +953,39 @@ window.GC_COMPONENTS = [
   <input type="url" class="form-control" id="sitio_web_disabled" name="sitio_web" value="https://www.demo.com" disabled>
 </div>`
     },
-    snippet:`<div class="mb-3">
-  <label for="sitio_web" class="form-label">Sitio web <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="right" data-bs-content="Incluye https:// para evitar enlaces incompletos." aria-label="Ver ayuda del sitio web">?</button></label>
-  <input type="url" class="form-control" id="sitio_web" name="sitio_web" placeholder="https://www.empresa.com">
-</div>`
+    snippet:`<form data-gc-validate>
+  <div class="mb-3">
+    <label for="correo" class="form-label"><span class="gc-required">*</span>Correo <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="right" data-bs-content="Recibe notificaciones del sistema y recuperacion de clave." aria-label="Ver ayuda del correo">?</button></label>
+    <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo" maxlength="300" required data-gc-rule="email">
+    <div class="gc-help">Recibe notificaciones del sistema y recuperacion de clave</div>
+  </div>
+</form>`
   },
   {
     id:"alertas-librerias",
+    catalogExamples: ["gc-formulario-usuarios","gc-formulario-roles","campo-validado"],
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/form-manager.js", detail: "CplusAlerts.error/warning/info — motor SweetAlert2 en cplus/js/core/alerts.js" },
-      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/form-manager.js", detail: "CplusAlerts en validaciones (líneas 413-677)" },
-      { module: "Embalajes", agregar: 106, file: "cplus/js/entities/embalajes/datatable.js", detail: "CplusAlerts.error en validación de duplicado (línea 101)" },
-      { module: "Métricas", agregar: 139, file: "cplus/js/core/standard-actions.js", detail: "Confirmaciones CRUD estándar vía CplusStandardActions (líneas 121-134)" },
-      { module: "Tutoriales", agregar: 145, file: "cplus/js/entities/tutoriales/tutoriales.js", detail: "toast/showLoading delegando a CplusAlerts (líneas 45-54)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/form-manager.js", detail: "El consumidor más denso: error/warning/info con override de título y showLoading/hideLoading alrededor del guardado (líneas 46-94, 459-467, 752-809)" },
+      { module: "Embalajes", agregar: 106, file: "cplus/js/entities/embalajes/datatable.js", detail: "CplusAlerts.error con título propio al detectar código duplicado (línea 101)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/form-manager.js", detail: "CplusAlerts.warning para reglas de negocio del formulario (código duplicado en la línea 413, origen no elegido de la lista en la 666) y showLoading al guardar (líneas 675-676)" },
+      { module: "Unidades de negocio", agregar: 120, file: "cplus/js/entities/lineas_negocio/datatable.js", detail: "Helper confirmThen sobre CplusAlerts.confirm, con window.confirm nativo como respaldo (líneas 105-112, el respaldo en la 111); al lado, notifyOk envuelve el toast de éxito (líneas 96-99)" },
+      { module: "Embalajes", agregar: 106, file: "cplus/js/core/entity-actions.js", detail: "confirm danger y toast genéricos del CRUD estándar: Embalajes los hereda vía CplusStandardActions.crud (embalajes/datatable.js:20 → standard-actions.js:130-138 → entity-actions.js:36-98)" },
+      { module: "Roles", agregar: 124, file: "cplus/js/entities/roles/form-manager.js", detail: "Helpers locales sobre CplusAlerts: notify() elige error o toast según el tipo (líneas 50-54) y el guardado envuelve showLoading/hideLoading (líneas 193-198, mensaje de redirección en la 246)" },
     ],
-    group:"Advertencias",
-    name:"Alertas SweetAlert2",
-    description:"Guía de uso para alertas del sistema con SweetAlert2. Grinclic usará dos patrones: alertas modales para mensajes invasivos que requieren decisión y notificaciones toast para mensajes breves no invasivos.",
-    use:"Usar alertas modales para confirmar acciones críticas, errores que bloquean el flujo o advertencias sensibles. Usar toasts para acciones completadas, copias, cargas o mensajes rápidos que no requieren decisión.",
-    avoid:"No usar modales para mensajes menores ni toasts para decisiones críticas. No mezclar otra librería de alertas en el mismo flujo sin justificación técnica.",
-    deps:"SweetAlert2 CDN + Bootstrap CSS + grinclic-forms.css + grinclic-forms.js. Se inicializan los patrones gcAlert y gcToast desde el módulo de formularios.",
-    accessibility:"Las alertas modales deben devolver el foco al flujo y usar textos breves. Los toasts no deben contener acciones obligatorias ni información crítica que desaparezca sin lectura.",
-    note:"Librería oficial definida para alertas: SweetAlert2. Tipos permitidos: modal dialogs y toast notifications.",
-    snippet:`<!-- Dependencia -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-  const gcAlert = Swal.mixin({
-    buttonsStyling: false,
-    customClass: {
-      popup: 'gc-swal-popup',
-      title: 'gc-swal-title',
-      htmlContainer: 'gc-swal-text',
-      confirmButton: 'btn btn-success gc-swal-confirm',
-      cancelButton: 'btn btn-outline-secondary gc-swal-cancel'
-    }
-  });
-
-  const gcToast = (title, icon = 'success', tone = 'success') => Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3200,
-    timerProgressBar: true,
-    buttonsStyling: false,
-    customClass: {
-      popup: 'gc-swal-toast gc-swal-toast--' + tone,
-      title: 'gc-swal-toast-title'
-    }
-  }).fire({ icon, title });
-
-  // Modal dialog: requiere decisión o lectura obligatoria.
-  gcAlert.fire({
-    icon: 'warning',
-    title: '¿Confirmas la actualización?',
-    html: 'Revisa que los datos sensibles y configuraciones críticas estén correctos antes de continuar.',
-    showCancelButton: true,
-    confirmButtonText: 'Sí, actualizar',
-    cancelButtonText: 'Cancelar',
-    reverseButtons: true
-  });
-
-  // Toast notification: informa sin interrumpir el flujo.
-  gcToast('Cambios guardados.', 'success', 'success');
-</script>`,
-    preview:`<div class="gc-alert-guide">
+    group:"Feedback",
+    name:"Alertas CplusAlerts (motor SweetAlert2)",
+    description:"Superficie de alertas de CPlus: window.CplusAlerts, definida en cplus/js/core/alerts.js. El motor es SweetAlert2 con la skin gc-swal-*. Dos formatos: modal para lo que exige lectura o decisión, y toast para confirmaciones breves que no interrumpen el flujo.",
+    use:"Usar success, error, warning e info para lo que el usuario debe leer antes de continuar, y toast para resultados rápidos ya consumados. Usar confirm antes de cualquier acción destructiva, encadenando then sobre su promesa. Usar flashFromSession para los mensajes flash_* que llegan del servidor.",
+    avoid:"No llamar Swal.fire ni cargar SweetAlert2 por CDN en una vista CPlus: se pierden la skin, el mapeo de tonos y el z-index sobre el overlay de carga. No usar toast para decisiones ni para errores que bloquean. No ignorar el booleano que devuelve confirm.",
+    deps:"cplus/js/core/alerts.js, ya servido por el bloque core de cplus/js/sources.php. SweetAlert2 11 viaja en cplus-vendor.bundle.min.js y la skin gc-swal-* se compila desde _gc-forms.scss. showLoading y hideLoading delegan en CplusLoading.",
+    verified: true,
+    accessibility:"El overlay de carga se marca con role=alert y aria-busy=true. Los toasts se cierran solos a los 3200 ms: no deben llevar información crítica ni la única vía de acción. confirm resuelve false ante cancelar, clic fuera o ESC, así que el teclado nunca deja el flujo a medias. Tras cerrar, el foco debe volver al control que la disparó.",
+    note:"Cadena de respaldo en <code>cplus/js/core/alerts.js</code>: si <code>window.Swal</code> falta, prueba <code>window.swal</code> y cae a <code>alert()</code> y <code>confirm()</code> nativos; en CPlus el bundle define <code>window.swal</code> como alias de SweetAlert2, así que el escalón intermedio no existe. <strong>Divergencia:</strong> <code>residuos_inventariables/form-manager.js</code> llama al global <code>swal(...)</code> con sintaxis v1 sin pasar por CplusAlerts.",
+    variants:[
+      {
+        name:"Guía: modal o toast",
+        description:"Criterio de selección entre los dos formatos, con un ejemplo de cada caso.",
+        preview:`<div class="gc-alert-guide">
   <section class="gc-alert-guide-card">
     <h3>Alertas modales / modal dialogs</h3>
     <p>Interrumpen el flujo y se usan cuando el usuario debe confirmar, decidir o leer un bloqueo antes de continuar.</p>
@@ -1103,32 +1051,215 @@ window.GC_COMPONENTS = [
 </div>
 <div class="gc-alert-rules mt-3">
   <strong>Regla para el equipo:</strong> modal dialog para decisiones críticas; toast notification para resultados rápidos. Ambos deben usar clases gc-swal-* y los tonos definidos por la identidad Grinclic.
-</div>`
+</div>`,
+        snippet:`// Superficie completa. La vista CPlus no carga nada por CDN ni define mixins:
+// SweetAlert2 ya viene en cplus/js/dist/cplus-vendor.bundle.min.js y la skin
+// gc-swal-* se compila desde cplus/scss/_gc-forms.scss.
+
+CplusAlerts.success('Proveedor guardado correctamente.');
+CplusAlerts.error('El código interno ya existe. Ingrese uno diferente.');
+CplusAlerts.warning('Revisa la información antes de continuar.');
+CplusAlerts.info('No hay registros para exportar con los filtros seleccionados.');
+
+CplusAlerts.toast('Cambios guardados.');
+CplusAlerts.toast('Filtro aplicado.', 'warning');
+
+CplusAlerts.confirm({
+  title: '¿Confirmar?',
+  text: '¿Eliminar este registro? Esta acción no se puede deshacer.',
+  confirmText: 'Eliminar',
+  cancelText: 'Cancelar',
+  danger: true
+}).then(function (confirmado) {
+  if (!confirmado) return;
+  // ejecutar la acción
+});
+
+CplusAlerts.showLoading('Guardando…');
+CplusAlerts.hideLoading();`
+      },
+      {
+        name:"Éxito",
+        description:"Modal de cierre para una acción importante que terminó bien. Título por defecto ¡Éxito! y un único botón verde Entendido. Para un guardado rutinario usa mejor el toast.",
+        preview:`<section class="gc-alert-guide-card">
+  <h3>Modal de éxito</h3>
+  <p>Botón de confirmación con btn btn-success gc-swal-confirm, el mismo par de clases que arma CplusAlerts.</p>
+  <div class="gc-swal-popup p-4 text-center">
+    <div class="gc-swal-title mb-2">¡Éxito!</div>
+    <div class="gc-swal-text mb-3">Proveedor guardado correctamente.</div>
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-success gc-swal-confirm" type="button">Entendido</button>
+    </div>
+  </div>
+  <div class="gc-alert-actions">
+    <button class="btn btn-success" type="button" data-gc-swal-demo="modal-success">Ver la demo del visor</button>
+  </div>
+</section>`,
+        snippet:`// Título por defecto: '¡Éxito!'. Botón: 'Entendido'. No devuelve valor.
+CplusAlerts.success('Proveedor guardado correctamente.');
+
+// Segundo argumento: override de opciones del motor, útil para el título.
+CplusAlerts.success('Registro creado.', { title: 'Operación completada' });`
+      },
+      {
+        name:"Error",
+        description:"Modal de bloqueo: el usuario debe corregir algo antes de seguir. Es el único nivel cuyo botón sale naranja, con gc-swal-confirm--warning en lugar de btn-success.",
+        preview:`<section class="gc-alert-guide-card">
+  <h3>Modal de error</h3>
+  <p>Para el nivel error, CplusAlerts cambia el botón a btn gc-swal-confirm--warning: naranja y sin btn-success.</p>
+  <div class="gc-swal-popup p-4 text-center">
+    <div class="gc-swal-title mb-2">¡Código duplicado!</div>
+    <div class="gc-swal-text mb-3">El código interno ya existe. Ingrese uno diferente.</div>
+    <div class="d-flex justify-content-center">
+      <button class="btn gc-swal-confirm--warning" type="button">Entendido</button>
+    </div>
+  </div>
+  <div class="gc-alert-actions">
+    <button class="btn btn-outline-secondary" type="button" data-gc-swal-demo="modal-error">Ver la demo del visor</button>
+  </div>
+</section>`,
+        snippet:`// Título por defecto: '¡Error!'. El botón usa gc-swal-confirm--warning.
+CplusAlerts.error('No fue posible cargar las ciudades del país seleccionado.');
+
+// Con título propio, como en la validación de duplicados de Embalajes.
+CplusAlerts.error('El código interno ya existe. Ingrese uno diferente.', { title: '¡Código duplicado!' });`
+      },
+      {
+        name:"Advertencia",
+        description:"Modal informativo sobre una regla de negocio que impide o condiciona la acción, sin ser un fallo técnico. Un solo botón; si necesitas decisión, usa la variante Confirmación.",
+        preview:`<section class="gc-alert-guide-card">
+  <h3>Modal de advertencia</h3>
+  <p>Mismas clases que el modal de éxito: la advertencia no cambia el color del botón, solo el ícono y el título.</p>
+  <div class="gc-swal-popup p-4 text-center">
+    <div class="gc-swal-title mb-2">Atención</div>
+    <div class="gc-swal-text mb-3">No se puede modificar el rol de este usuario porque tiene trazabilidad registrada en el sistema.</div>
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-success gc-swal-confirm" type="button">Entendido</button>
+    </div>
+  </div>
+</section>`,
+        snippet:`// Título por defecto: 'Atención'. Nivel info: título por defecto 'Aviso'.
+CplusAlerts.warning('No se puede modificar el rol de este usuario porque tiene trazabilidad registrada en el sistema.');
+
+CplusAlerts.warning('El código ya está relacionado a otra sucursal de este tercero.', { title: 'Advertencia' });
+
+CplusAlerts.info('La firma del usuario será usada para la generación de actas.');`
+      },
+      {
+        name:"Toast",
+        description:"Aviso breve arriba a la derecha que se cierra solo a los 3200 ms con barra de tiempo. Para resultados ya consumados que el usuario no necesita confirmar.",
+        preview:`<section class="gc-alert-guide-card">
+  <h3>Tonos de toast</h3>
+  <p>Tres tonos reales: success, warning y danger. El tipo info se pinta con el tono success y conserva su propio ícono.</p>
+  <div class="d-flex flex-column gap-2">
+    <div class="gc-swal-toast gc-swal-toast--success p-3">
+      <div class="gc-swal-toast-title">Cambios guardados.</div>
+    </div>
+    <div class="gc-swal-toast gc-swal-toast--warning p-3">
+      <div class="gc-swal-toast-title">Revisa la información antes de continuar.</div>
+    </div>
+    <div class="gc-swal-toast gc-swal-toast--danger p-3">
+      <div class="gc-swal-toast-title">No fue posible exportar el informe.</div>
+    </div>
+  </div>
+  <div class="gc-alert-actions">
+    <button class="btn btn-success" type="button" data-gc-swal-demo="toast-saved">Ver toast de éxito</button>
+    <button class="btn btn-outline-secondary" type="button" data-gc-swal-demo="toast-filtered">Ver toast de advertencia</button>
+  </div>
+</section>`,
+        snippet:`// toast(texto[, tipo]). Sin tipo, 'success'.
+CplusAlerts.toast('Informe generado.');
+CplusAlerts.toast('La planilla fue eliminada.', 'success');
+
+// Mapeo de tipo a tono de la skin:
+//   'error' y 'danger'  -> gc-swal-toast--danger
+//   'warning'           -> gc-swal-toast--warning
+//   'success', 'info' y cualquier otro -> gc-swal-toast--success
+// 'info' conserva su ícono propio aunque el fondo sea el verde de success.
+CplusAlerts.toast('Revisa la información antes de continuar.', 'warning');
+CplusAlerts.toast('No fue posible exportar el informe.', 'error');`
+      },
+      {
+        name:"Confirmación",
+        description:"Modal de decisión con dos botones. Devuelve una promesa de booleano: cancelar, clic fuera o ESC resuelven false. Con danger true el botón de confirmar sale naranja y los textos por defecto pasan a los de eliminación.",
+        preview:`<section class="gc-alert-guide-card">
+  <h3>Confirmación destructiva</h3>
+  <p>Con reverseButtons el orden visual es Cancelar y luego confirmar. Con danger true el confirmar usa gc-swal-confirm--warning.</p>
+  <div class="gc-swal-popup p-4 text-center">
+    <div class="gc-swal-title mb-2">¿Eliminar este registro?</div>
+    <div class="gc-swal-text mb-3">Esta acción eliminará la información asociada y no podrá visualizarse nuevamente.</div>
+    <div class="d-flex justify-content-center gap-2">
+      <button class="btn btn-outline-secondary gc-swal-cancel" type="button">Cancelar</button>
+      <button class="btn gc-swal-confirm--warning" type="button">Eliminar</button>
+    </div>
+  </div>
+  <div class="gc-alert-actions">
+    <button class="btn btn-outline-secondary" type="button" data-gc-swal-demo="modal-delete">Ver la demo del visor</button>
+    <button class="btn btn-success" type="button" data-gc-swal-demo="modal-update">Ver la demo no destructiva del visor</button>
+  </div>
+</section>`,
+        snippet:`// confirm(opciones) devuelve Promise de booleano. Siempre encadenar then.
+CplusAlerts.confirm({
+  title: '¿Está seguro de que desea eliminar este registro?',
+  text: 'Esta acción eliminará la información asociada y no podrá visualizarse nuevamente.',
+  confirmText: 'Eliminar',
+  cancelText: 'Cancelar',
+  danger: true
+}).then(function (ok) {
+  if (ok) doDelete();
+});
+
+// Sin danger: botón verde y textos por defecto '¿Confirmas la actualización?'
+// y 'Sí, actualizar'. Con danger: '¿Eliminar este registro?' y 'Sí, eliminar'.
+CplusAlerts.confirm({ text: 'Se actualizarán los datos del tercero.' })
+  .then(function (ok) { if (ok) guardar(); });`
+      }
+    ],
+    snippet:`// Superficie pública de window.CplusAlerts (cplus/js/core/alerts.js).
+// text es string; opts es un override de opciones del motor.
+
+CplusAlerts.success(text[, opts]);   // modal, título por defecto '¡Éxito!'
+CplusAlerts.error(text[, opts]);     // modal, título '¡Error!', botón naranja
+CplusAlerts.warning(text[, opts]);   // modal, título 'Atención'
+CplusAlerts.info(text[, opts]);      // modal, título 'Aviso'
+CplusAlerts.toast(text[, type]);     // toast 3200 ms; type: success|warning|error|danger|info
+CplusAlerts.confirm(opts);           // Promise de booleano; opts: title, text, confirmText, cancelText, danger
+CplusAlerts.flashFromSession(p);     // p: objeto con claves error, warning, success, info
+CplusAlerts.showLoading(mensaje);    // overlay de carga a pantalla completa
+CplusAlerts.hideLoading();           // cierra el overlay
+
+// Los cuatro niveles y toast no devuelven valor. Solo confirm devuelve promesa.
+// flashFromSession dispara únicamente el nivel más severo presente:
+// error, luego warning, luego success, luego info.`
   },
   {
     id:"encabezado-formulario",
     catalogExamples: ["gc-formulario-usuarios","gc-formulario-clientes"],
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/views/partials/form-head.php", detail: "Partial compartido gc-form-head (logo, título, gc-history) — incluido desde mostrarUsuarios.php:274" },
-      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Include del partial en la línea 144" },
-      { module: "Métricas", agregar: 139, file: "cplus/views/mostrarMetrica.php", detail: "Include del partial en la línea 137" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/partials/form-head.php", detail: "Parcial compartido gc-form-head: gc-form-title (línea 36) y gc-meta-grid con las cuatro celdas de auditoría (líneas 43-50); Usuarios lo incluye en la línea 273" },
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Include del parcial en la línea 143" },
+      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Include del parcial en la línea 96, dentro de form#form-role-permissions" },
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Include del parcial en la línea 360" },
     ],
     group:"Organización",
     name:"Encabezado formulario",
-    description:"Encabezado estandar con titulo, contexto e historial.",
-    use:"Usarlo como primer bloque de formularios administrativos.",
-    avoid:"No duplicarlo dentro de secciones internas.",
+    description:"Encabezado estándar de formularios: título y descripción opcional a la izquierda, retícula de auditoría a la derecha en dos columnas de dos filas (Fecha de creación, Creado por, Último cambio, Elaborado por).",
+    use:"Usarlo como primer bloque de formularios administrativos. En CPlus no se copia el marcado: se incluye el parcial compartido cplus/views/partials/form-head.php, que mapea fecha, elaboro, fecha_actualizacion y elaboro_actualizacion de la fila en edición.",
+    avoid:"No duplicarlo en secciones internas ni repetir el título de la página, y no usar h1: ese lo aporta el encabezado del módulo. No reintroducir el logo del tenant ni el bloque gc-history con gc-last-change naranja. Las acciones de pantalla van en .module-actions y el cierre del formulario en gc-review.",
     deps:"Bootstrap CSS + grinclic-forms.css",
+    verified: true,
+    accessibility:"Usa h2 porque el h1 lo aporta el module-header. La retícula se agrupa con role=\"group\" y aria-label \"Información de auditoría\". Cada celda es etiqueta más valor en spans de texto plano: no es un control, no le des foco ni lo conviertas en botón. El valor recorta con ellipsis en una línea, por eso el parcial repite el texto completo en title.",
+    note:"La retícula se autorregula: el parcial pinta solo las celdas con valor y en modo crear no emite <code>gc-meta-grid</code>, de modo que el título ocupa el ancho completo. El título se mantiene en 1.5rem porque va bajo el h1 de 1.65rem del module-header.",
     snippet:`<header class="gc-form-head">
-  <div class="gc-form-logo gc-form-logo--demo"><img src="assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
   <div class="gc-form-title">
-    <h1>Actualizar clientes</h1>
-    <p>Datos generales, ubicacion, contactos e integracion.</p>
+    <h2>Actualizar clientes</h2>
+    <p>Datos generales, ubicación, contactos e integración.</p>
   </div>
-  <div class="gc-history">
-    <span><strong>Creado por:</strong> Usuario responsable</span>
-    <span><strong>Realizado por:</strong> Usuario responsable</span>
-    <span class="gc-last-change"><strong>Ultimo cambio:</strong> 2026-06-09 15:00:35</span>
+  <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
+    <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
+    <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
+    <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
+    <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
   </div>
 </header>`
   },
@@ -1136,16 +1267,19 @@ window.GC_COMPONENTS = [
     id:"opciones-acordeon",
     catalogExamples: ["gc-formulario-configuraciones","gc-formulario-usuarios"],
     implementations: [
-      { module: "Unidades de negocio / Líneas de servicio", agregar: 120, file: "cplus/views/mostrarLineasNegocio.php", detail: "gc-business-accordion con columnas en el encabezado (líneas 227-250)" },
-      { module: "Roles", agregar: 124, file: "cplus/js/lib/RbacPermissionMatrix.js", detail: "Acordeón gc-business-accordion generado por JS para la matriz RBAC (líneas 414-477)" },
+      { module: "Unidades de negocio / Líneas de servicio", agregar: 120, file: "cplus/views/mostrarLineasNegocio.php", detail: "Contenedor accordion gc-business-accordion que el JS rellena (líneas 314-328)" },
+      { module: "Unidades de negocio / Líneas de servicio", agregar: 120, file: "cplus/js/entities/lineas_negocio/datatable.js", detail: "buildUnitArticle() arma article.gc-business-unit con cabecera en columnas y botón Crear L.Negocio (líneas 171-200)" },
+      { module: "Roles", agregar: 124, file: "cplus/js/lib/RbacPermissionMatrix.js", detail: "Acordeón gc-business-accordion generado por JS para la matriz RBAC (líneas 414-437)" },
+      { module: "Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "Acordeón Bootstrap simple, un accordion-item por módulo dentro de div.accordion#accDatos (líneas 541-551). Salvedad: 150 es el código que la propia producción declara para esta vista (cplus/config/entities.php:1042 y el hidden de mostrarDatos.php:302, más el enlace de :1108), pero NO está registrado en includes/funciones.php, cuyo mapa cplus termina en 149 (línea 194); el enlace Abrir vista no resuelve hoy" },
     ],
     group:"Organización",
     name:"Opciones por acordeon",
-    description:"Guía de composición para acordeones Bootstrap en Grinclic. Incluye una versión simple sin columnas extra y una versión con columnas en el encabezado. El ejemplo completo con tabla se abre en una página independiente para evitar cortes de ancho dentro del visor.",
+    description:"Acordeón Bootstrap con tres composiciones de encabezado: simple, con columnas de datos y con botón de crear registros a la derecha.",
     use:"Usarlo cuando se necesita agrupar información en bloques desplegables. Para acordeones operativos con tablas internas, usa la variante Con columnas y su Ejemplo completo en pantalla amplia.",
-    avoid:"No insertar tablas anchas completas dentro del visor rápido del catálogo; en esos casos debe usarse una página de ejemplo independiente.",
-    deps:"Bootstrap CSS + Bootstrap JS Accordion/Collapse + Bootstrap Icons + grinclic-forms.css + grinclic-forms.js. La lógica de flecha/estado se sincroniza desde bindBusinessUnitGuides().",
-    note:"La versión completa está en <a href='ejemplos/acordeon-unidades-negocio.html' target='_blank' rel='noopener'>ejemplos/acordeon-unidades-negocio.html</a>. Allí se ve el acordeón con columnas, acciones, buscador, exportación, tabla y paginación con el espacio requerido. La flecha del acordeón cambia automáticamente entre chevron-right y chevron-down, actualiza aria-expanded y aplica el fondo verde tenue solo al ítem abierto.",
+    avoid:"No usarlo para campos obligatorios: un panel cerrado los saca del recorrido de foco y la validación no puede enfocarlos sin abrirlo antes.",
+    deps:"Bootstrap CSS, Bootstrap JS (Accordion/Collapse), Bootstrap Icons y grinclic-forms.css. En producción la flecha y el estado los aporta cplus/js/core/gc-accordion.js, API window.GcAccordion = { init(root) }, con opt-in por data-gc-accordion y data-gc-business-guide; bindBusinessUnitGuides() es el equivalente solo del visor.",
+    accessibility:"Cada cabecera es un encabezado (h2 en producción) con un button que declara aria-expanded y aria-controls hacia su panel; en Con columnas ese button lleva title, que le da nombre accesible. La matriz RBAC de Roles usa un span con role=\"button\" y tabindex=\"0\": maneja Enter y espacio, pero solo contiene el chevron, sin texto ni aria-label, así que el lector lo anuncia como botón sin nombre; ponle aria-label al reutilizarlo.",
+    note:"Versión completa en <a href='ejemplos/acordeon-unidades-negocio.html' target='_blank' rel='noopener'>ejemplos/acordeon-unidades-negocio.html</a>, con buscador, exportación, tabla interna y paginación. Sin verificar: solo la variante simple tiene equivalente literal en producción; la de columnas no trae marcado en su snippet y la del botón de acción es una propuesta de diseño.",
     variants:[
       {
         name:"Acordeón simple",
@@ -1197,7 +1331,7 @@ window.GC_COMPONENTS = [
       },
       {
         name:"Con columnas (Unidades de negocio)",
-        description:"El encabezado muestra nombre, código y descripción alineados a la izquierda; las acciones van al final de la fila. El detalle con tabla interna se consulta en el ejemplo independiente.",
+        description:"El encabezado muestra nombre, código y descripción a la izquierda y las acciones al final de la fila.",
         example:"ejemplos/acordeon-unidades-negocio.html",
         preview:`<section class="gc-accordion-options-preview">
   <article class="gc-accordion-option-card">
@@ -1212,6 +1346,70 @@ window.GC_COMPONENTS = [
 <a class="btn btn-success" href="ejemplos/acordeon-unidades-negocio.html" target="_blank" rel="noopener">
   Ejemplo completo
 </a>`
+      },
+      {
+        name:"Con botón de acción",
+        description:"Título más el botón de crear (gc-create-business-btn) reducido a +, hermano del toggle para que crear no abra el acordeón. Propuesta: en producción solo existe con columnas, donde el botón es erp-btn erp-btn-secondary con texto.",
+        preview:`<section class="gc-accordion-options-preview">
+  <article class="gc-accordion-option-card">
+    <div class="accordion gc-simple-accordion-demo gc-accordion-with-create" id="accordionAccionCatalogo">
+      <div class="accordion-item">
+        <h4 class="accordion-header" id="accionHeadingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accionCollapseOne" aria-expanded="true" aria-controls="accionCollapseOne">
+            Inventariable
+          </button>
+          <button type="button" class="gc-create-business-btn gc-accordion-create" title="Crear registro" aria-label="Crear registro">
+            <i class="bi bi-plus-lg"></i>
+          </button>
+        </h4>
+        <div id="accionCollapseOne" class="accordion-collapse collapse show" aria-labelledby="accionHeadingOne" data-bs-parent="#accordionAccionCatalogo">
+          <div class="accordion-body">
+            Aquí van los registros hijos de esta unidad (por ejemplo, sus líneas de servicio). El botón del encabezado crea uno nuevo sin abrir ni cerrar el acordeón.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h4 class="accordion-header" id="accionHeadingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accionCollapseTwo" aria-expanded="false" aria-controls="accionCollapseTwo">
+            Servicios especiales
+          </button>
+          <button type="button" class="gc-create-business-btn gc-accordion-create" title="Crear registro" aria-label="Crear registro">
+            <i class="bi bi-plus-lg"></i>
+          </button>
+        </h4>
+        <div id="accionCollapseTwo" class="accordion-collapse collapse" aria-labelledby="accionHeadingTwo" data-bs-parent="#accordionAccionCatalogo">
+          <div class="accordion-body">
+            Segundo bloque para ver el estado colapsado con su propio botón de crear.
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>`,
+        snippet:`<!-- Botón estándar de crear (gc-create-business-btn) reducido a solo el símbolo +, superpuesto dentro del encabezado (hermano del toggle: crear NO dispara el colapso). z-index:4 obligatorio: el hover/focus del accordion-button de Bootstrap sube a z-index 2/3 y taparía el botón -->
+<style>
+  .gc-accordion-with-create .accordion-header{position:relative}
+  .gc-accordion-with-create .accordion-button{padding-right:64px}
+  .gc-accordion-with-create .accordion-button::after{order:-1;margin-left:0;margin-right:12px}
+  .gc-accordion-create{position:absolute;right:12px;top:50%;transform:translateY(-50%);z-index:4;display:inline-flex;align-items:center;justify-content:center;width:36px!important;height:36px!important;min-width:0!important;min-height:0!important;padding:0!important;border:1px solid #8bc991;border-radius:10px;font-size:1rem;line-height:1}
+</style>
+<div class="accordion gc-accordion-with-create" id="accordionConAccion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingAccion1">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccion1" aria-expanded="true" aria-controls="collapseAccion1">
+        Inventariable
+      </button>
+      <button type="button" class="gc-create-business-btn gc-accordion-create" id="crear_registro_accion1" title="Crear registro" aria-label="Crear registro">
+        <i class="bi bi-plus-lg"></i>
+      </button>
+    </h2>
+    <div id="collapseAccion1" class="accordion-collapse collapse show" aria-labelledby="headingAccion1" data-bs-parent="#accordionConAccion">
+      <div class="accordion-body">
+        Contenido del acordeón (los registros hijos de este grupo).
+      </div>
+    </div>
+  </div>
+</div>`
       }
     ]
   },
@@ -1219,41 +1417,47 @@ window.GC_COMPONENTS = [
     id:"pestanas-internas",
     catalogExamples: ["gc-formulario-usuarios","gc-formulario-clientes"],
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "nav-tabs con 3 pestañas: Datos / Credenciales / Información adicional (líneas 294-305)" },
-      { module: "Roles", agregar: 124, file: "cplus/js/lib/RbacPermissionMatrix.js", detail: "Tabs de la matriz RBAC generados por JS (mostrarRoles.php:173)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "nav-tabs con 3 pestañas: Datos del usuario / Credenciales / Información adicional (líneas 293-305)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/form-manager.js", detail: "toggleTabCredenciales(visible) oculta o muestra el BOTÓN de la pestaña Credenciales, localizándolo por [data-bs-toggle=\"tab\"][data-bs-target=\"#usuario-credenciales\"] y alternando d-none sobre su .nav-item; si estaba activa, activa la primera pestaña (líneas 475-482)" },
     ],
     group:"Organización",
-    name:"Pestanas internas",
-    description:"Tabs Bootstrap para navegar opciones dentro de una misma seccion.",
-    use:"Usarlo cuando varias subsecciones comparten el mismo contexto.",
-    avoid:"No usarlo para informacion que el usuario debe comparar toda al mismo tiempo.",
-    deps:"Bootstrap CSS + Bootstrap JS. Componente usado: Tabs de Bootstrap + grinclic-forms.css",
-    note:"Librería usada: Bootstrap Tabs/Navs. No requiere librería adicional.",
+    name:"Pestañas internas",
+    description:"Tabs de Bootstrap para navegar subsecciones dentro de un mismo formulario o pantalla.",
+    use:"Usarlo cuando varias subsecciones comparten el mismo contexto y el usuario las revisa de una en una. El primer botón lleva active y su panel show active.",
+    avoid:"No usarlo para información que el usuario debe comparar toda al mismo tiempo, ni para esconder campos obligatorios sin avisar del error en la pestaña que lo contiene.",
+    deps:"Bootstrap CSS + Bootstrap JS (Tabs) + grinclic-forms.css",
+    verified: true,
+    accessibility:"La lista lleva role=\"tablist\", cada button role=\"tab\" con aria-controls y aria-selected, y cada panel role=\"tabpanel\" con tabindex=\"0\" y aria-labelledby apuntando a su pestaña. Bootstrap solo actualiza aria-selected y el tabindex de las pestañas si el botón declara role=\"tab\": sin ese atributo las pestañas se ven bien pero no se anuncian. Si validas campos que viven en otra pestaña, revela la pestaña antes de enfocar el campo, porque focus() sobre un panel inactivo falla en silencio.",
+    note:"En CPlus la validación busca la pestaña dueña de un campo inválido por [data-bs-toggle=\"tab\"][data-bs-target=\"#id\"], así que los paneles deben conservar su id.",
     snippet:`<ul class="nav nav-tabs mb-3" id="config_tabs" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="basicos-tab" data-bs-toggle="tab" data-bs-target="#basicos" type="button" role="tab">Basicos</button>
+    <button class="nav-link active" id="basicos-tab" data-bs-toggle="tab" data-bs-target="#basicos" type="button" role="tab" aria-controls="basicos" aria-selected="true">Básicos</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="operacion-tab" data-bs-toggle="tab" data-bs-target="#operacion" type="button" role="tab">Operacion</button>
+    <button class="nav-link" id="operacion-tab" data-bs-toggle="tab" data-bs-target="#operacion" type="button" role="tab" aria-controls="operacion" aria-selected="false">Operación</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="alertas-tab" data-bs-toggle="tab" data-bs-target="#alertas" type="button" role="tab">Alertas</button>
+    <button class="nav-link" id="alertas-tab" data-bs-toggle="tab" data-bs-target="#alertas" type="button" role="tab" aria-controls="alertas" aria-selected="false">Alertas</button>
   </li>
 </ul>
 <div class="tab-content" id="config_tabs_content">
-  <div class="tab-pane fade show active" id="basicos" role="tabpanel" tabindex="0">
+  <div class="tab-pane fade show active" id="basicos" role="tabpanel" tabindex="0" aria-labelledby="basicos-tab">
     <div class="form-check"><input class="form-check-input" type="checkbox" id="cliente_activo" name="cliente_activo" value="1" checked><label class="form-check-label" for="cliente_activo">Cliente activo</label></div>
   </div>
-  <div class="tab-pane fade" id="operacion" role="tabpanel" tabindex="0">
+  <div class="tab-pane fade" id="operacion" role="tabpanel" tabindex="0" aria-labelledby="operacion-tab">
     <div class="form-check"><input class="form-check-input" type="checkbox" id="requiere_oc" name="requiere_oc" value="1"><label class="form-check-label" for="requiere_oc">Requiere orden de compra</label></div>
   </div>
-  <div class="tab-pane fade" id="alertas" role="tabpanel" tabindex="0">
+  <div class="tab-pane fade" id="alertas" role="tabpanel" tabindex="0" aria-labelledby="alertas-tab">
     <div class="form-check"><input class="form-check-input" type="checkbox" id="notificar_cambio" name="notificar_cambio" value="1"><label class="form-check-label" for="notificar_cambio">Notificar cambio de estado</label></div>
   </div>
 </div>`
   },
   {
     id:"gc-formulario-clientes",
+    implementations: [
+      { module: "Mis clientes (formulario legacy, sin migrar a CPlus)", agregar: 130, file: "formularios/administradorClientes.php", detail: "Mismas 8 secciones y en el mismo orden que el organismo: Datos generales, Ubicación, Contactos, Datos legales, Información comercial, Información adicional, Configuración e Integración EMLAZE (líneas 685, 746, 817, 898, 921, 951, 1068, 1133). Usa h3 y span.text-danger, no gc-section-title ni gc-required" },
+      { module: "Mis clientes (listado CPlus)", agregar: 130, file: "cplus/views/mostrarClientes.php", detail: "Lo único migrado a CPlus: formulario de filtros form#search dentro de section.card.filters-card (líneas 54-114). No hay formulario de alta ni edición" },
+    ],
     group:"Formularios",
     name:"Mis clientes / Actualizar cliente",
     description:"Organismo administrativo para actualizar información general, ubicación, contactos, datos legales, configuración comercial e integración del cliente.",
@@ -1261,19 +1465,21 @@ window.GC_COMPONENTS = [
     avoid:"No pegarlo sin ajustar action, names, valores precargados, permisos, validaciones de backend y reglas de sincronización con EMLAZE.",
     deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
     accessibility:"El formulario usa labels asociados, controles nativos, pestañas Bootstrap con roles, valores SI/NO explícitos y confirmación final antes del submit.",
+    note:"Propuesta de diseño, sin marcar como verificada: hoy no existe formulario de clientes en CPlus. La vista <code>cplus/views/mostrarClientes.php</code> solo tiene filtros y listado; el alta y la edición siguen en el formulario legacy <code>formularios/administradorClientes.php</code> (<code>cplus/MIGRATION_LEDGER.md:59</code>). Además el snippet incluye dos campos de prueba (PRUEBA AUTOLLENADO) que no existen en producción.",
+    example:"ejemplos/formulario-clientes.html",
     snippet:`<!-- Organismo: gc-formulario-clientes -->
     <!-- Uso conceptual: <gc-formulario-clientes></gc-formulario-clientes> -->
     <form class="gc-form-shell" method="post" action="/clientes/actualizar">
       <header class="gc-form-head">
-        <div class="gc-form-logo gc-form-logo--demo"><img src="assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
         <div class="gc-form-title">
-          <h1>Mis clientes</h1>
+          <h2>Mis clientes</h2>
           <p>Actualización de información general, ubicación, contactos, configuración comercial e integración.</p>
         </div>
-        <div class="gc-history">
-          <span><strong>Creado por:</strong> Usuario responsable</span>
-          <span><strong>Realizado por:</strong> Usuario responsable</span>
-          <span class="gc-last-change"><strong>Último cambio:</strong> 2026-06-09 15:00:35</span>
+        <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
+          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
+          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
+          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
+          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
         </div>
       </header>
     
@@ -1514,11 +1720,11 @@ window.GC_COMPONENTS = [
                             <div class="row g-3">
                               <div class="col-md-6">
                                 <label for="cliente_horario_entrada" class="form-label"><span class="gc-required">*</span>Horario entrada</label>
-                                <input type="text" class="form-control gc-materialize-time timepicker" data-gc-timepicker="materialize" readonly id="cliente_horario_entrada" name="horario_entrada" value="08:00" required>
+                                <input type="text" class="form-control" data-gc-timepicker="materialize" maxlength="5" id="cliente_horario_entrada" name="horario_entrada" value="08:00" required>
                               </div>
                               <div class="col-md-6">
                                 <label for="cliente_horario_salida" class="form-label"><span class="gc-required">*</span>Horario salida</label>
-                                <input type="text" class="form-control gc-materialize-time timepicker" data-gc-timepicker="materialize" readonly id="cliente_horario_salida" name="horario_salida" value="17:00" required>
+                                <input type="text" class="form-control" data-gc-timepicker="materialize" maxlength="5" id="cliente_horario_salida" name="horario_salida" value="17:00" required>
                               </div>
                             </div>
                           </section>
@@ -1529,11 +1735,11 @@ window.GC_COMPONENTS = [
                             <div class="row g-3">
                               <div class="col-md-6">
                                 <label for="cliente_horario_entrada_adicional" class="form-label">Horario entrada adicional</label>
-                                <input type="text" class="form-control gc-materialize-time timepicker" data-gc-timepicker="materialize" readonly id="cliente_horario_entrada_adicional" name="horario_entrada_adicional" value="18:00">
+                                <input type="text" class="form-control" data-gc-timepicker="materialize" maxlength="5" id="cliente_horario_entrada_adicional" name="horario_entrada_adicional" value="18:00">
                               </div>
                               <div class="col-md-6">
                                 <label for="cliente_horario_salida_adicional" class="form-label">Horario salida adicional</label>
-                                <input type="text" class="form-control gc-materialize-time timepicker" data-gc-timepicker="materialize" readonly id="cliente_horario_salida_adicional" name="horario_salida_adicional" value="20:00">
+                                <input type="text" class="form-control" data-gc-timepicker="materialize" maxlength="5" id="cliente_horario_salida_adicional" name="horario_salida_adicional" value="20:00">
                               </div>
                             </div>
                           </section>
@@ -1627,7 +1833,7 @@ window.GC_COMPONENTS = [
           </div>
           <div class="gc-review-actions">
             <button class="btn btn-outline-secondary" type="button">Cancelar</button>
-            <button class="btn btn-success" type="submit" id="cliente_btn_actualizar" disabled>Actualizar cliente</button>
+            <button class="btn btn-success" type="submit" id="cliente_btn_actualizar" disabled>Guardar</button>
           </div>
         </div>
       </footer>
@@ -1635,6 +1841,11 @@ window.GC_COMPONENTS = [
   },
   {
     id:"gc-formulario-usuarios",
+    implementations: [
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Shell del formulario: include de partials/form-head.php y las 3 pestañas con los mismos ids del organismo (líneas 273, 293-303)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Panes Datos del usuario y Credenciales de acceso, cada uno con section.border.rounded-3.p-3.bg-white y h2.gc-section-title (líneas 305-307 y 693-695)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Cierre gc-review-footer con checkbox data-gc-review-check que gatea el botón guardar (líneas 1059-1077)" },
+    ],
     group:"Formularios",
     name:"Mis usuarios / Actualizar usuario",
     description:"Organismo administrativo para administrar datos del usuario, acceso al sistema, credenciales, adjuntos y comunicación de credenciales.",
@@ -1642,19 +1853,21 @@ window.GC_COMPONENTS = [
     avoid:"No pegarlo sin ajustar action, permisos, roles disponibles, cliente asociado, validaciones de contraseña, almacenamiento de adjuntos y reglas reales de notificación por correo.",
     deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
     accessibility:"El formulario usa labels asociados, controles nativos, pestañas y acordeones Bootstrap, radiogroups SI/NO con valores explícitos, campos de clave protegidos y confirmación final antes del submit.",
+    note:"<strong>Sin verificar:</strong> es propuesta de diseño y difiere de la vista productiva <code>cplus/views/mostrarUsuarios.php</code> en cuatro puntos: no usa <code>gc-form-shell</code> ni <code>gc-form-section</code> (las secciones son <code>section.border.rounded-3.p-3.bg-white</code>), la pestaña Información adicional no lleva acordeón Bootstrap y el encabezado no se escribe en línea sino que incluye el parcial <code>cplus/views/partials/form-head.php</code>, que titula con h2.",
+    example:"ejemplos/formulario-usuarios.html",
     snippet:`<!-- Organismo: gc-formulario-usuarios -->
 <!-- Uso conceptual: <gc-formulario-usuarios></gc-formulario-usuarios> -->
 <form class="gc-form-shell" method="post" action="/usuarios/actualizar" enctype="multipart/form-data">
   <header class="gc-form-head">
-    <div class="gc-form-logo gc-form-logo--demo"><img src="assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
     <div class="gc-form-title">
-      <h1>Mis usuarios</h1>
+      <h2>Mis usuarios</h2>
       <p>Datos del usuario, acceso al sistema, credenciales, adjuntos y comunicación.</p>
     </div>
-    <div class="gc-history">
-      <span><strong>Creado por:</strong> Usuario responsable</span>
-      <span><strong>Realizado por:</strong> Usuario responsable</span>
-      <span class="gc-last-change"><strong>Último cambio:</strong> Pendiente</span>
+    <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
     </div>
   </header>
 
@@ -1905,7 +2118,7 @@ window.GC_COMPONENTS = [
       </div>
       <div class="gc-review-actions">
         <button class="btn btn-outline-secondary" type="button">Cancelar</button>
-        <button class="btn btn-success" type="submit" id="usuario_btn_actualizar" disabled>Actualizar usuario</button>
+        <button class="btn btn-success" type="submit" id="usuario_btn_actualizar" disabled>Guardar</button>
       </div>
     </div>
   </footer>
@@ -1913,24 +2126,32 @@ window.GC_COMPONENTS = [
   },
   {
     id:"gc-formulario-configuraciones",
+    implementations: [
+      { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "El form ES el organismo: form.gc-form-shell con data-gc-validate; el comentario de la vista declara la maqueta formulario-configuraciones.html (líneas 292-300)" },
+      { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "Cinco section.gc-form-section con h2.gc-section-title: Plan contratado, Información del negocio, Logo y licencia ambiental, Correos de notificación y Configuraciones por módulo (líneas 312, 331, 452, 496, 537)" },
+      { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "Acordeón BS5 nativo #accDatos con 8 bloques y cierre gc-review-box con data-gc-review-check (líneas 541-1090 y 1099-1116)" },
+    ],
     group:"Formularios",
     name:"Mis datos / Configuraciones",
     description:"Organismo administrativo para datos generales de empresa, parámetros operativos, alertas y funcionalidades del sistema.",
     use:"Usarlo como formulario principal de configuración de empresa. Las pestañas reducen scroll y los acordeones concentran listas largas de opciones críticas.",
     avoid:"No pegarlo sin ajustar action, permisos, valores precargados, validaciones de backend y names según el modelo de datos real.",
     deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
+    accessibility:"Las cabeceras del acordeón #accDatos son button con aria-expanded y aria-controls; Bootstrap sincroniza aria-expanded, así que no se escribe como valor fijo. Limitación real: un panel cerrado saca sus campos del recorrido de foco, así que si la validación marca un campo en un panel colapsado hay que abrirlo antes de enfocarlo, porque focus() falla en silencio. El checkbox gc-review-box deshabilita los submit y les pone un title con el motivo.",
+    note:"No se marca como verificada: producción reorganizó el organismo. En vez de las 5 pestañas del snippet, <code>cplus/views/mostrarDatos.php</code> usa 5 <code>section.gc-form-section</code> más el acordeón nativo <code>#accDatos</code>, y añade Plan contratado, Logo y licencia ambiental y Correos de notificación. <strong>Divergencia:</strong> el <code>agregar=150</code> que declara la vista no existe en el enrutador (<code>Menu()</code> termina en 149), así que «Abrir vista» no resuelve.",
+    example:"ejemplos/formulario-configuraciones.html",
     snippet:`<!-- Organismo: gc-formulario-configuraciones -->
 <form class="gc-form-shell" method="post" action="/configuraciones/actualizar" enctype="multipart/form-data">
   <header class="gc-form-head">
-    <div class="gc-form-logo gc-form-logo--demo"><img src="assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
     <div class="gc-form-title">
-      <h1>Mis datos / Configuraciones</h1>
+      <h2>Mis datos / Configuraciones</h2>
       <p>Datos generales de la empresa, parámetros operativos, alertas y funcionalidades del sistema.</p>
     </div>
-    <div class="gc-history">
-      <span><strong>Creado por:</strong> Usuario responsable</span>
-      <span><strong>Realizado por:</strong> Usuario responsable</span>
-      <span class="gc-last-change"><strong>Ultimo cambio:</strong> Pendiente</span>
+    <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
     </div>
   </header>
 
@@ -2824,7 +3045,7 @@ window.GC_COMPONENTS = [
       </div>
       <div class="gc-review-actions">
         <button class="btn btn-outline-secondary" type="button">Cancelar</button>
-        <button class="btn btn-success" type="submit" id="btn_actualizar_configuracion" disabled>Actualizar configuración</button>
+        <button class="btn btn-success" type="submit" id="btn_actualizar_configuracion" disabled>Guardar</button>
       </div>
     </div>
   </footer>
@@ -2832,6 +3053,11 @@ window.GC_COMPONENTS = [
   },
   {
     id:"gc-formulario-roles",
+    implementations: [
+      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "form#form-role-permissions con include de partials/form-head.php y la fila Nombre / Descripción / Estado (líneas 94-125)" },
+      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Selector de módulo real: div#rbac-form-modules con role=radiogroup y radios por módulo, no el select del organismo (líneas 152-171)" },
+      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Cierre gc-review-footer con #gc_review_roles que gatea #btn-submit-role (líneas 185-197)" },
+    ],
     group:"Formularios",
     name:"Mis roles / Actualizar rol o perfil",
     description:"Organismo compacto para crear o actualizar roles/perfiles del sistema, con módulo asociado, descripción funcional y cierre con revisión.",
@@ -2839,19 +3065,21 @@ window.GC_COMPONENTS = [
     avoid:"No pegarlo sin ajustar action, listado real de módulos, validaciones de permisos y reglas de autorización del backend.",
     deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
     accessibility:"El formulario usa labels asociados, controles nativos, mensaje informativo visible y confirmación final antes del submit para reducir cambios accidentales en perfiles de acceso.",
+    note:"No se marca como verificada: el organismo modela el módulo como un select con opciones fijas, mientras producción lo construye desde RBAC como radiogroup (<code>#rbac-form-modules</code> en <code>cplus/views/mostrarRoles.php</code>). Producción añade además el campo Estado en modo creación y la matriz completa de permisos RBAC, poblada por <code>cplus/js/lib/RbacPermissionMatrix.js</code>, que el organismo no documenta.",
+    example:"ejemplos/formulario-roles.html",
     snippet:`<!-- Organismo: gc-formulario-roles -->
 <!-- Uso conceptual: <gc-formulario-roles></gc-formulario-roles> -->
 <form class="gc-form-shell" method="post" action="/roles/actualizar">
   <header class="gc-form-head">
-    <div class="gc-form-logo gc-form-logo--demo"><img src="assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
     <div class="gc-form-title">
-      <h1>Mis roles</h1>
+      <h2>Mis roles</h2>
       <p>Configuración básica del rol, módulo asociado y descripción funcional.</p>
     </div>
-    <div class="gc-history">
-      <span><strong>Creado por:</strong> Usuario responsable</span>
-      <span><strong>Realizado por:</strong> Usuario responsable</span>
-      <span class="gc-last-change"><strong>Último cambio:</strong> Pendiente</span>
+    <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
     </div>
   </header>
 
@@ -2881,7 +3109,7 @@ window.GC_COMPONENTS = [
             </div>
             <div class="col-12">
               <label for="rol_descripcion" class="form-label">Descripción</label>
-              <textarea class="form-control" id="rol_descripcion" name="descripcion" rows="4" placeholder="Describe el alcance funcional del rol y los permisos asociados.">Perfil encargado de gestionar solicitudes, revisar manifiestos y consultar información operativa.</textarea>
+              <textarea class="form-control" id="rol_descripcion" name="descripcion" rows="4" placeholder="Describe el alcance funcional del rol y los permisos asociados.">Perfil encargado de administrar sucursales, usuarios y catálogos maestros del tenant.</textarea>
               <div class="gc-help">Documenta el alcance para facilitar soporte, auditoría y mantenimiento de permisos.</div>
             </div>
           </div>
@@ -2898,7 +3126,7 @@ window.GC_COMPONENTS = [
       </div>
       <div class="gc-review-actions">
         <button class="btn btn-outline-secondary" type="button">Cancelar</button>
-        <button class="btn btn-success" type="submit" id="rol_btn_actualizar" disabled>Actualizar rol</button>
+        <button class="btn btn-success" type="submit" id="rol_btn_actualizar" disabled>Guardar</button>
       </div>
     </div>
   </footer>
@@ -2906,6 +3134,11 @@ window.GC_COMPONENTS = [
   },
   {
     id:"gc-formulario-elementos-chequeo",
+    implementations: [
+      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "form#formularioRegistrar con include de partials/form-head.php y la caja informativa gc-info-box (líneas 84-92)" },
+      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Los tres únicos campos reales hoy: Nombre, Descripción y Estado en una sola fila (líneas 94-112)" },
+      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Cierre gc-review-footer con #gc_review_elementos que gatea #guardar (líneas 117-133)" },
+    ],
     group:"Formularios",
     name:"Elementos de chequeo / Actualizar elemento de chequeo",
     description:"Organismo operativo para configurar preguntas de chequeo, obligatoriedad, respuesta esperada, clasificación, verificación, sección y orden de visualización.",
@@ -2913,19 +3146,21 @@ window.GC_COMPONENTS = [
     avoid:"No pegarlo sin ajustar action, catálogos reales, reglas de obligatoriedad, dependencias entre tipo de respuesta y respuesta esperada, permisos y validaciones de backend.",
     deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
     accessibility:"El formulario usa labels asociados, controles nativos, ayudas cercanas a los campos, selectores para valores controlados y cierre con confirmación antes del submit.",
+    note:"No se marca como verificada: el organismo declara 9 campos en 3 secciones y producción tiene solo 3 campos en una sola fila, Nombre, Descripción y Estado (<code>cplus/views/mostrarElementosChequeo.php</code>), sin secciones ni <code>gc-section-title</code>. El subtítulo de la vista promete obligatoriedad, respuesta esperada, sección y orden, pero esos campos no están implementados.",
+    example:"ejemplos/formulario-elementos-chequeo.html",
     snippet:`<!-- Organismo: gc-formulario-elementos-chequeo -->
 <!-- Uso conceptual: <gc-formulario-elementos-chequeo></gc-formulario-elementos-chequeo> -->
 <form class="gc-form-shell" method="post" action="/elementos-chequeo/actualizar">
   <header class="gc-form-head">
-    <div class="gc-form-logo gc-form-logo--demo"><img src="assets/logo-demo.svg" alt="Logo demo de empresa" class="gc-logo-img"></div>
     <div class="gc-form-title">
-      <h1>Elementos de chequeo</h1>
+      <h2>Elementos de chequeo</h2>
       <p>Configuración de preguntas, obligatoriedad, respuesta esperada, sección y orden de visualización.</p>
     </div>
-    <div class="gc-history">
-      <span><strong>Creado por:</strong> Usuario responsable</span>
-      <span><strong>Realizado por:</strong> Usuario responsable</span>
-      <span class="gc-last-change"><strong>Último cambio:</strong> Pendiente</span>
+    <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
+      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
     </div>
   </header>
 
@@ -3047,11 +3282,2090 @@ window.GC_COMPONENTS = [
       </div>
       <div class="gc-review-actions">
         <button class="btn btn-outline-secondary" type="button">Cancelar</button>
-        <button class="btn btn-success" type="submit" id="chequeo_btn_actualizar" disabled>Actualizar elemento</button>
+        <button class="btn btn-success" type="submit" id="chequeo_btn_actualizar" disabled>Guardar</button>
       </div>
     </div>
   </footer>
 </form>`
+  },
+  {
+    id:"boton",
+    catalogExamples: ["opciones-acordeon"],
+    implementations: [
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "El kit en el módulo más simple: Nuevo del encabezado (línea 123) y Guardar del formulario (línea 187). Ojo: la tarjeta de filtros con su botón Buscar está COMENTADA (líneas 201-240), así que ese botón no se renderiza" },
+      { module: "Clientes", agregar: 130, file: "cplus/views/mostrarClientes.php", detail: "Buscar de la tarjeta de filtros, con el bloque vivo: erp-btn erp-btn-primary dentro de div.filters-actions (líneas 107-111)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Cancelar secundario + Guardar primario en form-actions (líneas 750-755) y el mismo par en el pie del modal de horarios (líneas 796-797)" },
+      { module: "Usuarios / Roles / Elementos de chequeo", agregar: 105, file: "cplus/js/core/gc-validate.js", detail: "La forma CPlus real de deshabilitar: bindReviewCheck fija targets[i].disabled = !check.checked sobre los submit del formulario (línea 117) y les pone el title de bloqueo (líneas 120-124). Lo activan los checkbox data-gc-review-check de mostrarUsuarios.php:1062, mostrarRoles.php:188 y mostrarElementosChequeo.php:120" },
+      { module: "Cargue de sucursales (parte de la migración validada de Sucursales, REQ-1026)", agregar: 146, file: "cplus/views/mostrarCarguesSucursales.php", detail: "Descargar plantilla con erp-btn erp-btn-excel dentro de module-actions, apuntando al endpoint BFF de plantilla por modo (líneas 113-116)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/js/core/datatable-v2-shell.js", detail: "buildToolbar arma el botón Exportar con erp-btn erp-btn-excel table-tool-btn: modo dropdown en las líneas 163-177 y botón único en las 179-186. Sucursales lo activa en modo dropdown declarando export: 'dropdown' en cplus/js/entities/sucursales/datatable.js:104, que GrincDataTable traduce a data-cplus-export-mode (GrincDataTable.js:386-391)" },
+    ],
+    group:"Acciones",
+    name:"Botón",
+    description:"Kit de botones estándar de CPlus. La clase base <code>.erp-btn</code> da forma, altura y tipografía; una segunda clase declara la intención: primario (verde de marca), secundario (blanco con borde), Excel (icono verde) y solo icono. El estado deshabilitado se resuelve con el atributo <code>disabled</code>, nunca con una clase.",
+    use:"Usarlo en toda acción de pantalla CPlus: Nuevo del encabezado, Guardar y Cancelar del formulario, Buscar de la tarjeta de filtros, pies de modal y exportación a Excel. Una sola acción primaria por bloque; el resto en secundario, con icono bi dentro del botón.",
+    avoid:"No usar la clase btn de Bootstrap cruda para acciones de pantalla, ni gc-module-btn, que es otro botón con otro verde y otro radio. No inventar modificadores: erp-btn-danger se escribe en algunas vistas pero no está definido en el CSS de CPlus, así que no pinta nada. Y .erp-btn sola, sin modificador, no declara fondo ni color.",
+    deps:"CSS propio de CPlus (cplus/scss/_components.scss, compilado en cplus/css/main.css) y Bootstrap Icons. No requiere Bootstrap JS, salvo el pie de modal del snippet Secundario, que cierra con data-bs-dismiss.",
+    verified: true,
+    accessibility:"Usar button para acciones y a solo cuando hay navegación real: el enlace del encabezado de módulo no admite el atributo disabled. El icono no debe ser el único contenido salvo en la variante solo icono, donde aria-label y title son obligatorios. Limitación real: .erp-btn-icon mide 38x38px, por debajo del objetivo táctil de 44px, así que conviene reservarlo para barras de escritorio. No anular el foco del navegador.",
+    variants:[
+      {
+        name:"Primario",
+        description:"La acción principal del bloque: Guardar, Buscar, Nuevo, confirmar en un modal. Verde de marca, una sola por bloque. A la derecha, el mismo botón con disabled.",
+        preview:`<section class="d-flex gap-4 flex-wrap align-items-start">
+  <div>
+    <p class="small text-muted mb-2">Habilitado</p>
+    <button type="submit" class="erp-btn erp-btn-primary">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+  </div>
+  <div>
+    <p class="small text-muted mb-2">Deshabilitado (atributo disabled)</p>
+    <button type="submit" class="erp-btn erp-btn-primary" disabled title="Confirma la revisión antes de guardar">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+  </div>
+</section>`,
+        snippet:`<button type="submit" class="erp-btn erp-btn-primary" id="guardarBtn" name="guardarBtn">
+  <i class="bi bi-save"></i> Guardar
+</button>
+
+<!-- Deshabilitado: atributo disabled, nunca una clase extra -->
+<button type="submit" class="erp-btn erp-btn-primary" id="guardarBtn" disabled>
+  <i class="bi bi-save"></i> Guardar
+</button>
+
+<!-- Buscar de la tarjeta de filtros (cplus/views/mostrarClientes.php:107-111).
+     En Embalajes esta tarjeta existe pero está comentada, así que no sirve de referencia viva. -->
+<div class="filters-actions">
+  <button type="submit" class="erp-btn erp-btn-primary">
+    <i class="bi bi-search"></i> Buscar
+  </button>
+</div>`
+      },
+      {
+        name:"Secundario",
+        description:"Acción de salida o de apoyo junto a la primaria: Cancelar, Volver, Cerrar, Limpiar. Fondo blanco con borde gris y texto oscuro. Va siempre a la izquierda de la primaria en pies de formulario y de modal.",
+        preview:`<section class="d-flex gap-3 flex-wrap justify-content-end">
+  <a href="#" class="erp-btn erp-btn-secondary">
+    <i class="bi bi-x-lg"></i> Cancelar
+  </a>
+  <button type="submit" class="erp-btn erp-btn-primary">
+    <i class="bi bi-save"></i> Guardar
+  </button>
+</section>`,
+        snippet:`<!-- Pie de formulario genérico: col-md-12 text-end basta.
+     No se copia la clase form-actions de Sucursales: compila como
+     #formularioRegistrar .form-actions (cplus/scss/_sucursales.scss:16 y :29-31)
+     y fuera de esa vista no aporta nada. -->
+<div class="col-md-12 text-end">
+  <a href="incluir.php?agregar=127" class="erp-btn erp-btn-secondary" id="cancelarBtn">
+    <i class="bi bi-x-lg"></i> Cancelar
+  </a>
+  <button type="submit" class="erp-btn erp-btn-primary" id="guardarBtn">
+    <i class="bi bi-save"></i> Guardar
+  </button>
+</div>
+
+<!-- Pie de modal: mismo par, mismo orden. Requiere el JS de Bootstrap por data-bs-dismiss. -->
+<div class="modal-footer">
+  <button type="button" class="erp-btn erp-btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+  <button type="button" class="erp-btn erp-btn-primary" id="guardarHorarios">Guardar</button>
+</div>`
+      },
+      {
+        name:"Excel",
+        description:"Descarga o exportación a Excel: misma silueta que el secundario, con el icono en verde. Suelto en el encabezado para plantillas, o con table-tool-btn en la barra de herramientas de la tabla, donde lo genera el shell.",
+        preview:`<section class="d-flex gap-3 flex-wrap align-items-center">
+  <a class="erp-btn erp-btn-excel" href="#">
+    <i class="bi bi-file-earmark-excel"></i> Descargar plantilla
+  </a>
+  <button type="button" class="erp-btn erp-btn-excel table-tool-btn" title="Exportar a Excel">
+    <i class="bi bi-file-earmark-excel-fill"></i> Exportar
+  </button>
+</section>`,
+        snippet:`<!-- Encabezado de módulo: descarga directa -->
+<a class="erp-btn erp-btn-excel" href="/cplus/bff/entities/sucursales/import/template.php?modo=1">
+  <i class="bi bi-file-earmark-excel"></i> Descargar plantilla
+</a>
+
+<!-- Barra de herramientas de tabla: lo inyecta cplus/js/core/datatable-v2-shell.js.
+     La clase standard-table NO se escribe en la vista: la añade el shell en runtime
+     (datatable-v2-shell.js:282).
+     En Sucursales la vista solo declara la tabla (cplus/views/mostrarSucursales.php:806): -->
+<table id="informe" class="table table-bordered table-sm" style="width:100%"></table>
+
+<!-- El modo de exportación se declara en el JS, no en la vista:
+     export: 'dropdown' en cplus/js/entities/sucursales/datatable.js:104;
+     GrincDataTable lo publica como data-cplus-export-mode (GrincDataTable.js:386-391)
+     y datatable-v2-shell.js:163-177 arma el dropdown Exportar / Exportar detallado. -->
+
+<!-- Markup resultante del shell -->
+<button type="button" class="erp-btn erp-btn-excel table-tool-btn" title="Exportar a Excel">
+  <i class="bi bi-file-earmark-excel-fill"></i> Exportar
+</button>`
+      },
+      {
+        name:"Solo icono (sin instancia productiva)",
+        description:"Botón cuadrado de 38x38px para barras de herramientas compactas. No lleva .erp-btn: .erp-btn-icon es autónoma, con borde, fondo y foco propios. No es .icon-action, que actúa dentro de las celdas de tabla. La clase existe en el kit pero ninguna vista ni JS la usa: patrón disponible, no precedente.",
+        preview:`<section class="d-flex gap-2 flex-wrap align-items-center">
+  <button type="button" class="erp-btn-icon" title="Recargar" aria-label="Recargar">
+    <i class="bi bi-arrow-clockwise"></i>
+  </button>
+  <button type="button" class="erp-btn-icon erp-btn-excel" title="Exportar a Excel" aria-label="Exportar a Excel">
+    <i class="bi bi-file-earmark-excel-fill"></i>
+  </button>
+</section>`,
+        snippet:`<button type="button" class="erp-btn-icon" title="Recargar" aria-label="Recargar">
+  <i class="bi bi-arrow-clockwise"></i>
+</button>
+
+<!-- Variante Excel: mismo cuadro, icono verde -->
+<button type="button" class="erp-btn-icon erp-btn-excel" title="Exportar a Excel" aria-label="Exportar a Excel">
+  <i class="bi bi-file-earmark-excel-fill"></i>
+</button>`
+      },
+      {
+        name:"Nuevo del encabezado de módulo",
+        description:"El botón de creación del encabezado, dentro de .module-actions: primario con icono bi-plus-lg y etiqueta Nuevo. En producción es un enlace con onclick, así que no admite disabled: si la acción no está disponible, se omite el botón. Cuando está condicionada, el disabled lo pone gc-validate.js sobre el submit.",
+        preview:`<section class="module-header">
+  <h1 class="section-title">
+    <i class="bi bi-box-seam section-title-icon"></i>
+    <span>Embalajes</span>
+  </h1>
+  <div class="module-actions">
+    <a href="#" class="erp-btn erp-btn-primary">
+      <i class="bi bi-plus-lg"></i> Nuevo
+    </a>
+  </div>
+</section>`,
+        snippet:`<section class="module-header">
+  <h1 class="section-title">
+    <i class="bi bi-box-seam section-title-icon"></i>
+    <span>Embalajes</span>
+  </h1>
+  <div class="module-actions">
+    <a href="#" class="erp-btn erp-btn-primary" onclick="mostrar(); return false;">
+      <i class="bi bi-plus-lg"></i> Nuevo
+    </a>
+  </div>
+</section>
+
+<!-- Acción condicionada: el disabled lo pone gc-validate.js:117-124 al leer el checkbox de revisión -->
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" id="gc_review_elementos" data-gc-review-check>
+  <label class="form-check-label" for="gc_review_elementos">He revisado la información antes de guardar.</label>
+</div>
+<button type="submit" class="erp-btn erp-btn-primary" id="guardar" name="guardar">
+  <i class="bi bi-save"></i> Guardar
+</button>`
+      }
+    ],
+    snippet:`<button type="submit" class="erp-btn erp-btn-primary" id="guardarBtn">
+  <i class="bi bi-save"></i> Guardar
+</button>`
+  },
+  {
+    id:"botonera-formulario",
+    catalogExamples: ["gc-formulario-clientes","gc-formulario-usuarios","gc-formulario-roles"],
+    implementations: [
+      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Cierre gc-review-footer / gc-review-box con el checkbox data-gc-review-check y, dentro de gc-review-actions, el submit Guardar más los hidden _csrf, accion, id y agregar=117 (líneas 117-133)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Mismo par de botones, pero el contenedor es div.row SIN mt-3 y con la clase extra form-actions (scoped a #formularioRegistrar en cplus/scss/_sucursales.scss:16 y :29-31); en solo lectura se sustituye por el enlace Volver (líneas 747-781)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Botonera dentro de gc-review-actions, con el submit gateado por el checkbox de revisión (líneas 1059-1075)" },
+      { module: "Tipos de vehículos", agregar: 137, file: "cplus/views/mostrarTipoVehiculos.php", detail: "Caso mayoritario, solo Guardar: div.row.mt-3 > div.col-md-12.text-end con el submit erp-btn erp-btn-primary rotulado por la variable PHP y los hidden _csrf, id y agregar=137; todo el bloque va bajo el gate empty($ver) (líneas 153-164)" },
+      { module: "Residuos inventariables", agregar: 126, file: "cplus/views/mostrarResiduosInventariables.php", detail: "Variante degradada: el Cancelar usa erp-btn sin erp-btn-secondary y sin icono (líneas 631-638)" },
+      { module: "Riesgos", agregar: 143, file: "cplus/views/mostrarRiesgos.php", detail: "Mismo contenedor con SOLO el submit Guardar y los ocultos _csrf, id y agregar=143, sin enlace Cancelar; el gate añade además $canCreate (líneas 175-186)" },
+    ],
+    group:"Acciones",
+    name:"Botonera de formulario (Cancelar y Guardar)",
+    description:"Pie que cierra los formularios CPlus: una fila propia <code>div.row.mt-3</code> con <code>div.col-md-12.text-end</code> dentro, el submit Guardar del kit erp-btn y los campos ocultos. Cancelar es opcional. En modo ver el pie se reduce a Volver. El rótulo del submit es siempre <strong>Guardar</strong>, al crear y al editar.",
+    use:"Usarlo al cierre de cualquier formulario de alta o edición; Guardar es el único submit del bloque. Cancelar, cuando se añade, es siempre un enlace a incluir.php?agregar=N del módulo, nunca un button. Para un módulo nuevo la variante por defecto es Solo guardar.",
+    avoid:"No usar btn btn-success ni btn btn-lg de Bootstrap crudo para el guardado: el estándar es erp-btn erp-btn-primary. No convertir Cancelar en button ni darle type=\"reset\". En modo consulta (ver=1) solo va Volver. Para el pie con checkbox de revisión el contenedor es gc-review-footer, no este. No copiar el pie de las maquetas gc-formulario-*.",
+    deps:"Bootstrap CSS (grid y text-end), Bootstrap Icons (bi-x-lg, bi-save, bi-arrow-left), el kit erp-btn de cplus/scss/_components.scss y, en el patrón gc-review, cplus/js/core/gc-validate.js.",
+    verified: true,
+    accessibility:"El orden en el DOM es Cancelar y luego Guardar, así el foco llega primero a la acción reversible. Cancelar es un enlace real con href: admite Enter y abrir en otra pestaña. Los iconos bi son decorativos, así que el botón nunca va solo con icono. El alto mínimo del kit erp-btn es 42px, suficiente como objetivo táctil.",
+    note:"Los campos ocultos van DENTRO del bloque: el token CSRF (<code>_csrf</code>), el id del registro (<code>id</code>), el número de módulo (<code>agregar</code>) y, según el módulo, <code>accion</code>, <code>elaboro</code> o <code>k</code>.",
+    variants:[
+      {
+        name:"Los tres botones, según el modo",
+        description:"Guardar, Cancelar y Volver no conviven en el mismo pie: dependen del modo. En crear y editar manda Guardar, con Cancelar al lado si el módulo lo incluye; en ver, solo Volver.",
+        preview:`<section>
+  <p style="margin:0 0 6px;color:#575756;font-size:.85rem">Crear o editar: Guardar, con Cancelar al lado cuando el módulo lo incluye.</p>
+  <div class="row mt-3">
+    <div class="col-md-12 text-end">
+      <a href="#" class="erp-btn erp-btn-secondary">
+        <i class="bi bi-x-lg"></i> Cancelar
+      </a>
+      <button type="button" class="erp-btn erp-btn-primary">
+        <i class="bi bi-save"></i> Guardar
+      </button>
+    </div>
+  </div>
+  <p style="margin:22px 0 6px;color:#575756;font-size:.85rem">Ver: no hay nada que guardar, el pie se reduce a Volver.</p>
+  <div class="row">
+    <div class="col-md-12 text-end form-actions">
+      <a href="#" class="erp-btn erp-btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+      </a>
+    </div>
+  </div>
+</section>`,
+        snippet:`<!-- Crear o editar -->
+<div class="row mt-3">
+  <div class="col-md-12 text-end">
+    <a href="incluir.php?agregar=127" class="erp-btn erp-btn-secondary">
+      <i class="bi bi-x-lg"></i> Cancelar
+    </a>
+    <button type="submit" class="erp-btn erp-btn-primary" id="guardarBtn">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+  </div>
+</div>
+
+<!-- Ver -->
+<div class="row">
+  <div class="col-md-12 text-end form-actions">
+    <a href="incluir.php?agregar=127" class="erp-btn erp-btn-secondary">
+      <i class="bi bi-arrow-left"></i> Volver
+    </a>
+  </div>
+</div>`
+      },
+      {
+        name:"Solo guardar (mayoritario)",
+        description:"El cierre más común en producción: el contenedor canónico con un único submit Guardar y los ocultos, sin enlace Cancelar.",
+        preview:`<section class="row mt-3">
+  <div class="col-md-12 text-end">
+    <button type="button" class="erp-btn erp-btn-primary">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+  </div>
+</section>`,
+        snippet:`<div class="row mt-3">
+  <div class="col-md-12 text-end">
+    <button type="submit" class="erp-btn erp-btn-primary" id="guardar" name="guardar">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+    <!-- Los ocultos del formulario van aquí dentro -->
+    <input type="hidden" name="_csrf" value="">
+    <input type="hidden" name="id" value="">
+    <input type="hidden" name="agregar" value="143">
+  </div>
+</div>`
+      },
+      {
+        name:"Crear",
+        description:"Alta de un registro nuevo con la opción Cancelar: el submit dice Guardar y el oculto id viaja vacío. El snippet usa el contenedor genérico div.row.mt-3 con div.col-md-12.text-end.",
+        preview:`<section class="row mt-3">
+  <div class="col-md-12 text-end">
+    <a href="#" class="erp-btn erp-btn-secondary">
+      <i class="bi bi-x-lg"></i> Cancelar
+    </a>
+    <button type="button" class="erp-btn erp-btn-primary">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+  </div>
+</section>`,
+        snippet:`<div class="row mt-3">
+  <div class="col-md-12 text-end">
+    <a href="incluir.php?agregar=127" class="erp-btn erp-btn-secondary" id="cancelarBtn">
+      <i class="bi bi-x-lg"></i> Cancelar
+    </a>
+    <button type="submit" class="erp-btn erp-btn-primary" id="guardarBtn">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+    <!-- Los ocultos del formulario van aquí dentro -->
+    <input type="hidden" name="_csrf" value="">
+    <input type="hidden" name="id" value="">
+    <input type="hidden" name="agregar" value="127">
+    <input type="hidden" name="elaboro" value="">
+  </div>
+</div>`
+      },
+      {
+        name:"Volver",
+        description:"Modo consulta: no hay nada que guardar, la botonera se reduce a un enlace de regreso al listado con bi-arrow-left. El snippet copia Sucursales: div.row sin mt-3 y con form-actions.",
+        preview:`<section class="row">
+  <div class="col-md-12 text-end form-actions">
+    <a href="#" class="erp-btn erp-btn-secondary">
+      <i class="bi bi-arrow-left"></i> Volver
+    </a>
+  </div>
+</section>`,
+        snippet:`<div class="row">
+  <div class="col-md-12 text-end form-actions">
+    <a href="incluir.php?agregar=127" class="erp-btn erp-btn-secondary">
+      <i class="bi bi-arrow-left"></i> Volver
+    </a>
+  </div>
+</div>`
+      },
+      {
+        name:"Guardar deshabilitado (gc-review)",
+        description:"El gating no usa el contenedor row mt-3 sino gc-review-footer / gc-review-box / gc-review-actions con el checkbox data-gc-review-check. La vista no trae el atributo disabled: lo aplica en runtime cplus/js/core/gc-validate.js mientras la casilla esté sin marcar. Cancelar nunca se deshabilita.",
+        preview:`<section class="gc-review-footer">
+  <div class="gc-review-box">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="gc_review_demo">
+      <label class="form-check-label" for="gc_review_demo">Confirmo que revisé datos personales, acceso, credenciales, correo, adjuntos y permisos antes de guardar la información del usuario.</label>
+    </div>
+    <div class="gc-review-actions">
+      <a href="#" class="erp-btn erp-btn-secondary">
+        <i class="bi bi-x-lg"></i> Cancelar
+      </a>
+      <button type="button" class="erp-btn erp-btn-primary" disabled title="Marca la confirmación de revisión para habilitar esta acción.">
+        <i class="bi bi-save"></i> Guardar
+      </button>
+    </div>
+  </div>
+</section>`,
+        snippet:`<div class="gc-review-footer">
+  <div class="gc-review-box">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="gc_review_usuarios" data-gc-review-check>
+      <label class="form-check-label" for="gc_review_usuarios">Confirmo que revisé datos personales, acceso, credenciales, correo, adjuntos y permisos antes de guardar la información del usuario.</label>
+    </div>
+    <div class="gc-review-actions">
+      <a href="incluir.php?agregar=105" class="erp-btn erp-btn-secondary" id="cancelarUsuario">
+        <i class="bi bi-x-lg"></i> Cancelar
+      </a>
+      <!-- Sin disabled: lo pone gc-validate.js:117 mientras la casilla esté sin marcar. -->
+      <button type="submit" class="erp-btn erp-btn-primary submit" id="guardarBtn" name="guardarBtn">
+        <i class="bi bi-save"></i> Guardar
+      </button>
+      <input type="hidden" name="_csrf" value="">
+      <input type="hidden" name="id" value="">
+      <input type="hidden" name="agregar" value="105">
+    </div>
+  </div>
+</div>`
+      }
+    ],
+    snippet:`<div class="row mt-3">
+  <div class="col-md-12 text-end">
+    <a href="incluir.php?agregar=127" class="erp-btn erp-btn-secondary" id="cancelarBtn">
+      <i class="bi bi-x-lg"></i> Cancelar
+    </a>
+    <button type="submit" class="erp-btn erp-btn-primary" id="guardarBtn">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+    <!-- Los ocultos del formulario van aquí dentro -->
+    <input type="hidden" name="_csrf" value="">
+    <input type="hidden" name="id" value="">
+    <input type="hidden" name="agregar" value="127">
+  </div>
+</div>`
+  },
+  {
+    id:"acciones-de-fila",
+    catalogExamples: ["opciones-acordeon","alertas-librerias"],
+    implementations: [
+      { module: "Embalajes", agregar: 106, file: "cplus/js/entities/embalajes/datatable.js", detail: "Caso canónico: crud({entityKey:'embalajes', agregarCase:106, label:'embalaje', withTraza:true}) en una línea (línea 20) y columna { type: 'actions' } (línea 71)" },
+      { module: "Clasificación interna", agregar: 122, file: "cplus/js/entities/clasificaciones/datatable.js", detail: "Caso del catálogo maestro simple: la columna de acciones (línea 26) más el badge de estado escrito a mano en el render de la columna Estado (líneas 28-34)" },
+      { module: "Roles", agregar: 124, file: "cplus/js/entities/roles/datatable.js", detail: "crud() con withTraza (línea 9) y traza condicionada al historial real del registro: visibleIf con row.has_traza (líneas 14-17), que deja placeholder en las filas sin traza" },
+      { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/datatable.js", detail: "crud() multilínea (líneas 25-30); cambia el permiso de la traza de 'view' a 'traza' (línea 37) y fija el orden ver·editar·eliminar·toggle·traza (líneas 38-40)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/datatable.js", detail: "crud({entityKey:'sucursales', agregarCase:127, label:'sucursal', withTraza:true}) (líneas 19-24) y columna { type: 'actions' } (línea 106)" },
+    ],
+    group:"Acciones",
+    name:"Acciones de fila",
+    description:"Grupo de iconos que opera un registro desde la tabla: ver, editar, eliminar, activar/desactivar y trazabilidad. No se escribe a mano: lo emite <code>CplusActionButtons.render</code> desde el descriptor de <code>CplusStandardActions.crud</code>, y la columna la arma <code>GrincDataTable</code> con <code>{ type: 'actions' }</code>.",
+    use:"Usarlo como única columna de acciones de un listado CPlus, siempre en la primera. Los cinco tipos estándar son ver, editar, eliminar, toggle y traza; para una acción propia, añadir un descriptor con su tipo, icono, evento y permiso al array de crud().",
+    avoid:"No escribir los iconos a mano ni inventar clases por módulo: el markup lo emite el factory. Tampoco es la barra de acciones de pantalla (crear, exportar, refrescar), que usa erp-btn y erp-btn-icon.",
+    deps:"Bootstrap Icons (bi-*) y Bootstrap Tooltip, reinicializado por CplusInitTooltips en cada draw. En producción: action-buttons.js, action-icons.js, standard-actions.js, entity-actions.js, GrincDataTable.js y CplusAlerts.",
+    verified: true,
+    accessibility:"Cada acción es un enlace o un botón, alcanzable por teclado. El texto accesible sale solo del atributo title: no hay aria-label ni texto oculto, y el icono no lleva aria-hidden. El contenedor declara aria-label=\"Acciones del registro\", sin role. El hueco de una acción oculta por estado sí marca aria-hidden=\"true\" y queda fuera del foco. El objetivo táctil es 26x26 px, por debajo del mínimo recomendado de 44x44.",
+    note:"Dos reglas deciden si un icono se ve. <strong>Sin permiso</strong> (row._can) la acción desaparece y no reserva espacio. <strong>Oculta por estado</strong> (visibleIf, como editar en un registro inactivo) sí deja un hueco con <code>.icon-action-placeholder</code>, para que los iconos restantes no se muevan.",
+    variants:[
+      {
+        name:"CRUD completo (fila activa)",
+        description:"Fila activa con todos los permisos. withTraza:true añade el quinto icono; la traza usa el permiso 'view'. El orden ver, editar, eliminar, toggle, traza lo fija el sort de la vista, no crud().",
+        preview:`<div class="mb-3">
+  <p class="text-muted small mb-2">Fila activa, usuario con permisos view, edit, delete y toggle.</p>
+  <div class="actions-group" aria-label="Acciones del registro">
+    <a href="incluir.php?agregar=106&actualizar=12&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+    <a href="incluir.php?agregar=106&actualizar=12" class="icon-action" title="Editar" data-bs-toggle="tooltip"><i class="bi bi-pencil"></i></a>
+    <button type="button" class="icon-action delete text-danger" title="Eliminar" data-bs-toggle="tooltip" data-cplus-action="embalajes:delete" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-trash3"></i></button>
+    <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip" data-cplus-action="embalajes:toggle-status" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-toggle-on"></i></button>
+    <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip" data-cplus-action="embalajes:traza" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-clock-history"></i></button>
+  </div>
+</div>`,
+        snippet:`<!-- Resultado que emite CplusActionButtons.render; el <td> recibe la clase table-actions del factory -->
+<td class="table-actions">
+  <div class="actions-group" aria-label="Acciones del registro">
+    <a href="incluir.php?agregar=106&actualizar=12&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+    <a href="incluir.php?agregar=106&actualizar=12" class="icon-action" title="Editar" data-bs-toggle="tooltip"><i class="bi bi-pencil"></i></a>
+    <button type="button" class="icon-action delete text-danger" title="Eliminar" data-bs-toggle="tooltip" data-cplus-action="embalajes:delete" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-trash3"></i></button>
+    <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip" data-cplus-action="embalajes:toggle-status" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-toggle-on"></i></button>
+    <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip" data-cplus-action="embalajes:traza" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-clock-history"></i></button>
+  </div>
+</td>`
+      },
+      {
+        name:"Solo lectura",
+        description:"row._can llega solo con view. Las acciones sin permiso no se pintan ni reservan hueco. La traza sobrevive porque su permiso también es 'view'; para condicionarla aparte hay que redefinirlo a 'traza'.",
+        preview:`<div class="mb-3">
+  <p class="text-muted small mb-2">Usuario sin edit, delete ni toggle: esas acciones colapsan, no queda hueco. Ver y Trazabilidad comparten el permiso view.</p>
+  <div class="actions-group" aria-label="Acciones del registro">
+    <a href="incluir.php?agregar=106&actualizar=12&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+    <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip" data-cplus-action="embalajes:traza" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-clock-history"></i></button>
+  </div>
+</div>`,
+        snippet:`<!-- row._can = { view: true }. Las acciones sin permiso devuelven cadena vacía (action-buttons.js:39).
+     La traza sobrevive porque su permiso también es 'view' (standard-actions.js:104). -->
+<td class="table-actions">
+  <div class="actions-group" aria-label="Acciones del registro">
+    <a href="incluir.php?agregar=106&actualizar=12&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+    <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip" data-cplus-action="embalajes:traza" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-clock-history"></i></button>
+  </div>
+</td>`
+      },
+      {
+        name:"Con traza y fila inactiva",
+        description:"En un registro inactivo, editar y eliminar se ocultan por visibleIf y dejan un hueco del mismo tamaño; el toggle cambia a bi-toggle-off.",
+        preview:`<div class="mb-3">
+  <p class="text-muted small mb-2">Fila inactiva: editar y eliminar dejan su hueco; el toggle muestra bi-toggle-off.</p>
+  <div class="actions-group" aria-label="Acciones del registro">
+    <a href="incluir.php?agregar=106&actualizar=31&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+    <span class="icon-action-placeholder" aria-hidden="true"></span>
+    <span class="icon-action-placeholder" aria-hidden="true"></span>
+    <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip" data-cplus-action="embalajes:toggle-status" data-cplus-row="{&quot;id&quot;:31,&quot;nombre&quot;:&quot;Estiba retirada&quot;,&quot;activo&quot;:0}"><i class="bi bi-toggle-off"></i></button>
+    <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip" data-cplus-action="embalajes:traza" data-cplus-row="{&quot;id&quot;:31,&quot;nombre&quot;:&quot;Estiba retirada&quot;,&quot;activo&quot;:0}"><i class="bi bi-clock-history"></i></button>
+  </div>
+</div>`,
+        snippet:`<!-- Fila inactiva: visibleIf oculta editar y eliminar y en su lugar queda el placeholder (action-buttons.js:31-33 y 43-45) -->
+<td class="table-actions">
+  <div class="actions-group" aria-label="Acciones del registro">
+    <a href="incluir.php?agregar=106&actualizar=31&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+    <span class="icon-action-placeholder" aria-hidden="true"></span>
+    <span class="icon-action-placeholder" aria-hidden="true"></span>
+    <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip" data-cplus-action="embalajes:toggle-status" data-cplus-row="{&quot;id&quot;:31,&quot;nombre&quot;:&quot;Estiba retirada&quot;,&quot;activo&quot;:0}"><i class="bi bi-toggle-off"></i></button>
+    <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip" data-cplus-action="embalajes:traza" data-cplus-row="{&quot;id&quot;:31,&quot;nombre&quot;:&quot;Estiba retirada&quot;,&quot;activo&quot;:0}"><i class="bi bi-clock-history"></i></button>
+  </div>
+</td>`
+      },
+      {
+        name:"Declaración en JavaScript (factory)",
+        description:"La declaración real. crud(opts) recibe entityKey, agregarCase, label y withTraza, y devuelve el array como editar, ver, toggle, eliminar y traza. También registra los handlers de toggle-status, delete y traza.",
+        preview:`<div class="mb-3">
+  <p class="text-muted small mb-2">Resultado de la llamada del bloque de código: el factory pinta el grupo completo.</p>
+  <div class="actions-group" aria-label="Acciones del registro">
+    <a href="incluir.php?agregar=106&actualizar=12&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+    <a href="incluir.php?agregar=106&actualizar=12" class="icon-action" title="Editar" data-bs-toggle="tooltip"><i class="bi bi-pencil"></i></a>
+    <button type="button" class="icon-action delete text-danger" title="Eliminar" data-bs-toggle="tooltip" data-cplus-action="embalajes:delete" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-trash3"></i></button>
+    <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip" data-cplus-action="embalajes:toggle-status" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-toggle-on"></i></button>
+    <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip" data-cplus-action="embalajes:traza" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-clock-history"></i></button>
+  </div>
+</div>`,
+        snippet:`// cplus/js/entities/embalajes/datatable.js:19-37 — declaración de las acciones.
+// La rama alternativa NO es []: es un fallback explícito de 5 descriptores (líneas 21-37),
+// por si standard-actions.js no cargó. Quien sí usa ': []' es roles/datatable.js:8-10.
+var ACCIONES_EMBALAJES = window.CplusStandardActions
+  ? window.CplusStandardActions.crud({ entityKey: 'embalajes', agregarCase: 106, label: 'embalaje', withTraza: true })
+  : [ /* fallback: editar, ver, toggle, eliminar, traza escritos a mano */ ];
+
+// cplus/js/entities/embalajes/datatable.js:39-44 — el orden del preview lo fija ESTE sort,
+// no crud(), que devuelve editar · ver · toggle · eliminar · traza.
+ACCIONES_EMBALAJES.sort(function (a, b) {
+  var ORD = { ver: 0, editar: 1, eliminar: 2, toggle: 3, traza: 4 };
+  var ia = ORD[a.tipo]; var ib = ORD[b.tipo];
+  return (ia === undefined ? 99 : ia) - (ib === undefined ? 99 : ib);
+});
+
+// cplus/js/entities/embalajes/datatable.js:71 — la columna de acciones del factory
+window.GrincDataTable.init({
+  entityKey: 'embalajes',
+  buildHead: true,
+  columns: [
+    { type: 'actions', actions: ACCIONES_EMBALAJES },
+    { data: 'nombre', title: 'Nombre' }
+  ]
+});
+
+// cplus/js/lib/GrincDataTable.js:300-306 — lo que el factory hace con esa columna:
+//   columns.push({ data: null, defaultContent: '' });
+//   columnDefs.push({ targets: i, className: 'table-actions', orderable: false, searchable: false,
+//     render: function (_d, _t, row) {
+//       return window.CplusActionButtons.render(actions, row, row._can || {});
+//     } });
+
+// Acción propia además de las cinco estándar (cplus/js/core/standard-actions.js:16-17):
+ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
+  evento: 'embalajes:export', permiso: 'view', titulo: 'Exportar' });`
+      }
+    ],
+    snippet:`<td class="table-actions">
+  <div class="actions-group" aria-label="Acciones del registro">
+    <a href="incluir.php?agregar=106&actualizar=12&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+    <a href="incluir.php?agregar=106&actualizar=12" class="icon-action" title="Editar" data-bs-toggle="tooltip"><i class="bi bi-pencil"></i></a>
+    <button type="button" class="icon-action delete text-danger" title="Eliminar" data-bs-toggle="tooltip" data-cplus-action="embalajes:delete" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-trash3"></i></button>
+    <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip" data-cplus-action="embalajes:toggle-status" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-toggle-on"></i></button>
+    <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip" data-cplus-action="embalajes:traza" data-cplus-row="{&quot;id&quot;:12,&quot;nombre&quot;:&quot;Caja plástica&quot;,&quot;activo&quot;:1}"><i class="bi bi-clock-history"></i></button>
+  </div>
+</td>`
+  },
+  {
+    id:"modal",
+    catalogExamples: ["alertas-librerias","campo-horario"],
+    implementations: [
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Modal #modalHorarios, el canónico: es el único cuyo footer usa el kit erp-btn en los dos botones (líneas 787-801)" },
+      { module: "Roles", agregar: 124, file: "cplus/js/entities/roles/datatable-constructor.js", detail: "Sobrescribe window.vertraza con una versión propia que consulta por BFF y pinta el MISMO modal centralizado #myModalT: localiza #myModalT, #trazainfo y #titulotraza, mete un spinner en el cuerpo y abre con bootstrap.Modal.getOrCreateInstance (líneas 100-125)" },
+      { module: "Residuos inventariables", agregar: 126, file: "cplus/views/mostrarResiduosInventariables.php", detail: "Tres modales de formulario: #modalAcopios en modal-lg (línea 398), #modalDeclarados en modal-xl (484) y #modalDuplicarResiduo (653), este último con el form POST al proxy BFF DENTRO del .modal-content y el cuerpo en row g-3 con dos col-md-6 (líneas 662-670)" },
+      { module: "Traza global (transversal; consumida por Embalajes 106, Usuarios 105, Sucursales 127 y Roles 124)", agregar: 106, file: "cplus/js/lib/GrincUtils.js", detail: "Markup de #myModalT inyectado en toda vista C+ (líneas 19-36, pie de un solo botón «Enterado» en las 29-31) y window.vertraza() que lo abre (líneas 86-146). El camino genérico es cplus/js/core/standard-actions.js:139-147, que registra el evento de traza para toda entidad declarada con withTraza: true — así lo hacen embalajes/datatable.js:20, usuarios/datatable.js:25-30, sucursales/datatable.js:19-24 y roles/datatable.js:9" },
+    ],
+    group:"Modales",
+    name:"Modal",
+    description:"Diálogo Bootstrap 5 estándar de CPlus: envoltorio .modal.fade con .modal-dialog y .modal-content, y dentro cabecera con título y botón de cierre, cuerpo, y pie con las acciones.",
+    use:"Usarlo cuando la acción necesita capturar datos adicionales, mostrar una tabla o un contenido que no cabe en la fila, o presentar información sin sacar al usuario del listado. El disparo va por la API JS de Bootstrap 5: bootstrap.Modal.getOrCreateInstance(el).show().",
+    avoid:"No usarlo para una confirmación de sí/no sin datos extra: para eso está CplusAlerts.confirm. No anidar un modal dentro de otro. No duplicar el modal de trazabilidad: ya existe uno global. No usarlo como reemplazo de una vista de formulario completa.",
+    deps:"Bootstrap CSS y JS (componente Modal), Bootstrap Icons y el kit erp-btn de cplus/scss/_components.scss.",
+    verified: true,
+    accessibility:"El button.btn-close no lleva texto, así que siempre necesita aria-label=\"Cerrar\". Todo contenedor .modal lleva tabindex=\"-1\" y aria-hidden=\"true\". Limitación real: aria-labelledby solo lo declara el modal transversal #myModalT; ningún modal escrito en la vista de un módulo validado lo tiene, así que es mejora recomendada, no patrón productivo. El foco y el cierre con ESC los gestiona Bootstrap: no hay trampa de foco propia en cplus/js.",
+    note:"Los previews se pintan <strong>ya abiertos y estáticos</strong>: solo el <code>.modal-content</code>, sin <code>.modal fade</code> ni backdrop. Copia siempre el bloque «Código HTML para copiar», que trae el envoltorio productivo completo.",
+    variants:[
+      {
+        name:"Básico",
+        description:"Modal informativo: muestra contenido y se cierra sin mutar nada, con un único botón en el pie. Sin precedente productivo: ningún módulo validado tiene un modal puramente informativo.",
+        preview:`<section class="gc-modal-static">
+  <div class="gc-modal-static-frame">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Compartir enlace de la sucursal <span class="fw-bold">SUC-01234</span></h5>
+        <button type="button" class="btn-close" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label" for="compartir_url_demo">Enlace de consulta</label>
+        <div class="input-group">
+          <input type="text" id="compartir_url_demo" class="form-control" value="https://dev.grinclic.com/incluir.php?agregar=127&amp;ver=8f2c1a" readonly>
+          <button type="button" class="btn btn-outline-secondary" title="Copiar enlace">
+            <i class="bi bi-clipboard"></i> Copiar
+          </button>
+        </div>
+        <div class="form-text">El enlace caduca en 8 horas.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="erp-btn erp-btn-secondary">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</section>`,
+        snippet:`<!-- Footer con el kit erp-btn, como el modal canónico de Sucursales (cplus/views/mostrarSucursales.php:796-797).
+     Divergencia abierta: el modal transversal #myModalT cierra con "btn btn-secondary" crudo
+     (cplus/js/lib/GrincUtils.js:30-31), no con el kit erp-btn. -->
+<div class="modal fade" id="modalCompartir" tabindex="-1" aria-labelledby="modalCompartirLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCompartirLabel">Compartir enlace de la sucursal <span id="compartir_doc_label" class="fw-bold"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label" for="compartir_url">Enlace de consulta</label>
+        <div class="input-group">
+          <input type="text" id="compartir_url" class="form-control" readonly>
+          <button type="button" class="btn btn-outline-secondary" id="btnCopiarCompartir" title="Copiar enlace">
+            <i class="bi bi-clipboard"></i> Copiar
+          </button>
+        </div>
+        <div class="form-text" id="compartir_expira"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="erp-btn erp-btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Apertura: API de Bootstrap 5, nunca el plugin jQuery.
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('modalCompartir')).show();
+</script>`
+      },
+      {
+        name:"Confirmación",
+        description:"Para un sí/no simple no se usa modal sino CplusAlerts.confirm({title, text, confirmText, cancelText, danger}), que devuelve una promesa booleana y resuelve false ante cancelar, cierre o ESC. El modal solo se justifica cuando la confirmación exige capturar datos extra; hoy ningún módulo validado tiene uno así.",
+        preview:`<section class="gc-modal-static">
+  <div class="gc-modal-static-frame">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Anular documento <span class="fw-bold">DOC-01234</span></h5>
+        <button type="button" class="btn-close" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label" for="anular_causal_demo">Causal de anulación <span class="gc-required">*</span></label>
+          <select id="anular_causal_demo" class="form-select">
+            <option>Error de digitación</option>
+            <option>Servicio no prestado</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="anular_motivo_demo">Motivo <span class="gc-required">*</span></label>
+          <textarea id="anular_motivo_demo" class="form-control" rows="3" placeholder="Describe el motivo de la anulación (mínimo 5 caracteres)"></textarea>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="anular_correo_demo">
+          <label class="form-check-label" for="anular_correo_demo">Enviar correo de anulación</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="erp-btn erp-btn-secondary">Cancelar</button>
+        <button type="button" class="erp-btn erp-btn-primary"><i class="bi bi-x-circle"></i> Anular</button>
+      </div>
+    </div>
+  </div>
+</section>`,
+        snippet:`<!-- 1) Confirmación simple (sin datos extra): NO va modal. API real en cplus/js/core/alerts.js:140-159 y 244. -->
+<script>
+  CplusAlerts.confirm({
+    title: '¿Eliminar esta sucursal?',
+    text: 'Esta acción no se puede deshacer.',
+    danger: true,
+    confirmText: 'Eliminar',
+    cancelText: 'Cancelar'
+  }).then(function (confirmado) {
+    // Promise<bool>: cancelar, cerrar o ESC devuelven false.
+    if (!confirmado) { return; }
+    // ... acción real (proxy BFF)
+  });
+</script>
+
+<!-- 2) Solo si la confirmación exige capturar datos (causal, motivo, banderas): ahí sí un modal. -->
+<div class="modal fade" id="modalAnularDoc" tabindex="-1" aria-labelledby="modalAnularDocLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalAnularDocLabel">Anular documento <span id="anular_doc_label" class="fw-bold"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="anular_id" value="">
+        <div class="mb-3">
+          <label class="form-label" for="anular_causal">Causal de anulación <span class="gc-required">*</span></label>
+          <select id="anular_causal" class="form-select"></select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="anular_motivo">Motivo <span class="gc-required">*</span></label>
+          <textarea id="anular_motivo" class="form-control" rows="3" maxlength="1000"
+                    placeholder="Describe el motivo de la anulación (mínimo 5 caracteres)"></textarea>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="anular_correo">
+          <label class="form-check-label" for="anular_correo">Enviar correo de anulación</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="erp-btn erp-btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="erp-btn erp-btn-primary" id="btnAnularDoc"><i class="bi bi-x-circle"></i> Anular</button>
+      </div>
+    </div>
+  </div>
+</div>`
+      },
+      {
+        name:"Formulario",
+        description:"Captura un formulario completo sin salir del listado: se abre desde la acción de la fila, valida, llama al proxy BFF y refresca la tabla. Usa modal-lg o modal-xl según el ancho necesario.",
+        preview:`<section class="gc-modal-static gc-modal-static--lg">
+  <div class="gc-modal-static-frame">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Duplicar residuo</h5>
+        <button type="button" class="btn-close" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="dup_codigo_demo">Código <span class="gc-required">*</span></label>
+            <input type="text" id="dup_codigo_demo" class="form-control" maxlength="50" autocomplete="off" placeholder="Ej. RES-0042">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="dup_nombre_demo">Nombre <span class="gc-required">*</span></label>
+            <input type="text" id="dup_nombre_demo" class="form-control" maxlength="300" autocomplete="off" placeholder="Ej. Aceite usado (copia)">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="erp-btn erp-btn-secondary">Cancelar</button>
+        <button type="button" class="erp-btn erp-btn-primary"><i class="bi bi-files"></i> Duplicar</button>
+      </div>
+    </div>
+  </div>
+</section>`,
+        snippet:`<!-- Base: cplus/views/mostrarResiduosInventariables.php:653-682. En producción el
+     Cancelar usa "erp-btn" SIN erp-btn-secondary (línea 674) — la misma degradación
+     documentada en la entrada Botonera de formulario. Aquí se normaliza al kit. -->
+<div class="modal fade" id="modalDuplicarResiduo" tabindex="-1" aria-labelledby="modalDuplicarResiduoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="post" action="/cplus/bff/entities/residuos_inventariables/proxies/duplicate.php" autocomplete="off">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDuplicarResiduoLabel">Duplicar residuo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="dup_codigo">Código <span class="gc-required">*</span></label>
+              <input type="text" name="codigo" id="dup_codigo" class="form-control" maxlength="50" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="dup_nombre">Nombre <span class="gc-required">*</span></label>
+              <input type="text" name="nombre" id="dup_nombre" class="form-control" maxlength="300" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="erp-btn erp-btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="erp-btn erp-btn-primary"><i class="bi bi-files"></i> Duplicar</button>
+          <input type="hidden" name="id" value="">
+          <input type="hidden" name="agregar" value="126">
+          <input type="hidden" name="_csrf" value="">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Abrir desde la acción de la fila; el submit lo cierra al navegar al proxy BFF.
+  var elDuplicar = document.getElementById('modalDuplicarResiduo');
+  bootstrap.Modal.getOrCreateInstance(elDuplicar).show();
+</script>`
+      },
+      {
+        name:"Trazabilidad",
+        description:"Modal centralizado #myModalT, inyectado por cplus/js/lib/GrincUtils.js en toda vista C+. Una vista nueva no copia markup: declara tipoTrza de su entidad en cplus/config/entities.php y llama a window.vertraza(documento, nombre) desde la acción de la fila.",
+        preview:`<section class="gc-modal-static gc-modal-static--lg gc-modal-trace">
+  <div class="gc-modal-static-frame">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Trazabilidad (Residuos peligrosos - Sede Norte)</h5>
+        <button type="button" class="btn-close" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed informe">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Elaboro</th>
+                <th>Motivo</th>
+                <th>Detalle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tc-center"><strong>2026-08-04</strong></td>
+                <td class="tc-center"><strong>ANA MARIA ROJAS</strong></td>
+                <td>Actualización</td>
+                <td>Cambio de frecuencia de 30 a 15 días.</td>
+              </tr>
+              <tr>
+                <td class="tc-center"><strong>2026-07-22</strong></td>
+                <td class="tc-center"><strong>CARLOS PEREZ</strong></td>
+                <td>Creación</td>
+                <td>Declaración creada desde el módulo de clientes.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary">Enterado</button>
+      </div>
+    </div>
+  </div>
+</section>`,
+        snippet:`<!-- NO copies el markup: #myModalT lo inyecta cplus/js/lib/GrincUtils.js (líneas 19-36) en toda vista C+.
+     1) Declara 'tipoTrza' de la entidad en cplus/config/entities.php; includes/menu_cplus.php lo publica
+        en window.CplusEntityTrza y GrincUtils.js lo resuelve solo.
+     2) Dispara el modal desde la acción de trazabilidad de la fila. -->
+<script>
+  // Camino genérico: declarar withTraza: true en crud() y dejar que lo dispare
+  // cplus/js/core/standard-actions.js:139-147, como hacen Embalajes (embalajes/datatable.js:20),
+  // Usuarios (usuarios/datatable.js:25-30), Sucursales (sucursales/datatable.js:19-24)
+  // y Roles (roles/datatable.js:9).
+  window.vertraza(row.id, row.nombre || '');
+  // Nota: Roles sobrescribe window.vertraza con su propia versión por BFF, que pinta
+  // el mismo #myModalT (cplus/js/entities/roles/datatable-constructor.js:100-125).
+</script>`
+      }
+    ],
+    snippet:`<!-- Esqueleto recomendado del modal C+. Base: cplus/views/mostrarSucursales.php:787-801,
+     el único modal de un módulo validado y el único con el kit erp-btn en los dos botones del pie.
+     El aria-labelledby del contenedor .modal es una MEJORA PROPUESTA del catálogo: ninguna vista
+     de módulo validado lo declara; el único precedente en el árbol es el modal transversal
+     #myModalT (cplus/js/lib/GrincUtils.js:20-21). -->
+<div class="modal fade" id="modalEjemplo" tabindex="-1" aria-labelledby="modalEjemploLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEjemploLabel"><i class="bi bi-clock"></i> Título del modal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body"><!-- contenido --></div>
+      <div class="modal-footer">
+        <button type="button" class="erp-btn erp-btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="erp-btn erp-btn-primary" id="guardarEjemplo">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id:"tabla-listado",
+    catalogExamples: ["acciones-de-fila","boton","modal"],
+    implementations: [
+      { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/datatable.js", detail: "12 columnas declarativas con buildHead y embudos filter:'select' en Módulo de acceso, Estado, Cliente, Rol y Asesor comercial (líneas 76-118)" },
+      { module: "Embalajes", agregar: 106, file: "cplus/js/entities/embalajes/datatable.js", detail: "El caso más simple: acciones + nombre/código/estado/descripción (líneas 64-77). La vista solo aporta la tabla vacía en cplus/views/mostrarEmbalajes.php (líneas 243-247)" },
+      { module: "Zonas", agregar: 118, file: "cplus/js/entities/zonas/datatable.js", detail: "pinRecentOnSave:true y filtros select alimentados por el BFF filters/zones antes de construir la tabla (líneas 69-97)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/datatable.js", detail: "22 columnas (1 de acciones + 21 de datos) y export:'dropdown' en la línea 104, que activa el menú Exportar / Exportar detallado en la toolbar (líneas 99-132)" },
+      { module: "Riesgos", agregar: 143, file: "cplus/js/entities/Riesgos/datatable.js", detail: "render propio del badge para un estado entero: data === 1 pinta badge bg-success, cualquier otro valor badge bg-secondary (línea 84)" }
+    ],
+    group:"Listados",
+    name:"Tabla de listado",
+    description:"Listado estándar de CPlus. La vista solo deja el contenedor y una etiqueta <code>table</code> vacía; <code>GrincDataTable.init(config)</code> lo construye por POST contra el BFF con <code>serverSide</code>, y <code>datatable-v2-shell.js</code> lo envuelve en el shell V2: toolbar, tarjeta y footer con paginación.",
+    use:"Usarlo como referencia del listado de cualquier módulo CPlus. Opciones de configuración: entityKey, columns, columnDefs, tableId, excelPath, pinRecentOnSave, dataCallback, onInit, buildHead, export y dom. Los anchos canónicos se piden por columna con width:'nombre', 'codigo', 'fecha' o 'descripcion'.",
+    avoid:"No copiar este HTML a una vista: el listado lo genera JavaScript contra el BFF. No armar el thead a mano con buildHead. No usarlo en tablas de detalle de modal o acordeón, que no llevan shell V2.",
+    deps:"jQuery, DataTables (build Bootstrap 5), Bootstrap CSS y Bootstrap Icons. En CPlus: cplus/js/lib/GrincDataTable.js más el bloque core declarado en cplus/js/sources.php; estilos productivos en cplus/scss/_datatables.scss.",
+    verified: true,
+    accessibility:"Cada botón de acción lleva title con tooltip de Bootstrap, que CplusInitTooltips reinicializa tras cada redibujado. El embudo declara aria-expanded y aria-label 'Filtrar' más el título de la columna. La paginación va en un contenedor role='navigation' aria-label='Paginación', cada botón trae su aria-label y los no disponibles usan disabled, no solo opacidad.",
+    note:"Una tabla se deja fuera del shell V2 con <code>data-cplus-shell=\"off\"</code> y el botón de Excel se apaga con <code>data-cplus-toolbar-excel=\"off\"</code> (cplus/js/core/datatable-v2-shell.js). <strong>Salvedad:</strong> el shell está contrastado contra producción, pero el juego de columnas es una composición del catálogo: ninguna vista tiene exactamente estas.",
+    stateOrder:["enabled","cargando","vacio"],
+    stateLabels:{
+      enabled:"Con datos: shell V2 completo, columna de acciones, badge de estado y footer con rango y paginación. La tercera fila está inactiva, por eso Editar y Eliminar dejan su hueco reservado.",
+      cargando:"Cargando: el shell y el thead ya están pintados antes de la primera respuesta del BFF y el footer muestra el texto de arranque. El loader que cablea la tabla es el overlay GLOBAL #cplus-loading-overlay que enciende CplusLoading.show('Cargando…') desde GrincDataTable.js: position:fixed, z-index 20000, fondo rgba(15,23,42,0.55) con desenfoque, spinner de 3rem y el mensaje. Aquí se emula a escala de la tarjeta porque position:fixed no es representable dentro del preview; en producción cubre toda la ventana, no solo la tabla.",
+      vacio:"Vacío: la consulta no devolvió filas. El texto es el literal de datatable-defaults.js, emptyTable: 'No hay datos disponibles'. Con un filtro aplicado el literal sería otro, zeroRecords: 'No se encontraron registros'."
+    },
+    states:{
+      enabled:`<section class="gc-table-listado-preview">
+  <section class="erp-card table-card cplus-v2-card">
+    <div class="table-toolbar">
+      <h2 class="card-title">Embalajes<span class="text-muted cplus-shell-count"> (3)</span></h2>
+      <div class="table-toolbar-actions">
+        <div class="dataTables_filter">
+          <label><input type="search" placeholder="Buscar..." aria-label="Buscar en la tabla"></label>
+        </div>
+        <button type="button" class="erp-btn erp-btn-excel table-tool-btn" data-cplus-excel="../../cplus/bff/shared/export-excel.php?entity=embalajes" title="Exportar a Excel">
+          <i class="bi bi-file-earmark-excel-fill"></i> Exportar
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm dataTable standard-table" style="width:100%">
+        <thead>
+          <tr>
+            <th class="table-actions">Acciones</th>
+            <th class="table-id">ID</th>
+            <th class="table-nombre"><span class="th-content"><span class="th-title">Nombre</span><button class="column-filter-btn" type="button" data-column="2" data-label="Nombre" data-type="text" aria-expanded="false" aria-label="Filtrar Nombre"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-codigo"><span class="th-content"><span class="th-title">Código</span><button class="column-filter-btn" type="button" data-column="3" data-label="Código" data-type="text" aria-expanded="false" aria-label="Filtrar Código"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-estado"><span class="th-content"><span class="th-title">Estado</span><button class="column-filter-btn is-active" type="button" data-column="4" data-label="Estado" data-type="select" aria-expanded="false" aria-label="Filtrar Estado"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-fecha">Fecha ingreso</th>
+            <th class="table-descripcion">Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="table-actions">
+              <div class="actions-group" aria-label="Acciones del registro">
+                <a href="incluir.php?agregar=106&actualizar=1&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+                <a href="incluir.php?agregar=106&actualizar=1" class="icon-action" title="Editar" data-bs-toggle="tooltip"><i class="bi bi-pencil"></i></a>
+                <button type="button" class="icon-action delete text-danger" title="Eliminar" data-bs-toggle="tooltip"><i class="bi bi-trash3"></i></button>
+                <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip"><i class="bi bi-toggle-on"></i></button>
+                <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip"><i class="bi bi-clock-history"></i></button>
+              </div>
+            </td>
+            <td class="table-id">1</td>
+            <td class="table-nombre">Caneca plástica 120 L</td>
+            <td class="table-codigo">EMB-001</td>
+            <td class="table-estado"><span class="badge bg-success">Activo</span></td>
+            <td class="table-fecha">2026-01-14</td>
+            <td class="table-descripcion table-truncate" title="Caneca con tapa para residuos ordinarios en punto ecológico">Caneca con tapa para residuos ordinarios en punto ecológico</td>
+          </tr>
+          <tr>
+            <td class="table-actions">
+              <div class="actions-group" aria-label="Acciones del registro">
+                <a href="incluir.php?agregar=106&actualizar=2&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+                <a href="incluir.php?agregar=106&actualizar=2" class="icon-action" title="Editar" data-bs-toggle="tooltip"><i class="bi bi-pencil"></i></a>
+                <button type="button" class="icon-action delete text-danger" title="Eliminar" data-bs-toggle="tooltip"><i class="bi bi-trash3"></i></button>
+                <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip"><i class="bi bi-toggle-on"></i></button>
+                <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip"><i class="bi bi-clock-history"></i></button>
+              </div>
+            </td>
+            <td class="table-id">2</td>
+            <td class="table-nombre">Guardián 2 L</td>
+            <td class="table-codigo">EMB-014</td>
+            <td class="table-estado"><span class="badge bg-success">Activo</span></td>
+            <td class="table-fecha">2026-02-03</td>
+            <td class="table-descripcion table-truncate" title="Recipiente rígido para cortopunzantes">Recipiente rígido para cortopunzantes</td>
+          </tr>
+          <tr>
+            <td class="table-actions">
+              <div class="actions-group" aria-label="Acciones del registro">
+                <a href="incluir.php?agregar=106&actualizar=3&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+                <span class="icon-action-placeholder" aria-hidden="true"></span>
+                <span class="icon-action-placeholder" aria-hidden="true"></span>
+                <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip"><i class="bi bi-toggle-off"></i></button>
+                <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip"><i class="bi bi-clock-history"></i></button>
+              </div>
+            </td>
+            <td class="table-id">3</td>
+            <td class="table-nombre">Bolsa roja 60 x 90</td>
+            <td class="table-codigo">EMB-022</td>
+            <td class="table-estado"><span class="badge bg-secondary">Inactivo</span></td>
+            <td class="table-fecha">2025-11-27</td>
+            <td class="table-descripcion table-truncate" title="Descontinuada: reemplazada por la referencia de 70 x 100">Descontinuada: reemplazada por la referencia de 70 x 100</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="cplus-shell-range">Mostrando 1 a 3 de 3 registros</span>
+      <div class="pagination" role="navigation" aria-label="Paginación">
+        <button class="page-btn" data-cplus-page="first" disabled aria-label="Primera">&laquo;</button>
+        <button class="page-btn" data-cplus-page="prev" disabled aria-label="Anterior">&lsaquo;</button>
+        <button class="page-btn active" data-cplus-page="0" aria-label="Página 1">1</button>
+        <button class="page-btn" data-cplus-page="next" disabled aria-label="Siguiente">&rsaquo;</button>
+        <button class="page-btn" data-cplus-page="last" disabled aria-label="Última">&raquo;</button>
+      </div>
+    </div>
+  </section>
+</section>`,
+      cargando:`<section class="gc-table-listado-preview">
+  <section class="erp-card table-card cplus-v2-card" style="position:relative">
+    <div class="table-toolbar">
+      <h2 class="card-title">Embalajes<span class="text-muted cplus-shell-count"></span></h2>
+      <div class="table-toolbar-actions">
+        <div class="dataTables_filter">
+          <label><input type="search" placeholder="Buscar..." aria-label="Buscar en la tabla"></label>
+        </div>
+        <button type="button" class="erp-btn erp-btn-excel table-tool-btn" data-cplus-excel="../../cplus/bff/shared/export-excel.php?entity=embalajes" title="Exportar a Excel">
+          <i class="bi bi-file-earmark-excel-fill"></i> Exportar
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm dataTable standard-table" style="width:100%">
+        <thead>
+          <tr>
+            <th class="table-actions">Acciones</th>
+            <th class="table-id">ID</th>
+            <th class="table-nombre"><span class="th-content"><span class="th-title">Nombre</span><button class="column-filter-btn" type="button" data-column="2" data-label="Nombre" data-type="text" aria-expanded="false" aria-label="Filtrar Nombre"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-codigo"><span class="th-content"><span class="th-title">Código</span><button class="column-filter-btn" type="button" data-column="3" data-label="Código" data-type="text" aria-expanded="false" aria-label="Filtrar Código"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-estado"><span class="th-content"><span class="th-title">Estado</span><button class="column-filter-btn" type="button" data-column="4" data-label="Estado" data-type="select" aria-expanded="false" aria-label="Filtrar Estado"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-fecha">Fecha ingreso</th>
+            <th class="table-descripcion">Descripción</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="cplus-shell-range">Cargando...</span>
+      <div class="pagination" role="navigation" aria-label="Paginación"></div>
+    </div>
+    <!-- Emulación del overlay GLOBAL #cplus-loading-overlay (loading.js:37-44). En producción es
+         position:fixed sobre toda la ventana; aquí se acota a la tarjeta solo para poder verlo. -->
+    <div id="cplus-loading-overlay" role="alert" aria-busy="true" style="position:absolute;inset:0;z-index:20000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(15,23,42,0.55);backdrop-filter:blur(2px)">
+      <div class="spinner-border text-light" style="width:3rem;height:3rem;border-width:0.3em" role="status" aria-hidden="true"></div>
+      <div class="cplus-loading__msg" style="color:#fff;font-weight:600;font-size:1.05rem;letter-spacing:0.2px">Cargando…</div>
+    </div>
+  </section>
+</section>`,
+      vacio:`<section class="gc-table-listado-preview">
+  <section class="erp-card table-card cplus-v2-card">
+    <div class="table-toolbar">
+      <h2 class="card-title">Embalajes<span class="text-muted cplus-shell-count"></span></h2>
+      <div class="table-toolbar-actions">
+        <div class="dataTables_filter">
+          <label><input type="search" placeholder="Buscar..." aria-label="Buscar en la tabla"></label>
+        </div>
+        <button type="button" class="erp-btn erp-btn-excel table-tool-btn" data-cplus-excel="../../cplus/bff/shared/export-excel.php?entity=embalajes" title="Exportar a Excel">
+          <i class="bi bi-file-earmark-excel-fill"></i> Exportar
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm dataTable standard-table" style="width:100%">
+        <thead>
+          <tr>
+            <th class="table-actions">Acciones</th>
+            <th class="table-id">ID</th>
+            <th class="table-nombre"><span class="th-content"><span class="th-title">Nombre</span><button class="column-filter-btn" type="button" data-column="2" data-label="Nombre" data-type="text" aria-expanded="false" aria-label="Filtrar Nombre"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-codigo"><span class="th-content"><span class="th-title">Código</span><button class="column-filter-btn" type="button" data-column="3" data-label="Código" data-type="text" aria-expanded="false" aria-label="Filtrar Código"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-estado"><span class="th-content"><span class="th-title">Estado</span><button class="column-filter-btn" type="button" data-column="4" data-label="Estado" data-type="select" aria-expanded="false" aria-label="Filtrar Estado"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-fecha">Fecha ingreso</th>
+            <th class="table-descripcion">Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dataTables_empty" colspan="7">No hay datos disponibles</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="cplus-shell-range">Mostrando 0 a 0 de 0 registros</span>
+      <div class="pagination" role="navigation" aria-label="Paginación">
+        <button class="page-btn active" disabled>1</button>
+      </div>
+    </div>
+  </section>
+</section>`
+    },
+    snippet:`<!-- Referencia de DOM. En producción la vista NO escribe esta tabla:
+     solo deja <div class="table-responsive"><table id="informe" class="table table-bordered table-sm"></table></div>
+     y el listado lo genera GrincDataTable.init({ entityKey, tableId, buildHead, columns, ... }).
+     El shell erp-card/table-toolbar/table-footer lo aplica solo datatable-v2-shell.js.
+     Las clases de ancho se repiten aquí en el th para que el ejemplo estático se vea alineado;
+     buildHead emite el th sin clase (cplus/js/lib/GrincDataTable.js, líneas 341-349). -->
+<section class="erp-card table-card cplus-v2-card">
+  <div class="table-toolbar">
+    <h2 class="card-title">Embalajes<span class="text-muted cplus-shell-count"> (3)</span></h2>
+    <div class="table-toolbar-actions">
+      <div class="dataTables_filter">
+        <label><input type="search" placeholder="Buscar..." aria-label="Buscar en la tabla"></label>
+      </div>
+      <button type="button" class="erp-btn erp-btn-excel table-tool-btn" data-cplus-excel="../../cplus/bff/shared/export-excel.php?entity=embalajes" title="Exportar a Excel">
+        <i class="bi bi-file-earmark-excel-fill"></i> Exportar
+      </button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered table-sm dataTable standard-table" style="width:100%">
+      <thead>
+        <tr>
+          <th class="table-actions">Acciones</th>
+          <th class="table-id">ID</th>
+          <th class="table-nombre"><span class="th-content"><span class="th-title">Nombre</span><button class="column-filter-btn" type="button" data-column="2" data-label="Nombre" data-type="text" aria-expanded="false" aria-label="Filtrar Nombre"><i class="bi bi-funnel"></i></button></span></th>
+          <th class="table-codigo">Código</th>
+          <th class="table-estado">Estado</th>
+          <th class="table-fecha">Fecha ingreso</th>
+          <th class="table-descripcion">Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="table-actions">
+            <div class="actions-group" aria-label="Acciones del registro">
+              <a href="incluir.php?agregar=106&actualizar=1&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+              <a href="incluir.php?agregar=106&actualizar=1" class="icon-action" title="Editar" data-bs-toggle="tooltip"><i class="bi bi-pencil"></i></a>
+              <button type="button" class="icon-action delete text-danger" title="Eliminar" data-bs-toggle="tooltip"><i class="bi bi-trash3"></i></button>
+              <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip"><i class="bi bi-toggle-on"></i></button>
+              <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip"><i class="bi bi-clock-history"></i></button>
+            </div>
+          </td>
+          <td class="table-id">1</td>
+          <td class="table-nombre">Caneca plástica 120 L</td>
+          <td class="table-codigo">EMB-001</td>
+          <td class="table-estado"><span class="badge bg-success">Activo</span></td>
+          <td class="table-fecha">2026-01-14</td>
+          <td class="table-descripcion table-truncate" title="Caneca con tapa para residuos ordinarios en punto ecológico">Caneca con tapa para residuos ordinarios en punto ecológico</td>
+        </tr>
+        <tr>
+          <td class="table-actions">
+            <div class="actions-group" aria-label="Acciones del registro">
+              <a href="incluir.php?agregar=106&actualizar=2&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+              <a href="incluir.php?agregar=106&actualizar=2" class="icon-action" title="Editar" data-bs-toggle="tooltip"><i class="bi bi-pencil"></i></a>
+              <button type="button" class="icon-action delete text-danger" title="Eliminar" data-bs-toggle="tooltip"><i class="bi bi-trash3"></i></button>
+              <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip"><i class="bi bi-toggle-on"></i></button>
+              <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip"><i class="bi bi-clock-history"></i></button>
+            </div>
+          </td>
+          <td class="table-id">2</td>
+          <td class="table-nombre">Guardián 2 L</td>
+          <td class="table-codigo">EMB-014</td>
+          <td class="table-estado"><span class="badge bg-success">Activo</span></td>
+          <td class="table-fecha">2026-02-03</td>
+          <td class="table-descripcion table-truncate" title="Recipiente rígido para cortopunzantes">Recipiente rígido para cortopunzantes</td>
+        </tr>
+        <tr>
+          <td class="table-actions">
+            <div class="actions-group" aria-label="Acciones del registro">
+              <a href="incluir.php?agregar=106&actualizar=3&ver=1" class="icon-action" title="Ver" data-bs-toggle="tooltip"><i class="bi bi-eye"></i></a>
+              <span class="icon-action-placeholder" aria-hidden="true"></span>
+              <span class="icon-action-placeholder" aria-hidden="true"></span>
+              <button type="button" class="icon-action" title="Activar/Desactivar" data-bs-toggle="tooltip"><i class="bi bi-toggle-off"></i></button>
+              <button type="button" class="icon-action" title="Trazabilidad" data-bs-toggle="tooltip"><i class="bi bi-clock-history"></i></button>
+            </div>
+          </td>
+          <td class="table-id">3</td>
+          <td class="table-nombre">Bolsa roja 60 x 90</td>
+          <td class="table-codigo">EMB-022</td>
+          <td class="table-estado"><span class="badge bg-secondary">Inactivo</span></td>
+          <td class="table-fecha">2025-11-27</td>
+          <td class="table-descripcion table-truncate" title="Descontinuada: reemplazada por la referencia de 70 x 100">Descontinuada: reemplazada por la referencia de 70 x 100</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-footer">
+    <span class="cplus-shell-range">Mostrando 1 a 3 de 3 registros</span>
+    <div class="pagination" role="navigation" aria-label="Paginación">
+      <button class="page-btn" data-cplus-page="first" disabled aria-label="Primera">&laquo;</button>
+      <button class="page-btn" data-cplus-page="prev" disabled aria-label="Anterior">&lsaquo;</button>
+      <button class="page-btn active" data-cplus-page="0" aria-label="Página 1">1</button>
+      <button class="page-btn" data-cplus-page="next" disabled aria-label="Siguiente">&rsaquo;</button>
+      <button class="page-btn" data-cplus-page="last" disabled aria-label="Última">&raquo;</button>
+    </div>
+  </div>
+</section>`
+  },
+  {
+    id:"filtros-listado",
+    catalogExamples: ["boton","campo-texto","campo-fecha","select-simple","seleccion-busqueda","tabla-listado"],
+    implementations: [
+      { module: "Clientes", agregar: 130, file: "cplus/views/mostrarClientes.php", detail: "Grid completa de 6 filtros: Nombre/ID, Clasificación interna, Asesor, Estado, Categoría y Ubicación, con botón Buscar (líneas 54-114)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Variante por GET a incluir.php con id de colapso propio usuariosFiltersCollapse (líneas 1084-1137)" },
+      { module: "Tipos de vehículo", agregar: 137, file: "cplus/views/mostrarTipoVehiculos.php", detail: "Versión mínima de dos filtros; usa label.form-label en vez de .form-group (líneas 170-204)" }
+    ],
+    group:"Listados",
+    name:"Filtros de listado",
+    description:"Tarjeta estándar que precede al listado en los módulos con búsqueda por formulario; no todos la llevan. Agrupa los campos en una rejilla de seis columnas y cierra con la botonera de consulta a la derecha. Bajo 768px el título se vuelve un botón que colapsa los filtros.",
+    use:"Usarlo como bloque estándar entre el encabezado del módulo y la tabla del listado. Los campos se arman con los patrones de la biblioteca: form-label o label suelto más form-control, form-select o select con búsqueda. El botón es el kit erp-btn en su variante erp-btn-primary.",
+    avoid:"No usarlo para el formulario de crear o editar: ese comparte el aspecto pero se llama form-card. No meter dentro acciones del módulo como Crear o Exportar: van en el encabezado o en la barra de la tabla. No sustituye al embudo de filtro por columna.",
+    deps:"Bootstrap CSS, Bootstrap JS Collapse (colapso móvil) y Bootstrap Icons. En producción los estilos salen de cplus/scss/_components.scss; los selects con búsqueda añaden chosen-select.",
+    verified: true,
+    accessibility:"Cada campo mantiene su label asociado por for/id. El título móvil es un button con aria-expanded y aria-controls hacia el id de .filters-collapse; el chevron rota por el selector [aria-expanded=\"true\"], así que ese atributo debe ser real y no decorativo. El botón de consulta es type=\"submit\", así que Enter busca desde cualquier campo. Los iconos son decorativos y deberían llevar aria-hidden=\"true\", cosa que producción no hace.",
+    note:"El id del contenedor colapsable debe ser único por página: producción usa <code>filtersCollapse</code> y, en Usuarios, <code>usuariosFiltersCollapse</code>.",
+    snippet:`<section class="card filters-card">
+  <div class="filters-card-header">
+    <h2 class="card-title filters-title-desktop">Filtros de búsqueda</h2>
+    <button type="button" class="filters-title-mobile"
+            data-bs-toggle="collapse" data-bs-target="#filtersCollapse"
+            aria-expanded="false" aria-controls="filtersCollapse">
+      <span><i class="bi bi-funnel"></i> Filtros de búsqueda</span>
+      <i class="bi bi-chevron-down filters-toggle-icon"></i>
+    </button>
+  </div>
+  <div class="collapse filters-collapse" id="filtersCollapse">
+    <form id="search" action="" method="post">
+      <div class="filters-grid">
+        <div class="form-group">
+          <label for="fechabusqueda">Desde</label>
+          <input type="date" class="form-control" id="fechabusqueda" name="fechabusqueda">
+        </div>
+        <div class="form-group">
+          <label for="fechabusqueda_hasta">Hasta</label>
+          <input type="date" class="form-control" id="fechabusqueda_hasta" name="fechabusqueda_hasta">
+        </div>
+        <div class="form-group">
+          <label for="clientebusqueda">Cliente</label>
+          <select class="form-select chosen-select" id="clientebusqueda" name="clientebusqueda">
+            <option value="" selected>Seleccione</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="codigo">Código</label>
+          <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Ingrese código">
+        </div>
+        <div class="form-group">
+          <label for="estadobusqueda">Estado</label>
+          <select class="form-select" id="estadobusqueda" name="estadobusqueda">
+            <option value="" selected>Seleccione</option>
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="docbusqueda">Documento</label>
+          <input type="text" class="form-control" id="docbusqueda" name="docbusqueda" placeholder="N&deg; de documento">
+        </div>
+      </div>
+      <div class="filters-actions">
+        <button type="submit" class="erp-btn erp-btn-primary">
+          <i class="bi bi-search"></i> Buscar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>`,
+    preview:`<section class="gc-filters-demo">
+  <section class="card filters-card">
+    <div class="filters-card-header">
+      <h2 class="card-title filters-title-desktop">Filtros de búsqueda</h2>
+      <button type="button" class="filters-title-mobile"
+              data-bs-toggle="collapse" data-bs-target="#filtersCollapseDemo"
+              aria-expanded="false" aria-controls="filtersCollapseDemo">
+        <span><i class="bi bi-funnel"></i> Filtros de búsqueda</span>
+        <i class="bi bi-chevron-down filters-toggle-icon"></i>
+      </button>
+    </div>
+    <div class="collapse filters-collapse" id="filtersCollapseDemo">
+      <form id="searchFiltrosDemo" action="" method="post" onsubmit="return false;">
+        <div class="filters-grid">
+          <div class="form-group">
+            <label for="filtro_demo_desde">Desde</label>
+            <input type="date" class="form-control" id="filtro_demo_desde" name="filtro_demo_desde">
+          </div>
+          <div class="form-group">
+            <label for="filtro_demo_hasta">Hasta</label>
+            <input type="date" class="form-control" id="filtro_demo_hasta" name="filtro_demo_hasta">
+          </div>
+          <div class="form-group">
+            <label for="filtro_demo_cliente">Cliente</label>
+            <select class="form-select" id="filtro_demo_cliente" name="filtro_demo_cliente">
+              <option value="" selected>Seleccione</option>
+              <option value="1">Gráficas ABC S.A.S</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="filtro_demo_codigo">Código</label>
+            <input type="text" class="form-control" id="filtro_demo_codigo" name="filtro_demo_codigo" placeholder="Ingrese código">
+          </div>
+          <div class="form-group">
+            <label for="filtro_demo_estado">Estado</label>
+            <select class="form-select" id="filtro_demo_estado" name="filtro_demo_estado">
+              <option value="" selected>Seleccione</option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="filtro_demo_doc">Documento</label>
+            <input type="text" class="form-control" id="filtro_demo_doc" name="filtro_demo_doc" placeholder="N&deg; de documento">
+          </div>
+        </div>
+        <div class="filters-actions">
+          <button type="submit" class="erp-btn erp-btn-primary">
+            <i class="bi bi-search"></i> Buscar
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</section>`
+  },
+  {
+    id:"loader-overlay",
+    implementations: [
+      { module: "Usuarios", agregar: 105, file: "cplus/js/core/loading.js", detail: "Definición del patrón: crea el nodo cplus-loading-overlay y lleva el conteo de referencias (líneas 22-75)" },
+      { module: "Embalajes", agregar: 106, file: "cplus/js/lib/GrincDataTable.js", detail: "wireTableLoading ata show/hide al ciclo preXhr/xhr de la tabla y bindNavLoadingOnce lo enciende al navegar (líneas 44-99)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/form-manager.js", detail: "showLoading al salir del formulario y CplusLoading.hideAll en beforeunload (líneas 782-812)" },
+      { module: "Roles", agregar: 124, file: "cplus/js/entities/roles/form-manager.js", detail: "showLoading/hideLoading envueltos en helpers locales alrededor del guardado, delegando en CplusLoading vía CplusAlerts (líneas 193-198), y un segundo showLoading con mensaje de redirección tras el éxito (línea 246)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/cargues.js", detail: "showLoading manual antes de subir el archivo del cargue masivo, con la guarda de existencia de CplusAlerts (líneas 74-75)" },
+    ],
+    group:"Feedback",
+    name:"Overlay de carga",
+    description:"Overlay oscuro que CPlus muestra mientras una operación está en curso. No se escribe en la vista: lo crea y lo oculta <code>CplusLoading</code> (cplus/js/core/loading.js), que mantiene un único nodo global con spinner y mensaje. También ofrece una forma localizada sobre un contenedor.",
+    use:"Usarlo en cualquier espera que deba bloquear la pantalla: primera carga de una tabla, paginación o filtrado que pase de 300 ms, envío de formulario, navegación y consultas remotas. Siempre por API: CplusLoading.show(mensaje), hide(), hideAll(), during(promesaOFuncion, mensaje) y overlayOn(elemento, opciones).",
+    avoid:"No escribir el markup en una vista ni crear otro overlay: el nodo es único y global. No llamar hide() sin show() previo: desbalancea el conteo y apaga el overlay de otra operación en curso. No dejarlo encendido al abrir un SweetAlert2: el fondo oscuro queda detrás del modal.",
+    deps:"Bootstrap 5 CSS (spinner-border, text-light) y cplus/js/core/loading.js, que cplus/js/sources.php carga en todas las vistas cplus. Sin SCSS propio: loading.js escribe los estilos en línea.",
+    verified: true,
+    accessibility:"El overlay se crea con role=alert y aria-busy=true, y el spinner con role=status y aria-hidden=true, así que lo único anunciado es el mensaje. Limitación real: no atrapa el foco ni marca inerte el fondo, de modo que el resto de la página sigue alcanzable con el tabulador durante la carga. Mantén el mensaje corto y en español (Cargando…, Guardando…).",
+    note:"Dos operaciones concurrentes comparten el overlay y la primera en terminar no lo apaga; <code>hideAll()</code> fuerza el contador a cero y <code>during()</code> oculta en éxito y en error. <strong>Salvedad:</strong> <code>overlayOn()</code> no tiene hoy ningún call-site en cplus. <strong>Divergencia:</strong> el nodo está duplicado en <code>cplus/js/core/alerts.js</code> sin conteo de referencias; editar el markup exige tocar los dos archivos.",
+    stateOrder:["pantalla","localizado"],
+    stateLabels:{
+      pantalla:"Pantalla completa. Lo que produce CplusLoading.show(mensaje): position:fixed, inset:0, z-index 20000, fondo rgba(15,23,42,0.55) con desenfoque, spinner de 3rem y mensaje debajo. Aquí se muestra dentro de una caja de demostración; en producción cubre toda la ventana.",
+      localizado:"Localizado sobre un elemento. Lo que produce CplusLoading.overlayOn(elemento): position:absolute, inset:0, z-index 5, fondo rgba(15,23,42,0.45) y spinner de 2.5rem, sin mensaje. El handle devuelto expone done(), que REMUEVE el nodo del DOM, y hay un timeout de seguridad de 4000 ms."
+    },
+    states:{
+      pantalla:`<div style="position:relative;min-height:230px;border:1px solid #d7dce2;border-radius:10px;overflow:hidden;background:#ffffff">
+  <div style="padding:18px;color:#575756">Contenido de la vista que queda debajo del overlay mientras carga.</div>
+  <div role="alert" aria-busy="true" style="position:absolute;inset:0;z-index:20000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(15,23,42,0.55);backdrop-filter:blur(2px)">
+    <div class="spinner-border text-light" style="width:3rem;height:3rem;border-width:0.3em" role="status" aria-hidden="true"></div>
+    <div class="cplus-loading__msg" style="color:#fff;font-weight:600;font-size:1.05rem;letter-spacing:0.2px">Cargando...</div>
+  </div>
+</div>`,
+      localizado:`<div style="position:relative;min-height:190px;border:1px solid #d7dce2;border-radius:10px;overflow:hidden;background:#ffffff">
+  <div style="padding:18px;color:#575756">Solo este bloque queda tapado. El resto de la pantalla sigue operativo.</div>
+  <div class="cplus-inline-loading" aria-busy="true" style="position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45)">
+    <div class="spinner-border text-light" style="width:2.5rem;height:2.5rem" role="status" aria-hidden="true"></div>
+  </div>
+</div>`
+    },
+    snippet:`<!-- No se escribe HTML en la vista: el overlay lo crea y lo destruye CplusLoading. -->
+<script>
+  // 1. Pantalla completa manual. SIEMPRE emparejar show/hide (conteo de referencias).
+  CplusLoading.show('Cargando…');
+  fetch(url).finally(function () { CplusLoading.hide(); });
+
+  // 2. Pantalla completa envolviendo una promesa: hide() automático en éxito y en error.
+  CplusLoading.during(fetch(url), 'Guardando…');
+
+  // 3. Reset duro (navegación, beforeunload): apaga aunque el contador siga en 2 o 3.
+  CplusLoading.hideAll();
+
+  // 4. Localizado sobre un contenedor. done() REMUEVE el nodo; hay timeout de seguridad.
+  var handle = CplusLoading.overlayOn(document.querySelector('.table-responsive'), { timeoutMs: 4000 });
+  handle.done();
+</script>
+
+<!-- Markup que genera CplusLoading.show(). Referencia: no copiarlo a una vista. -->
+<div id="cplus-loading-overlay" role="alert" aria-busy="true" style="position:fixed;inset:0;z-index:20000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(15,23,42,0.55);backdrop-filter:blur(2px)">
+  <div class="spinner-border text-light" style="width:3rem;height:3rem;border-width:0.3em" role="status" aria-hidden="true"></div>
+  <div class="cplus-loading__msg" style="color:#fff;font-weight:600;font-size:1.05rem;letter-spacing:0.2px">Cargando...</div>
+</div>
+
+<!-- Markup que genera CplusLoading.overlayOn(elemento). Referencia. -->
+<div class="cplus-inline-loading" aria-busy="true" style="position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45)">
+  <div class="spinner-border text-light" style="width:2.5rem;height:2.5rem" role="status" aria-hidden="true"></div>
+</div>`
+  },
+  {
+    id:"estado-vacio",
+    catalogExamples: ["opciones-acordeon"],
+    implementations: [
+      { module: "Embalajes", agregar: 106, file: "cplus/js/core/datatable-defaults.js", detail: "Textos literales emptyTable y zeroRecords que comparten todas las tablas cplus (líneas 6 y 14)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/js/lib/GrincDataTable.js", detail: "La factory inyecta CplusDataTableDefaults.language en cada tabla que construye (líneas 425-428)" },
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Tabla informe que pinta la fila dataTables_empty cuando el BFF no devuelve registros (líneas 243-247)" },
+      { module: "Líneas de negocio", agregar: 120, file: "cplus/js/entities/lineas_negocio/datatable.js", detail: "gc-empty-accordion-note para lista vacía y la misma clase con text-danger para error (líneas 267-271 y 281)" },
+      { module: "Roles", agregar: 124, file: "cplus/js/lib/RbacPermissionMatrix.js", detail: "gc-empty-accordion-note cuando un módulo del acordeón RBAC no tiene permisos configurados (líneas 419-423)" },
+    ],
+    group:"Feedback",
+    name:"Estado vacío",
+    description:"Cómo se comunica que no hay nada que mostrar. Hay dos formas productivas: la fila que pinta DataTables con los textos de datatable-defaults.js, y la nota gc-empty-accordion-note en bloques y acordeones.",
+    use:"En tablas no se escribe nada: inicializar por GrincDataTable, que hereda los textos en español. En bloques, acordeones y paneles rellenados por JavaScript, pintar un p.gc-empty-accordion-note que diga qué falta y cómo crearlo; con text-danger, el error de carga.",
+    avoid:"No inventar textos propios para la tabla vacía: son globales y cambiarlos rompe la consistencia. No dejar el contenedor en blanco ni con el placeholder de carga. No usar modal ni toast.",
+    deps:"Bootstrap CSS. Tablas: DataTables BS5 del bundle cplus-vendor.bundle.min.js, datatable-defaults.js y GrincDataTable.js. Bloques: gc-empty-accordion-note de cplus/scss/_gc-accordion.scss.",
+    verified: true,
+    accessibility:"La fila vacía es una fila real del tbody: el lector de pantalla la lee sin aria adicional. La nota de bloque es texto visible, no solo un icono. Si el contenedor se rellena por JavaScript, sustituir el placeholder de carga por la nota en el mismo nodo.",
+    variants:[
+      {
+        name:"Tabla sin registros",
+        description:"La entidad no tiene ni un registro: el listado se ve igual y solo cambia el cuerpo, una celda dataTables_empty a todo el ancho con el texto de emptyTable.",
+        preview:`<section class="gc-table-listado-preview">
+  <section class="erp-card table-card cplus-v2-card">
+    <div class="table-toolbar">
+      <h2 class="card-title">Embalajes<span class="text-muted cplus-shell-count"></span></h2>
+      <div class="table-toolbar-actions">
+        <div class="dataTables_filter">
+          <label><input type="search" placeholder="Buscar..." aria-label="Buscar en la tabla"></label>
+        </div>
+        <button type="button" class="erp-btn erp-btn-excel table-tool-btn" data-cplus-excel="../../cplus/bff/shared/export-excel.php?entity=embalajes" title="Exportar a Excel">
+          <i class="bi bi-file-earmark-excel-fill"></i> Exportar
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm dataTable standard-table" style="width:100%">
+        <thead>
+          <tr>
+            <th class="table-actions">Acciones</th>
+            <th class="table-id">ID</th>
+            <th class="table-nombre"><span class="th-content"><span class="th-title">Nombre</span><button class="column-filter-btn" type="button" data-column="2" data-label="Nombre" data-type="text" aria-expanded="false" aria-label="Filtrar Nombre"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-codigo"><span class="th-content"><span class="th-title">Código</span><button class="column-filter-btn" type="button" data-column="3" data-label="Código" data-type="text" aria-expanded="false" aria-label="Filtrar Código"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-estado"><span class="th-content"><span class="th-title">Estado</span><button class="column-filter-btn" type="button" data-column="4" data-label="Estado" data-type="select" aria-expanded="false" aria-label="Filtrar Estado"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-fecha">Fecha ingreso</th>
+            <th class="table-descripcion">Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dataTables_empty" colspan="7">No hay datos disponibles</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="cplus-shell-range">Mostrando 0 a 0 de 0 registros</span>
+      <div class="pagination" role="navigation" aria-label="Paginación">
+        <button class="page-btn active" disabled>1</button>
+      </div>
+    </div>
+  </section>
+</section>`,
+        snippet:`<!-- La fila vacía no se escribe: la emite DataTables cuando el body llega sin filas. -->
+<div class="table-responsive">
+  <table id="informe" class="table table-bordered table-sm" style="width:100%">
+    <!-- thead generado por GrincDataTable (buildHead) -->
+  </table>
+</div>
+
+<!-- Fila que emite DataTables. Referencia, no copiarla a una vista: -->
+<tr><td class="dataTables_empty" colspan="7">No hay datos disponibles</td></tr>`
+      },
+      {
+        name:"Tabla sin coincidencias",
+        description:"Hay registros pero el filtro no devolvió ninguno: texto de zeroRecords, el buscador conserva lo escrito y el pie añade el total sin filtrar.",
+        preview:`<section class="gc-table-listado-preview">
+  <section class="erp-card table-card cplus-v2-card">
+    <div class="table-toolbar">
+      <h2 class="card-title">Embalajes<span class="text-muted cplus-shell-count"></span></h2>
+      <div class="table-toolbar-actions">
+        <div class="dataTables_filter">
+          <label><input type="search" placeholder="Buscar..." aria-label="Buscar en la tabla" value="caneca azul"></label>
+        </div>
+        <button type="button" class="erp-btn erp-btn-excel table-tool-btn" data-cplus-excel="../../cplus/bff/shared/export-excel.php?entity=embalajes" title="Exportar a Excel">
+          <i class="bi bi-file-earmark-excel-fill"></i> Exportar
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm dataTable standard-table" style="width:100%">
+        <thead>
+          <tr>
+            <th class="table-actions">Acciones</th>
+            <th class="table-id">ID</th>
+            <th class="table-nombre"><span class="th-content"><span class="th-title">Nombre</span><button class="column-filter-btn" type="button" data-column="2" data-label="Nombre" data-type="text" aria-expanded="false" aria-label="Filtrar Nombre"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-codigo"><span class="th-content"><span class="th-title">Código</span><button class="column-filter-btn" type="button" data-column="3" data-label="Código" data-type="text" aria-expanded="false" aria-label="Filtrar Código"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-estado"><span class="th-content"><span class="th-title">Estado</span><button class="column-filter-btn" type="button" data-column="4" data-label="Estado" data-type="select" aria-expanded="false" aria-label="Filtrar Estado"><i class="bi bi-funnel"></i></button></span></th>
+            <th class="table-fecha">Fecha ingreso</th>
+            <th class="table-descripcion">Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dataTables_empty" colspan="7">No se encontraron registros</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="cplus-shell-range">Mostrando 0 a 0 de 0 registros (filtrado de 3 registros totales)</span>
+      <div class="pagination" role="navigation" aria-label="Paginación">
+        <button class="page-btn active" disabled>1</button>
+      </div>
+    </div>
+  </section>
+</section>`,
+        snippet:`<!-- Mismo listado: este estado no tiene markup propio. -->
+<!-- Textos en window.CplusDataTableDefaults.language (cplus/js/core/datatable-defaults.js): -->
+<!--   emptyTable:   No hay datos disponibles       -> la entidad no tiene registros -->
+<!--   zeroRecords:  No se encontraron registros    -> hay registros, el filtro no devolvió ninguno -->
+<!--   infoEmpty:    Mostrando 0 a 0 de 0 registros -->
+<!--   infoFiltered: (filtrado de _MAX_ registros totales) -->
+<!-- GrincDataTable.init los hereda solo: no redefinir language por entidad. -->
+<tr><td class="dataTables_empty" colspan="7">No se encontraron registros</td></tr>`
+      },
+      {
+        name:"Bloque o acordeón vacío",
+        description:"La nota gc-empty-accordion-note dentro de un acordeón o de cualquier contenedor rellenado por JavaScript: lista vacía, módulo sin permisos y, con text-danger, error de carga.",
+        preview:`<section>
+  <div class="gc-business-unit-body">
+    <p class="gc-empty-accordion-note">No hay unidades de negocio registradas.</p>
+  </div>
+  <div class="gc-business-unit-body">
+    <p class="gc-empty-accordion-note">Este módulo no tiene permisos configurados.</p>
+  </div>
+  <div class="gc-business-unit-body">
+    <p class="gc-empty-accordion-note text-danger">No se pudo cargar el listado de unidades de negocio.</p>
+  </div>
+</section>`,
+        snippet:`<!-- Lista vacía dentro del cuerpo de un acordeón -->
+<div class="gc-business-unit-body">
+  <p class="gc-empty-accordion-note">No hay unidades de negocio registradas.</p>
+</div>
+
+<!-- Error de carga: misma nota + text-danger de Bootstrap -->
+<div class="gc-business-unit-body">
+  <p class="gc-empty-accordion-note text-danger">No se pudo cargar el listado de unidades de negocio.</p>
+</div>
+
+<script>
+  // Patrón real (cplus/js/entities/lineas_negocio/datatable.js:267-271):
+  // el mismo contenedor pasa de placeholder de carga a nota vacía o a nota de error.
+  if (!units.length) {
+    $c.html('<p class="gc-empty-accordion-note">No hay unidades de negocio registradas.</p>');
+  }
+</script>`
+      },
+      {
+        name:"PROPUESTA — Bloque genérico (sin instancia productiva)",
+        description:"Propuesta para pantallas que no son tabla ni acordeón (paneles de detalle, resúmenes, pestañas). Reutiliza gc-empty-accordion-note con el icono y la fila de gc-accordion-loading. Sin instancia productiva: el sello de verificado no cubre esta variante.",
+        preview:`<section>
+  <div class="gc-empty-accordion-note" style="display:flex;align-items:center;gap:10px">
+    <i class="bi bi-info-circle" aria-hidden="true"></i>
+    <span>Aún no hay documentos adjuntos para este registro.</span>
+  </div>
+</section>`,
+        snippet:`<!-- PROPUESTA: sin instancia productiva en cplus a la fecha de este catálogo. -->
+<!-- Reutiliza gc-empty-accordion-note; el flex/gap replica gc-accordion-loading. -->
+<div class="gc-empty-accordion-note" style="display:flex;align-items:center;gap:10px">
+  <i class="bi bi-info-circle" aria-hidden="true"></i>
+  <span>Aún no hay documentos adjuntos para este registro.</span>
+</div>`
+      }
+    ],
+    snippet:`<!-- Tabla: la fila vacía la emite DataTables, no se escribe en la vista. -->
+<tr><td valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles</td></tr>
+
+<!-- Bloque o acordeón: nota visible en el mismo contenedor que se rellena por JavaScript. -->
+<div class="gc-business-unit-body">
+  <p class="gc-empty-accordion-note">No hay unidades de negocio registradas.</p>
+</div>`
+  },
+  {
+    id:"encabezado-modulo",
+    catalogExamples: ["encabezado-formulario","badge-estado","opciones-acordeon"],
+    implementations: [
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Piloto canónico V2: section-title con bi-box-seam y module-actions con el botón Nuevo (líneas 116-128)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Mismo patrón con bi-people-fill; el botón Nuevo se autooculta al abrir el formulario (líneas 244-259)" },
+      { module: "Configuraciones del sistema", agregar: 133, file: "cplus/views/mostrarConfiguracionesSistema.php", detail: "Variante solo título: module-header sin module-actions (líneas 115-120)" },
+      { module: "Unidades de negocio / Líneas de servicio", agregar: 120, file: "cplus/views/mostrarLineasNegocio.php", detail: "Migrada el 2026-08-10 al encabezado único cplus/views/partials/page-head.php: arma $phAcciones con el Nuevo primario más el secundario Volver, y pasa $subtitulo. Con la migración desaparecieron sus dos divergencias — un botón gc-module-btn duplicado dentro del propio header y una etiqueta de cierre desapareada &lt;/header&gt; para un &lt;section class=&quot;module-header&quot;&gt;" },
+    ],
+    group:"Organización",
+    name:"Encabezado de módulo (listado)",
+    description:"Encabezado de la página de listado: título con icono a la izquierda y acciones globales del módulo a la derecha, dentro de section.standard-screen. Es el primer bloque de las vistas cplus migradas a V2, antes de la card de filtros y la tabla.",
+    use:"Primer bloque de una vista de listado cplus (mostrarXxx.php). Aquí van el título del módulo, su icono bi-* y las acciones globales (Nuevo, Volver al listado). El h1 lleva section-title; el icono, section-title-icon; el grupo de botones, module-actions.",
+    avoid:"No usarlo dentro del formulario de crear/editar: ahí va encabezado-formulario, que titula el registro. No declarar dos module-header en la misma vista. No usar gc-module-header, gc-module-title ni gc-module-btn: son el duplicado de la maqueta, no el kit V2.",
+    deps:"Bootstrap Icons (icono bi-*) y la hoja compilada cplus/css/main.css. No necesita JavaScript propio.",
+    verified: true,
+    accessibility:"El h1.section-title debe ser el único h1 de la vista, con el nombre del módulo en un span. El icono bi-* es decorativo y producción lo emite sin aria-hidden: al copiar el patrón, añádelo. El botón Nuevo es un enlace con onclick: mantén el texto visible junto al icono.",
+    note:"Dos divergencias registradas. El eyebrow module-context existe en el SCSS y tiene helper (cplus_render_module_context), pero ninguna vista lo usa: por eso no va en el snippet. Y data-cplus-skip-header solo se lee en document.body, no en el section.standard-screen donde lo declaran las vistas: lo que evita la doble inyección del shell es el .module-header ya presente.",
+    variants:[
+      {
+        name:"Título más botón Nuevo (canónico)",
+        description:"La forma estándar del listado: h1 con icono a la izquierda y module-actions con el botón primario Nuevo a la derecha.",
+        preview:`<section class="standard-screen">
+  <section class="module-header">
+    <h1 class="section-title">
+      <i class="bi bi-box-seam section-title-icon" aria-hidden="true"></i>
+      <span>Embalajes</span>
+    </h1>
+    <div class="module-actions">
+      <a href="#" class="erp-btn erp-btn-primary" onclick="return false;">
+        <i class="bi bi-plus-lg"></i> Nuevo
+      </a>
+    </div>
+  </section>
+</section>`,
+        snippet:`<!-- data-cplus-skip-header="1" es la convención que usan las 28 vistas cplus para declarar
+     "esta vista trae su propio header". OJO: el shell lo lee solo en <body> (datatable-v2-shell.js:31),
+     así que aquí es decorativo; lo que de verdad evita la doble inyección es el .module-header de abajo
+     (datatable-v2-shell.js:32). -->
+<section class="standard-screen container" data-cplus-skip-header="1">
+
+  <section class="module-header">
+    <h1 class="section-title">
+      <i class="bi bi-box-seam section-title-icon" aria-hidden="true"></i>
+      <span>Embalajes</span>
+    </h1>
+    <div class="module-actions">
+      <a href="#" class="erp-btn erp-btn-primary" onclick="mostrar(); return false;">
+        <i class="bi bi-plus-lg"></i> Nuevo
+      </a>
+    </div>
+  </section>
+
+</section>`
+      },
+      {
+        name:"Solo título",
+        description:"Cuando el módulo no crea registros no se emite module-actions: solo el h1 y su icono.",
+        preview:`<section class="standard-screen">
+  <section class="module-header">
+    <h1 class="section-title">
+      <i class="bi bi-gear-fill section-title-icon" aria-hidden="true"></i>
+      <span>Configuraciones del sistema</span>
+    </h1>
+  </section>
+</section>`,
+        snippet:`<section class="module-header">
+  <h1 class="section-title">
+    <i class="bi bi-gear-fill section-title-icon" aria-hidden="true"></i>
+    <span>Configuraciones del sistema</span>
+  </h1>
+</section>`
+      },
+      {
+        name:"Con acción secundaria",
+        description:"En vistas que abren detalle o formulario a página completa, module-actions suma un erp-btn-secondary de retorno junto al primario.",
+        preview:`<section class="standard-screen">
+  <section class="module-header">
+    <h1 class="section-title">
+      <i class="bi bi-diagram-3 section-title-icon" aria-hidden="true"></i>
+      <span>Unidades de negocio / Líneas de servicio</span>
+    </h1>
+    <div class="module-actions">
+      <a href="#" class="erp-btn erp-btn-primary" onclick="return false;">
+        <i class="bi bi-plus-lg"></i> Nuevo
+      </a>
+      <a href="#" class="erp-btn erp-btn-secondary" onclick="return false;">
+        <i class="bi bi-arrow-left"></i> Volver al listado
+      </a>
+    </div>
+  </section>
+</section>`,
+        snippet:`<section class="module-header">
+  <h1 class="section-title">
+    <i class="bi bi-diagram-3 section-title-icon" aria-hidden="true"></i>
+    <span>Unidades de negocio / Líneas de servicio</span>
+  </h1>
+  <div class="module-actions">
+    <a href="#" class="erp-btn erp-btn-primary" onclick="mostrar(); return false;">
+      <i class="bi bi-plus-lg"></i> Nuevo
+    </a>
+    <a href="incluir.php?agregar=120" class="erp-btn erp-btn-secondary">
+      <i class="bi bi-arrow-left"></i> Volver al listado
+    </a>
+  </div>
+</section>`
+      }
+    ],
+    snippet:`<!-- data-cplus-skip-header="1": la vista trae su propio header, el shell JS no debe inyectar otro. -->
+<section class="standard-screen container" data-cplus-skip-header="1">
+
+  <section class="module-header">
+    <h1 class="section-title">
+      <i class="bi bi-box-seam section-title-icon" aria-hidden="true"></i>
+      <span>Embalajes</span>
+    </h1>
+    <div class="module-actions">
+      <a href="#" class="erp-btn erp-btn-primary" onclick="mostrar(); return false;">
+        <i class="bi bi-plus-lg"></i> Nuevo
+      </a>
+    </div>
+  </section>
+
+</section>`
+  },
+  {
+    id:"badge-estado",
+    catalogExamples: ["encabezado-modulo","alertas-librerias"],
+    implementations: [
+      { module: "Embalajes", agregar: 106, file: "cplus/js/entities/embalajes/datatable.js", detail: "Columna declarativa type: 'badge' (línea 74) — el HTML lo pinta el render centralizado INTERNO de GrincDataTable (función privada renderBadge, cplus/js/lib/GrincDataTable.js:261-270, cableada en :324). No es API pública: window.GrincDataTable solo expone init (GrincDataTable.js:474)" },
+      { module: "Clasificación interna", agregar: 122, file: "cplus/js/entities/clasificaciones/datatable.js", detail: "El mismo badge escrito a mano en el render de la columna Estado (líneas 28-34). Es el patrón MAYORITARIO: 15 entidades lo escriben así frente a 7 declarativas" },
+      { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/form-manager.js", detail: "Única píldora erp-badge de un módulo validado: renderParafiscalItem compone span.erp-badge con erp-badge-danger o erp-badge-success y el texto Vencida/Vigente, fuera de la tabla, dentro del bloque de documentos del formulario (líneas 567-574)" },
+      { module: "Categorías del declarado", agregar: 115, file: "cplus/js/entities/categorias_declarado/datatable.js", detail: "El badge escrito a mano en el render de la columna Estado, igual que Clasificación interna: badge bg-success / badge bg-secondary (líneas 81-82)" },
+      { module: "Roles", agregar: 124, file: "cplus/js/entities/roles/datatable.js", detail: "Columna declarativa type: 'badge' sobre el campo status_label, la forma a la que el catálogo quiere converger (línea 41)" },
+    ],
+    group:"Organización",
+    name:"Badge de estado",
+    description:"Píldora pastel que comunica el estado de un registro. En listados es un badge de Bootstrap (badge bg-success / badge bg-secondary) al que el SCSS de tablas da forma de píldora dentro de .dataTable o #informe. Fuera de la tabla, la misma píldora es erp-badge.",
+    use:"En un listado, declarar la columna con type: 'badge' y dejar que la pinte el render centralizado de GrincDataTable; es el objetivo al que converger. Fuera de la tabla usar erp-badge con erp-badge-success o erp-badge-danger: verde para el estado favorable y rojo para el desfavorable.",
+    avoid:"No usar grinc-badge ni gc-badge: existen en el SCSS pero sin consumidores y no son la píldora V2. table-estado es el ancho de la columna, no un badge. Fuera de .dataTable o #informe, bg-success queda con el verde crudo de Bootstrap: ahí va erp-badge.",
+    deps:"Listado: Bootstrap CSS, cplus/css/main.css y cplus/js/lib/GrincDataTable.js. erp-badge: solo cplus/css/main.css.",
+    verified: true,
+    accessibility:"El badge es texto, no solo color: la palabra Activo o Inactivo debe estar siempre presente. Si se rellena por JavaScript conviene declararlo con aria-live='polite'; es una mejora propuesta, ninguna instancia validada lo emite hoy. No es un control: no es clicable ni recibe foco.",
+    note:"Trampa verificada: en la tabla, Inactivo se marca con <code>bg-secondary</code>, pero el SCSS le aplica el pastel rojo (--screen-danger-bg): la clase dice secundario y el color dice peligro. <strong>Divergencia:</strong> no hay píldora V2 para un estado «en curso»; solo existen erp-badge-success y erp-badge-danger.",
+    variants:[
+      {
+        name:"Estado en listado (Activo / Inactivo)",
+        description:"El badge canónico de las tablas cplus: lo emite GrincDataTable cuando la columna declara type: 'badge', y solo es píldora dentro de .dataTable o #informe. renderBadge es privado; la API pública es GrincDataTable.init.",
+        preview:`<table class="dataTable">
+  <tbody>
+    <tr>
+      <td>Ruta urbana</td>
+      <td class="table-estado"><span class="badge bg-success">Activo</span></td>
+    </tr>
+    <tr>
+      <td>Barrido y limpieza</td>
+      <td class="table-estado"><span class="badge bg-secondary">Inactivo</span></td>
+    </tr>
+  </tbody>
+</table>`,
+        snippet:`<!-- Forma recomendada: declarar la columna y dejar que GrincDataTable pinte el badge.
+     type: 'badge' añade la clase table-estado y el render centralizado renderBadge().
+{ data: 'activo', title: 'Estado', type: 'badge', className: 'table-estado' }
+-->
+
+<!-- HTML resultante (solo se ve como píldora dentro de .dataTable o #informe): -->
+<span class="badge bg-success">Activo</span>
+<span class="badge bg-secondary">Inactivo</span>`
+      },
+      {
+        name:"Píldora fuera de la tabla (erp-badge)",
+        description:"Misma píldora para formularios, resúmenes y estados que no son Activo/Inactivo, como Vigente/Vencida en la lista de documentos del formulario de Usuarios.",
+        preview:`<div class="gc-badge-estado-demo">
+  <span class="erp-badge erp-badge-success">Vigente</span>
+  <span class="erp-badge erp-badge-danger">Vencida</span>
+</div>`,
+        snippet:`<span class="erp-badge erp-badge-success">Vigente</span>
+<span class="erp-badge erp-badge-danger">Vencida</span>
+
+<!-- Span compuesto por el JS del formulario (patrón de Usuarios,
+     cplus/js/entities/usuarios/form-manager.js:567-574): el script arma el nodo
+     completo alternando erp-badge-success / erp-badge-danger.
+     El id va genérico: no acoplarlo al selector de un módulo. -->
+<!-- aria-live: mejora propuesta, ninguna instancia validada lo emite hoy. -->
+<span id="estadoBadge" class="erp-badge" aria-live="polite"></span>`
+      }
+    ],
+    snippet:`<!-- En listado: el badge lo pinta GrincDataTable a partir de la columna declarativa.
+{ data: 'activo', title: 'Estado', type: 'badge', className: 'table-estado' }
+-->
+<span class="badge bg-success">Activo</span>
+<span class="badge bg-secondary">Inactivo</span>
+
+<!-- Fuera de la tabla (formularios, resúmenes): misma píldora con erp-badge. -->
+<span class="erp-badge erp-badge-success">Vigente</span>
+<span class="erp-badge erp-badge-danger">Vencida</span>`
+  },
+  {
+    id:"caja-informativa",
+    catalogExamples: ["encabezado-formulario","alertas-librerias","gc-formulario-elementos-chequeo"],
+    implementations: [
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Forma mayoritaria: h4 + p justo después del include de form-head.php, dentro del gate empty($ver) (líneas 145-150)" },
+      { module: "Manejo del residuo", agregar: 116, file: "cplus/views/mostrarManejoResiduo.php", detail: "Misma forma h4 + p tras el include de form-head.php, dentro del gate empty($ver) (línea 146)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Dos cajas en la misma vista: la de cabecera con h4 + p (líneas 274-279) y la de \"Información adicional\", solo h4, que abre el bloque #optadd (líneas 840-842)" },
+      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Forma corta en una sola línea, solo h4 y sin párrafo: div.gc-info-box con h4 «Información del elemento de chequeo» (línea 91). La misma forma corta está en mostrarClasificaciones.php:91, mostrarEstadosRecorrido.php:91 y mostrarDestinoAliado.php:91" },
+      { module: "Proveedores", agregar: 128, file: "cplus/views/mostrarProveedores.php", detail: "Única instancia sin el gate empty($ver): también se pinta en modo Ver (líneas 58-61)" },
+    ],
+    group:"Organización",
+    name:"Caja informativa de formulario",
+    description:"Callout estático que abre un formulario y explica en una frase qué se va a registrar. Es texto fijo escrito en la vista, no una respuesta del sistema: nunca cambia. Va después del encabezado de formulario y antes de la primera fila de campos.",
+    use:"Usarla como primer bloque dentro de form-card, justo tras el include de cplus/views/partials/form-head.php, para decir de qué registro se trata. La forma mayoritaria es un h4 con la entidad y un p con la instrucción. Envolverla en el gate empty($ver) para que no salga en modo Ver.",
+    avoid:"No usarla para feedback: los mensajes que responden a una acción son de CplusAlerts. Para la ayuda de un campo está gc-help. Sin botones, sin JavaScript y sin repetir el título de gc-form-head.",
+    deps:"Bootstrap CSS. La clase se define en cplus/scss/_gc-forms.scss y se compila a cplus/css/main.css. No necesita JavaScript.",
+    verified: true,
+    accessibility:"Es texto estático: no lleva role=\"alert\" ni aria-live, porque anunciarlo como alerta interrumpiría al lector de pantalla con información que ya estaba en la página. Su título es h4 y el del encabezado es h2, así que se salta el nivel h3; si la vista añade luego sus propios h3, la jerarquía queda desordenada. No es un control: no debe recibir foco. Contraste del cuerpo: 9,7:1.",
+    note:"El modificador <code>is-open</code> es inerte: la regla base ya declara <code>display:block</code> y <code>.gc-info-box.is-open</code> repite lo mismo. El bloque nació como desplegable en formularios_v2, pero ese toggle no se adoptó y aquí se usa siempre como callout estático visible.",
+    variants:[
+      {
+        name:"Título y párrafo",
+        description:"Forma mayoritaria: 12 de las 20 instancias productivas. El h4 nombra la entidad y el p da la instrucción. Es la que se copia por defecto.",
+        preview:`<section>
+  <div class="gc-info-box">
+    <h4>Información sobre el tipo de embalaje</h4>
+    <p>Complete los campos requeridos para registrar un nuevo tipo de embalaje.</p>
+  </div>
+</section>`,
+        snippet:`<?php if (empty($ver)) { ?>
+    <div class="gc-info-box">
+        <h4>Información sobre el tipo de embalaje</h4>
+        <p>Complete los campos requeridos para registrar un nuevo tipo de embalaje.</p>
+    </div>
+<?php } ?>`
+      },
+      {
+        name:"Solo título",
+        description:"Forma corta: 8 de las 20 instancias. Se usa cuando el nombre de la entidad basta, o cuando la caja solo separa un bloque interno, como «Información adicional» en Usuarios.",
+        preview:`<section>
+  <div class="gc-info-box"><h4>Información del elemento de chequeo</h4></div>
+  <div class="gc-info-box"><h4>Información adicional</h4></div>
+</section>`,
+        snippet:`<?php if (empty($ver)) { ?>
+    <div class="gc-info-box"><h4>Información del elemento de chequeo</h4></div>
+<?php } ?>`
+      },
+      {
+        name:"SIN USO PRODUCTIVO — Modificador compacto",
+        description:"El modificador gc-info-box--compact existe en el SCSS y viaja compilado, pero ninguna vista de cplus lo usa: reduce relleno, margen superior y tamaño de letra. El sello de verificado de la entrada no cubre esta variante.",
+        preview:`<section>
+  <div class="gc-info-box gc-info-box--compact">
+    <h4>Información sobre el tipo de vehículo</h4>
+    <p>Complete los campos requeridos para registrar un nuevo tipo de vehículo.</p>
+  </div>
+</section>`,
+        snippet:`<!-- SIN USO PRODUCTIVO: cero instancias en cplus/views a 2026-08-05. -->
+<!-- Definición: cplus/scss/_gc-forms.scss:467-473. Antes de usarlo, acordar si el modificador se adopta o se borra. -->
+<div class="gc-info-box gc-info-box--compact">
+    <h4>Información sobre el tipo de vehículo</h4>
+    <p>Complete los campos requeridos para registrar un nuevo tipo de vehículo.</p>
+</div>`
+      }
+    ],
+    snippet:`<div id="adicionar" class="form-card">
+    <form name="formularioRegistrar" id="formularioRegistrar" method="post" autocomplete="off">
+
+        <?php include 'cplus/views/partials/form-head.php'; ?>
+
+        <?php if (empty($ver)) { ?>
+            <div class="gc-info-box">
+                <h4>Información sobre el tipo de embalaje</h4>
+                <p>Complete los campos requeridos para registrar un nuevo tipo de embalaje.</p>
+            </div>
+        <?php } ?>
+
+        <div class="row g-3">
+            <!-- campos del formulario -->
+        </div>
+    </form>
+</div>`
+  },
+  {
+    id:"alerta-estatica",
+    catalogExamples: ["alertas-librerias","estado-vacio","gc-formulario-roles"],
+    implementations: [
+      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "La vista más densa del patrón: 5 alertas estáticas en un solo formulario — info de modo lectura (línea 88), warning de rol multimódulo (144), danger de validación que arranca oculto con style display:none (151), success como pista de la matriz RBAC (175) y warning de catálogo vacío (201)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "El ejemplo canónico de advertencia dentro de un formulario: alert-warning con role=alert, icono bi-info-circle y remate en strong, envuelto en row + col-md-12 y condicionado a que el usuario tenga trazabilidad (líneas 280-289)" },
+      { module: "Residuos inventariables", agregar: 126, file: "cplus/views/mostrarResiduosInventariables.php", detail: "Corte por error de carga: echo de div.alert.alert-danger.m-4 con el mensaje y salida inmediata, sin emitir el resto del módulo (línea 124)" },
+      { module: "Unidades de negocio / Líneas de servicio", agregar: 120, file: "cplus/views/mostrarLineasNegocio.php", detail: "Alerta de error del servidor escrita en la vista con role=alert y el mensaje escapado con cplus_e (línea 200)" },
+    ],
+    group:"Feedback",
+    name:"Alerta estática en la vista",
+    description:"Mensaje de bloque que la vista .php ya trae escrito cuando la página carga: el <code>div.alert.alert-*</code> de Bootstrap 5. Es feedback de contexto, no de reacción; ocupa sitio en el flujo y sigue ahí mientras la condición siga siendo cierta. El texto sale de variables PHP de la propia vista.",
+    use:"Usarla cuando el mensaje describe el estado de la pantalla y sigue siendo cierto mientras el usuario la mira: permiso denegado, modo solo lectura, un registro que no cargó. También como contenedor que el JavaScript rellena o destapa después. El tono lo elige el significado: danger bloquea, warning condiciona, info encuadra el modo, success confirma un hecho ya presente.",
+    avoid:"No usarla para el resultado de una acción (guardar, eliminar, exportar, un fallo de red): eso es CplusAlerts. No añadir botón de cierre: en producción ninguna alerta estática lleva alert-dismissible ni btn-close. No escribir CSS propio para .alert. No dejar el tono como único portador del significado. Y no copiar una alerta que el JavaScript destapa sin copiar también ese JavaScript.",
+    deps:"Bootstrap 5 CSS, ya compilado en cplus/css/main.min.css, con los tonos sobrescritos en cplus/scss/_variables.scss. Iconos bootstrap-icons. No requiere JavaScript: CPlus no usa el plugin Alert de Bootstrap.",
+    verified: true,
+    accessibility:"Producción casi nunca declara rol. Criterio: si el mensaje ya está en el HTML al cargar, el rol no aporta nada; sí importa cuando el JavaScript la inserta, destapa o rellena después, con role=alert para lo urgente y role=status para lo informativo. El color no puede ser el único portador del significado: el texto debe decir por sí solo qué pasa. Si la alerta contiene controles, no lleva role=alert, porque interrumpe la lectura en cada cambio.",
+    note:"<strong>No es la alerta de CplusAlerts.</strong> Si el mensaje describe el estado de la pantalla, es alerta estática; si describe el resultado de una acción, es el modal o el toast de <code>window.CplusAlerts</code>. Y si llega del servidor tras un redirect, <code>cplus/lib/flash.php</code> lo convierte en un modal de CplusAlerts. El icono es opcional y minoritario.",
+    variants:[
+      {
+        name:"Peligro — alert-danger (12 de 24)",
+        description:"El tono mayoritario, en dos formas reales: el corte por permisos, que se emite y hace return para que el módulo no se renderice, y el aviso de carga fallida dentro de una pantalla que sí se pinta.",
+        preview:`<section>
+  <p style="margin:0 0 8px;color:#575756;font-size:.9rem">Corte por permisos (5 vistas idénticas):</p>
+  <section class="standard-screen container">
+    <div class="alert alert-danger mt-4">
+      <strong>Acceso denegado.</strong> No tiene los permisos para ingresar a esta funcionalidad.
+    </div>
+  </section>
+  <p style="margin:20px 0 8px;color:#575756;font-size:.9rem">Registro que no se pudo cargar, dentro del formulario:</p>
+  <div class="alert alert-danger" role="alert">No se pudo cargar el registro. Verifique que exista e intente de nuevo.</div>
+  <p style="margin:20px 0 8px;color:#575756;font-size:.9rem">Contenedor de validación que arranca oculto y destapa el JavaScript:</p>
+  <div id="module-validation-message" class="alert alert-danger">Debe seleccionar un módulo para el rol.</div>
+</section>`,
+        snippet:`<!-- 1. Corte por permisos. Bloque literal repetido en 5 vistas de cplus/views;
+     hoy ninguna pertenece a un módulo validado, así que el catálogo lo documenta
+     como patrón vigente de producción sin citarlas como ejemplo. -->
+<section class="standard-screen container">
+  <div class="alert alert-danger mt-4">
+    <strong>Acceso denegado.</strong> No tiene los permisos para ingresar a esta funcionalidad.
+  </div>
+</section>
+
+<!-- 2. Registro que no se pudo cargar (mostrarLineasNegocio.php:200).
+     El texto sale de una variable PHP del request, ya escapada con cplus_e(). -->
+<div class="alert alert-danger" role="alert">No se pudo cargar el registro. Verifique que exista e intente de nuevo.</div>
+
+<!-- 3. Contenedor de validación vacío que el JS rellena y destapa
+     (mostrarRoles.php:151). En producción arranca con style="display:none". -->
+<div id="module-validation-message" class="alert alert-danger" style="display:none"></div>`
+      },
+      {
+        name:"Advertencia — alert-warning (7 de 24)",
+        description:"Regla de negocio que condiciona lo que el usuario puede hacer, sin ser un fallo técnico. Tres usos: aviso dentro del formulario, banner que destapa el JavaScript y contenedor que se rellena al abrir un modal.",
+        preview:`<section>
+  <p style="margin:0 0 8px;color:#575756;font-size:.9rem">Aviso dentro del formulario (el único con icono y strong):</p>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-warning" role="alert">
+        <strong><i class="bi bi-info-circle"></i> Advertencia:</strong>
+        Este usuario tiene registros asociados, por lo tanto <strong>no se puede modificar el Rol ni el Cliente</strong> para mantener la integridad de los datos históricos del sistema.
+      </div>
+    </div>
+  </div>
+  <p style="margin:20px 0 8px;color:#575756;font-size:.9rem">Banner que nace oculto y lo destapa el JS:</p>
+  <div class="alert alert-warning" role="alert">
+    <i class="bi bi-exclamation-triangle me-1"></i>
+    El servicio no está activo — avise al administrador.
+  </div>
+  <p style="margin:20px 0 8px;color:#575756;font-size:.9rem">Aviso compacto de regla de negocio (py-2 px-3 small):</p>
+  <div class="alert alert-warning py-2 px-3 small mt-2" role="alert">Ya existe un registro con ese código en este tenant.</div>
+</section>`,
+        snippet:`<!-- 1. Aviso dentro del formulario (mostrarUsuarios.php:281-288).
+     Único de los 24 que combina icono y strong de encabezado. -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="alert alert-warning" role="alert">
+      <strong><i class="bi bi-info-circle"></i> Advertencia:</strong>
+      Este usuario tiene registros asociados, por lo tanto <strong>no se puede modificar el Rol ni el Cliente</strong> para mantener la integridad de los datos históricos del sistema.
+    </div>
+  </div>
+</div>
+
+<!-- 2. Banner que el JS destapa quitando d-none. Patrón disponible: hoy ninguna
+     instancia con role=alert + icono destapada por JS vive en un módulo validado. -->
+<div id="healthBanner" class="alert alert-warning d-none" role="alert">
+  <i class="bi bi-exclamation-triangle me-1"></i>
+  El servicio no está activo — avise al administrador.
+</div>
+
+<!-- 3. Aviso que el JS rellena y destapa (mostrarRoles.php:151).
+     Divergencia real: Roles oculta con style="display:none" inline, no con la
+     utilidad d-none; recomendar d-none es una mejora propuesta del catálogo. -->
+<div id="module-validation-message" class="alert alert-danger" style="display:none"></div>`
+      },
+      {
+        name:"Información — alert-info (3 de 24)",
+        description:"Explica en qué modo se está viendo la pantalla, o que un bloque no tiene contenido adicional. No anuncia problema ni éxito: solo encuadra lo que el usuario mira. Ninguna instancia lleva icono ni rol.",
+        preview:`<section>
+  <p style="margin:0 0 8px;color:#575756;font-size:.9rem">Modo lectura de un formulario:</p>
+  <div class="alert alert-info">
+    Está consultando este rol en modo lectura. Use el botón <strong>Editar</strong> en la tabla para habilitar los cambios.
+  </div>
+  <p style="margin:20px 0 8px;color:#575756;font-size:.9rem">Modo consulta por falta de permiso de modificación:</p>
+  <div class="alert alert-info">
+    Modo consulta: no tiene el permiso de modificación (<code>1a1</code>) sobre este módulo.
+  </div>
+</section>`,
+        snippet:`<!-- 1. Modo lectura del formulario (mostrarRoles.php:88-90). -->
+<div class="alert alert-info">
+  Está consultando este rol en modo lectura. Use el botón <strong>Editar</strong> en la tabla para habilitar los cambios.
+</div>
+
+<!-- 2. Modo consulta por permiso ausente (mostrarDatos.php:287-289).
+     El code del permiso se muestra literal dentro de code. -->
+<div class="alert alert-info">
+  Modo consulta: no tiene el permiso de modificación (<code>1a1</code>) sobre este módulo.
+</div>`
+      },
+      {
+        name:"Éxito — alert-success (2 de 24)",
+        description:"El tono menos usado. No confirma una acción recién hecha, sino un hecho ya presente en el registro: un archivo adjunto, o una pista que acompaña un panel vacío. Para confirmar un guardado, el toast de CplusAlerts.",
+        preview:`<section>
+  <p style="margin:0 0 8px;color:#575756;font-size:.9rem">Archivo ya adjunto en el registro (único success con icono):</p>
+  <div class="alert alert-success py-2 mb-0">
+    <i class="bi bi-file-earmark-pdf"></i>
+    Ficha de caracterización cargada: <strong>ficha_residuo_2026.pdf</strong>.
+    Adjuntar un nuevo PDF la reemplaza.
+  </div>
+  <p style="margin:20px 0 8px;color:#575756;font-size:.9rem">Pista dentro del panel de la matriz RBAC:</p>
+  <div class="tab-content">
+    <div class="alert alert-success rbac-matrix__hint" id="rbac-matrix-hint">
+      Seleccione uno o varios módulos para visualizar y ajustar los permisos disponibles.
+    </div>
+  </div>
+</section>`,
+        snippet:`<!-- 1. Alerta de confirmación con icono. Patrón disponible: hoy no hay instancia
+     en un módulo validado (la única del árbol está en un módulo sin terminar).
+     py-2 mb-0 lo aprieta para que quepa al pie del bloque de carga. -->
+<div class="alert alert-success py-2 mb-0">
+  <i class="bi bi-file-earmark-pdf"></i>
+  Ficha de caracterización cargada: <strong>ficha_residuo_2026.pdf</strong>.
+  Adjuntar un nuevo PDF la reemplaza.
+</div>
+
+<!-- 2. Pista de panel vacío (mostrarRoles.php:175-177).
+     rbac-matrix__hint solo anula el margin-bottom (cplus/scss/_rbac-matrix.scss:56-58). -->
+<div class="alert alert-success rbac-matrix__hint" id="rbac-matrix-hint">
+  Seleccione uno o varios módulos para visualizar y ajustar los permisos disponibles.
+</div>`
+      }
+    ],
+    snippet:`<!-- Esqueleto del patrón. Solo dos clases: la base y el tono.
+     Sin botón de cierre: alert-dismissible y data-bs-dismiss="alert"
+     tienen 0 apariciones en todo cplus/. -->
+<div class="alert alert-danger">
+  <strong>Acceso denegado.</strong> No tiene los permisos para ingresar a esta funcionalidad.
+</div>
+
+<div class="alert alert-warning" role="alert">
+  Este usuario tiene registros asociados, por lo tanto no se puede modificar el Rol ni el Cliente.
+</div>
+
+<div class="alert alert-info">
+  Está consultando este registro en modo lectura.
+</div>
+
+<div class="alert alert-success py-2 mb-0">
+  Ficha de caracterización cargada.
+</div>
+
+<!-- Cuando el JavaScript lo rellena o lo destapa después, sí conviene el rol:
+     role="alert" para lo urgente, role="status" para lo informativo. -->
+<div id="healthBanner" class="alert alert-warning d-none" role="alert"></div>`
+  },
+  {
+    id:"filtros-columna",
+    catalogExamples: ["tabla-listado","filtros-listado","boton"],
+    implementations: [
+      { module: "Usuarios", agregar: 105, file: "cplus/js/entities/usuarios/datatable.js", detail: "Referencia del patrón: cinco columnas con filter select — Módulo de acceso, Estado, Cliente, Rol y Asesor comercial — con sus filterOptions (líneas 104-114)" },
+      { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/datatable.js", detail: "Mezcla los dos tipos: Nombre e ID con filter text, y Código, Tipo, Estado y Clasificación interna con filter select (líneas 107-112)" },
+      { module: "Roles", agregar: 124, file: "cplus/js/entities/roles/datatable.js", detail: "Columna Estado declarativa con type: 'badge' dentro del mismo bloque de columnas declarativas del listado (línea 41)" },
+      { module: "Zonas", agregar: 118, file: "cplus/js/entities/zonas/datatable.js", detail: "Cuatro columnas select alimentadas por buildOptions sobre los filtros que devuelve el BFF (líneas 78-87)" },
+      { module: "Residuos inventariables", agregar: 126, file: "cplus/js/entities/residuos_inventariables/datatable.js", detail: "Cinco columnas select consecutivas, el caso más denso del patrón (líneas 121-151)" }
+    ],
+    group:"Listados",
+    name:"Filtros por columna (embudo)",
+    description:"Filtro por columna en el encabezado de la tabla: cada columna filtrable muestra un embudo junto a su título y al pulsarlo se abre un popover único, colgado del body, que se reposiciona bajo el embudo activo.",
+    use:"Para filtrar un listado por una columna concreta. No se escribe a mano: se declara en GrincDataTable.init con filter text o filter select, y filterOptions alimenta la lista del select. Para criterios que no son columna, usar la tarjeta de filtros de listado.",
+    avoid:"No usar el filtro retirado del pie (th class filter o selectfilter en el tfoot): este embudo lo reemplaza. No escribir a mano el markup del embudo ni del popover, ni filtrar en el navegador: la tabla es serverSide.",
+    deps:"main.css de CPlus (kit erp-btn y estilos de _datatables.scss) + bootstrap-icons + jQuery + DataTables + cplus/js/lib/GrincDataTable.js + cplus/js/core/column-filters.js.",
+    verified: true,
+    accessibility:"El embudo es un button con aria-label «Filtrar» más el título de la columna y alterna aria-expanded. El popover declara aria-hidden y al abrirse mueve el foco a su primer control; en el filtro de texto, Enter aplica. Limitación real: el popover cuelga del body, no declara role de diálogo ni devuelve el foco al embudo al cerrarse.",
+    note:"El preview muestra el popover abierto para poder verlo; en producción es <code>position:fixed</code>, arranca oculto y solo aparece al pulsar el embudo.",
+    variants:[
+      {
+        name:"Embudo en el encabezado",
+        description:"Celda de encabezado de una columna filtrable: título y embudo dentro del mismo contenedor para que no se separen al ajustar anchos. Lo genera GrincDataTable.",
+        preview:`<div class="gc-demo-colfilter">
+  <table class="table dataTable" style="margin:0">
+    <thead>
+      <tr>
+        <th><span class="th-content"><span class="th-title">Nombre</span></span></th>
+        <th><span class="th-content"><span class="th-title">Módulo de acceso</span><button class="column-filter-btn" type="button" data-column="1" data-label="Módulo de acceso" data-type="select" aria-expanded="false" aria-label="Filtrar Módulo de acceso"><i class="bi bi-funnel"></i></button></span></th>
+        <th><span class="th-content"><span class="th-title">Estado</span><button class="column-filter-btn is-active" type="button" data-column="2" data-label="Estado" data-type="select" aria-expanded="false" aria-label="Filtrar Estado"><i class="bi bi-funnel"></i></button></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Ana Mendez</td><td>Logística</td><td>Activo</td></tr>
+      <tr><td>Andrea Cabrera</td><td>Administrativo</td><td>Activo</td></tr>
+    </tbody>
+  </table>
+</div>`,
+        snippet:`<!-- Generado por GrincDataTable a partir de la config de columnas. No se escribe a mano. -->
+<th>
+  <span class="th-content">
+    <span class="th-title">Módulo de acceso</span>
+    <button class="column-filter-btn" type="button"
+            data-column="1" data-label="Módulo de acceso" data-type="select"
+            aria-expanded="false" aria-label="Filtrar Módulo de acceso">
+      <i class="bi bi-funnel"></i>
+    </button>
+  </span>
+</th>`
+      },
+      {
+        name:"Popover de selección",
+        description:"El de filter select. Subtítulo «Seleccione una opción» y lista que siempre empieza por Todos, equivalente a quitar el filtro.",
+        preview:`<div class="gc-demo-colfilter">
+  <div class="column-filter-popover is-open" aria-hidden="false">
+    <div class="column-filter-popover-header"><strong>Módulo de acceso</strong><span>Seleccione una opción</span></div>
+    <select class="column-filter-control" data-filter-select>
+      <option value="">Todos</option>
+      <option value="logistica">Logística</option>
+      <option value="administrativo">Administrativo</option>
+      <option value="cliente">Cliente</option>
+    </select>
+    <div class="column-filter-actions">
+      <button class="erp-btn erp-btn-secondary" type="button" data-filter-clear>Limpiar</button>
+      <button class="erp-btn erp-btn-secondary" type="button" data-filter-cancel>Cancelar</button>
+      <button class="erp-btn erp-btn-primary" type="button" data-filter-apply>Aplicar</button>
+    </div>
+  </div>
+</div>`,
+        snippet:`<!-- Lo construye CplusColumnFilters dentro de #columnFilterPopover, único en el body. -->
+<div class="column-filter-popover is-open" aria-hidden="false">
+  <div class="column-filter-popover-header">
+    <strong>Módulo de acceso</strong><span>Seleccione una opción</span>
+  </div>
+  <select class="column-filter-control" data-filter-select>
+    <option value="">Todos</option>
+    <option value="logistica">Logística</option>
+  </select>
+  <div class="column-filter-actions">
+    <button class="erp-btn erp-btn-secondary" type="button" data-filter-clear>Limpiar</button>
+    <button class="erp-btn erp-btn-secondary" type="button" data-filter-cancel>Cancelar</button>
+    <button class="erp-btn erp-btn-primary" type="button" data-filter-apply>Aplicar</button>
+  </div>
+</div>`
+      },
+      {
+        name:"Popover de texto",
+        description:"El de filter text. Subtítulo «Búsqueda por texto»; el campo aplica también con Enter, sin pulsar Aplicar.",
+        preview:`<div class="gc-demo-colfilter">
+  <div class="column-filter-popover is-open" aria-hidden="false">
+    <div class="column-filter-popover-header"><strong>Nombre</strong><span>Búsqueda por texto</span></div>
+    <input class="column-filter-control" type="text" placeholder="Escriba para filtrar..." data-filter-text value="">
+    <div class="column-filter-actions">
+      <button class="erp-btn erp-btn-secondary" type="button" data-filter-clear>Limpiar</button>
+      <button class="erp-btn erp-btn-secondary" type="button" data-filter-cancel>Cancelar</button>
+      <button class="erp-btn erp-btn-primary" type="button" data-filter-apply>Aplicar</button>
+    </div>
+  </div>
+</div>`,
+        snippet:`<div class="column-filter-popover is-open" aria-hidden="false">
+  <div class="column-filter-popover-header">
+    <strong>Nombre</strong><span>Búsqueda por texto</span>
+  </div>
+  <input class="column-filter-control" type="text" placeholder="Escriba para filtrar..." data-filter-text value="">
+  <div class="column-filter-actions">
+    <button class="erp-btn erp-btn-secondary" type="button" data-filter-clear>Limpiar</button>
+    <button class="erp-btn erp-btn-secondary" type="button" data-filter-cancel>Cancelar</button>
+    <button class="erp-btn erp-btn-primary" type="button" data-filter-apply>Aplicar</button>
+  </div>
+</div>`
+      },
+      {
+        name:"Declaración en JavaScript",
+        description:"El origen de todo lo anterior: en la práctica solo se escribe esto. GrincDataTable.init pasa a CplusColumnFilters las columnas que declaren filter.",
+        preview:`<div class="gc-demo-colfilter gc-demo-colfilter-code">
+  <p>Las columnas con <code>filter</code> reciben embudo automáticamente. <code>filterOptions</code> alimenta la lista del tipo <code>select</code>.</p>
+</div>`,
+        snippet:`GrincDataTable.init({
+  tableId: "#informe",
+  entity: "usuarios",
+  columns: [
+    { data: "nombre", title: "Nombre", filter: "text" },
+    { data: "tipo",   title: "Módulo de acceso", filter: "select", filterOptions: buildOptions(filters.tipo) },
+    { data: "estado", title: "Estado", type: "badge", filter: "select", filterOptions: buildOptions(filters.estado) }
+  ]
+});`
+      }
+    ]
   }
 
 

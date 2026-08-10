@@ -23,7 +23,7 @@ mockups/<modulo>/   Capturas numeradas de cada módulo migrado
 ## Receta: agregar un componente
 
 1. Abre `data/componentes.js` y copia un objeto existente del grupo que corresponda
-   (`Campos`, `Bloques`, `Advertencias`, `Organización` o `Formularios`).
+   (`Acciones`, `Campos`, `Bloques`, `Listados`, `Modales`, `Feedback`, `Organización` o `Formularios`).
 2. Cambia `id` (único, kebab-case), `name`, `description`, `use`, `avoid`, `deps` y `accessibility`.
 3. Pon el HTML del ejemplo en `snippet` (es lo que el desarrollador copia). Si aplica, agrega
    `states: { enabled, error, disabled }` con el HTML de cada estado.
@@ -98,6 +98,16 @@ implementations: [
 
 ## Changelog
 
+- **v1.4 (2026-08-05)** — Barrido completo de patrones generales cplus: el catálogo pasa de 24 a 34
+  entradas con `boton`, `botonera-formulario`, `acciones-de-fila`, `modal`, `tabla-listado`,
+  `filtros-listado`, `loader-overlay`, `estado-vacio`, `encabezado-modulo` y `badge-estado`, cada una
+  contrastada contra `cplus/scss/` y vistas productivas (`verified: true` sube de 11 a 21). Los grupos
+  del visor pasan de 5 a 8: `Advertencias` se renombra `Feedback` y se agregan `Acciones`, `Listados` y
+  `Modales`. El buscador ahora indexa nombre, id y descripción (antes solo nombre) y el selftest crece de
+  9 a 13 checks. `assets/grinclic-forms.css` suma 11 secciones "Espejo visor" que replican estilos
+  productivos solo para el preview: se editan aquí, nunca se copian de vuelta a producción. Las
+  divergencias biblioteca↔producción halladas en el barrido se reportan aparte; esta biblioteca sigue
+  sin modificar `cplus/scss/`.
 - **v1.3 (2026-07-30)** — Sección de ejemplos re-estilada con la familia visual del catálogo
   (variables `--gc-*`, grid 128px) + fila **"Verlo ya usado en esta biblioteca"** (campo
   `catalogExamples`): enlaces internos a los formularios completos donde el componente aparece usado.
