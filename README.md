@@ -47,6 +47,15 @@ variants: [
   patrones grandes (tipo residuos inventariables) que no caben en el visor.
 - Un componente sin `variants` se comporta como siempre.
 
+## Receta: soltar una entrega de diseño (render-only)
+
+1. Copia el `.html` a `ejemplos/entregas/` (el nombre del archivo será el título:
+   `tabla-residuos_v2.html` → «Tabla residuos v2»).
+2. Doble clic a `actualizar-entregas.cmd` (raíz de la biblioteca): regenera `data/entregas.js`.
+3. Refresca `index.html`: la entrega aparece en el grupo **Entregas**, solo render
+   (iframe + «Abrir completo»), sin panel de código. Para retirarla, borra el archivo
+   y vuelve a ejecutar el `.cmd`.
+
 ## Receta: documentar ejemplos de implementación real
 
 Cada componente puede mostrar la sección **Ejemplos de implementación** (entre el preview y el código
@@ -98,6 +107,29 @@ implementations: [
 
 ## Changelog
 
+- **v1.8 (2026-08-11)** — Nuevo grupo **Entregas** (render-only): carpeta `ejemplos/entregas/` +
+  script `herramientas/actualizar-entregas.ps1` (doble clic en `actualizar-entregas.cmd`, raíz de la
+  biblioteca) regeneran el manifiesto `data/entregas.js` (`window.GC_ENTREGAS`); el visor sintetiza
+  cada entrega como componente con iframe + botón «Abrir completo», sin panel de código ni
+  implementaciones, y el grupo solo aparece en el nav si el manifiesto trae al menos una entrada.
+  Suma 2 checks de selftest cuando hay entregas activas (o 1 en modo sin entregas, rama alternativa
+  del mismo check). El espejo `gc-page-header` de `assets/grinclic-forms.css` se revalida contra
+  `cplus` HEAD `5859e8b1` (working tree limpio): 32/32 reglas, las entradas `encabezado-formulario`/
+  `encabezado-modulo` y los 6 `ejemplos/*.html` sin divergencias — constancia, sin cambios de código.
+  Barrido estético contra los tokens productivos (radio base 8px, modal 15px, checkbox 5px, ayuda
+  999px, verde `#1b7f4d`): 37 instancias de `.btn` que heredaban el radio de fábrica de Bootstrap CDN
+  (gate automatizado 110→73→0) se corrigen en `assets/grinclic-forms.css` vía
+  `--bs-btn-border-radius:8px` (excluye `.btn-sm`/`.btn-lg`); las 73 líneas restantes quedan
+  documentadas en el comentario del espejo como excepciones canónicas verificadas contra `cplus/scss`
+  (control segmentado `.gc-yes-no`, tamaños, modal de trazabilidad, mecánica nativa de
+  `.input-group`). Aparte y fuera de ese conteo, `.modal-content` genérico se corrige con
+  `--bs-modal-border-radius:15px`, verificado a mano en las 4 variantes del componente Modal. Suma
+  el check permanente «radio de botón alineado al token productivo». El
+  catálogo no cambia: 39 entradas, 24 verificadas (las entregas no viven en `data/componentes.js`).
+  Selftest final: **15 checks** en modo sin entregas (13 base + 1 de entregas + 1 de radio).
+  Divergencias internas de producción encontradas y reportadas aparte, sin tocar `cplus/scss/`:
+  cuatro radios de modal distintos (15/16/9.6/14px) y dos kits de botón con radio propio (`erp-btn`
+  10px vs `.btn` 8px).
 - **v1.7 (2026-08-11)** — La entrada `checkbox` (grupo Campos) se reestructura a **dos variantes**:
   «Estándar» (checkbox suelto + confirmación de revisión gc-review, estados enabled/error/disabled)
   y **«Tarjeta de opción (gc-check-card)»** con estados propios normal/marcado/disabled y snippet real

@@ -2145,3 +2145,26 @@ table.dataTable th.dataTables_empty{text-align:center}
   .gc-page-header__actions>*{width:100%}
   .gc-page-header .gc-page-header__new-btn{width:100%}
 }
+
+/* === Espejo visor: radio de .btn/.modal-content Bootstrap de fábrica — cplus/scss/_variables.scss:137-138
+   sobrescribe $border-radius (a $grinc-border-radius=8px, :113) y $border-radius-lg (a
+   $grinc-border-radius-lg=15px, :114) ANTES del import de Bootstrap, confirmado en el compilado
+   cplus/css/main.css (--bs-border-radius:8px, --bs-border-radius-lg:15px). El visor carga Bootstrap
+   5.3.3 de CDN de fábrica (index.html:10): sin esto, .btn sale en 0.375rem (6px) y .modal-content
+   genérico en 0.5rem (8px) de fábrica. Se excluyen .btn-sm/.btn-lg porque cplus NO sobrescribe
+   $border-radius-sm (queda en el 0.25rem de fábrica en ambos lados: cplus/css/main.css
+   --bs-border-radius-sm:0.25rem) y ningún ejemplo del catálogo usa .btn-lg todavía. Excepciones ya
+   cubiertas por reglas propias de mayor especificidad y no tocadas por esto: .gc-yes-no .btn (radio 0,
+   línea 113 de esta hoja / cplus/scss/_gc-forms.scss:726), .gc-modal-trace .modal-content y
+   .modal-footer .btn (radios 16px/10px, líneas 1865/1881 de esta hoja / cplus/scss/_base.scss:286,420),
+   .timepicker-modal .modal-content (radio 14px, línea 585 de esta hoja / cplus/scss/_gc-timepicker.scss:76),
+   y el radio 0 que Bootstrap
+   aplica de fábrica a los .btn no-extremos de un .input-group (mecánica nativa idéntica en ambos lados,
+   sin token grinclic de por medio). Solo demo, no copiar a producción. === */
+.btn:not(.btn-sm):not(.btn-lg){--bs-btn-border-radius:8px}
+.modal-content{--bs-modal-border-radius:15px}
+
+/* === Espejo visor: modal de recorte gc-image-crop (cplus/scss/_gc-forms.scss:1278-1284).
+   La estación croppie del modal (cplus/views/partials/image-crop-modal.php) anula el marco
+   del stage para que croppie pinte su propio lienzo. Solo demo, no copiar a producción. === */
+.gc-logo-preview-stage--crop{padding:0;min-height:250px;display:block;background:transparent;border:none}

@@ -153,31 +153,39 @@
       <div class="col-lg-6">
         <div class="mb-3 gc-upload-field">
           <label for="config_logo" class="form-label">Logo o imagen corporativa</label>
-          <input type="file" class="form-control" id="config_logo" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" aria-describedby="config_logo_specs" data-gc-image-preview-input data-gc-image-preview-target="#config_logo_preview_modal">
-          <div id="config_logo_specs" class="gc-upload-specs">Formatos permitidos: PNG, JPG, JPEG, WEBP o SVG. Peso máximo recomendado: 5 MB.</div>
-          <div class="gc-upload-preview" aria-label="Ejemplo de logo esperado">
-            <div class="gc-upload-thumb"><img src="../assets/logo-demo.svg" alt="Ejemplo de logo demo"></div>
+          <input type="file" class="form-control" id="config_logo" accept="image/png,image/jpeg,image/gif"
+                 data-gc-crop-input
+                 data-gc-crop-target="#config_logo_hidden"
+                 data-gc-crop-preview="#config_logo_thumb"
+                 data-gc-crop-viewport="150x150"
+                 data-gc-crop-max-mb="2"
+                 data-gc-crop-title="Recortar logo"
+                 aria-describedby="config_logo_specs">
+          <div id="config_logo_specs" class="gc-upload-specs">Formatos permitidos: JPG, JPEG, PNG o GIF. Peso máximo: 2 MB.</div>
+          <div class="gc-upload-preview" aria-label="Logo actual del cliente">
+            <div class="gc-upload-thumb"><img src="../assets/logo-demo.svg" id="config_logo_thumb" alt="Logo actual"></div>
             <div class="gc-upload-meta">
-              <strong>logo_empresa.svg</strong>
-              <span>Imagen lista para revisar antes de cargar.</span>
+              <strong>Logo actual</strong>
+              <span>La nueva imagen lo reemplaza al guardar.</span>
             </div>
-            <button class="btn btn-outline-secondary btn-sm ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#config_logo_preview_modal">Ver vista previa</button>
           </div>
+          <input type="hidden" name="logo" id="config_logo_hidden">
         </div>
-        <div class="modal fade" id="config_logo_preview_modal" tabindex="-1" aria-labelledby="config_logo_preview_modal_title" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered gc-logo-preview-dialog">
-            <div class="modal-content gc-image-preview-modal">
+        <!-- Espejo de cplus/views/partials/image-crop-modal.php (gc-image-crop) -->
+        <div class="modal fade gc-image-preview-modal" id="gc_crop_modal" tabindex="-1" aria-labelledby="gc_crop_modal_title" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
               <div class="modal-header">
-                <h2 class="modal-title fs-6" id="config_logo_preview_modal_title">Vista previa del logo</h2>
+                <h5 class="modal-title" id="gc_crop_modal_title">Recortar imagen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
               </div>
               <div class="modal-body">
-                <div class="gc-logo-preview-stage"><img src="../assets/logo-demo.svg" alt="Vista previa del logo" data-gc-image-preview-output></div>
-                <p class="gc-logo-preview-name" data-gc-image-preview-name>logo_empresa.svg</p>
+                <div id="gc_crop_modal_stage" class="gc-logo-preview-stage gc-logo-preview-stage--crop"></div>
+                <p class="gc-logo-preview-name" id="gc_crop_modal_name"></p>
               </div>
-              <div class="gc-logo-preview-actions">
-                <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
-                <button class="btn btn-success" type="button" data-bs-dismiss="modal">Cargar imagen</button>
+              <div class="modal-footer gc-logo-preview-actions">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="gc_crop_modal_apply">Cargar imagen</button>
               </div>
             </div>
           </div>

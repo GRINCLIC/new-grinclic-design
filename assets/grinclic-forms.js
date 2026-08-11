@@ -256,6 +256,110 @@
     });
   }
 
+  /* Demo del componente productivo cplus/js/core/gc-image-crop.js: mismo contrato data-gc-crop-*,
+     con carga perezosa de la vendor croppie de assets/vendor/. Solo demo, no copiar a producción. */
+  function loadCroppie(callback){
+    if(window.Croppie){ callback(); return; }
+    if(loadCroppie.pending){ loadCroppie.pending.push(callback); return; }
+    loadCroppie.pending = [callback];
+    var marker = document.querySelector('script[src*="grinclic-forms.js"]');
+    var base = marker ? marker.getAttribute("src").replace(/grinclic-forms\.js.*$/, "") : "assets/";
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = base + "vendor/croppie/croppie.css";
+    document.head.appendChild(link);
+    var script = document.createElement("script");
+    script.src = base + "vendor/croppie/croppie.js";
+    script.onload = function(){
+      var pending = loadCroppie.pending || [];
+      loadCroppie.pending = null;
+      pending.forEach(function(fn){ fn(); });
+    };
+    document.head.appendChild(script);
+  }
+
+  function openCropModal(modal, stage, applyBtn, input, dataURL){
+    var viewportStr = input.getAttribute("data-gc-crop-viewport") || "150x150";
+    var parts = viewportStr.split("x").map(Number);
+    var vpW = parts[0] > 0 ? parts[0] : 150;
+    var vpH = parts[1] > 0 ? parts[1] : 150;
+    var instance = null;
+    var applied = false;
+    var bsModal = window.bootstrap.Modal.getOrCreateInstance(modal);
+
+    function onShown(){
+      instance = new window.Croppie(stage, {
+        viewport:{ width: vpW, height: vpH, type: "square" },
+        boundary:{ width: vpW + 100, height: vpH + 100 },
+        enableExif: true,
+        showZoomer: true
+      });
+      instance.bind({ url: dataURL });
+    }
+
+    function onApply(){
+      if(!instance) return;
+      instance.result({ type: "canvas", size: "viewport", format: "png" }).then(function(result){
+        applied = true;
+        var target = input.dataset.gcCropTarget ? document.querySelector(input.dataset.gcCropTarget) : null;
+        if(target) target.value = result;
+        var preview = input.dataset.gcCropPreview ? document.querySelector(input.dataset.gcCropPreview) : null;
+        if(preview) preview.src = result;
+        bsModal.hide();
+      });
+    }
+
+    function onHidden(){
+      if(instance){ instance.destroy(); instance = null; }
+      if(!applied) input.value = "";
+      modal.removeEventListener("shown.bs.modal", onShown);
+      modal.removeEventListener("hidden.bs.modal", onHidden);
+      applyBtn.removeEventListener("click", onApply);
+    }
+
+    modal.addEventListener("shown.bs.modal", onShown);
+    modal.addEventListener("hidden.bs.modal", onHidden);
+    applyBtn.addEventListener("click", onApply);
+    bsModal.show();
+  }
+
+  function bindImageCrops(root){
+    root.querySelectorAll("[data-gc-crop-input]").forEach(function(input){
+      if(input.dataset.gcCropBound) return;
+      input.dataset.gcCropBound = "true";
+      input.addEventListener("change", function(){
+        var file = input.files && input.files[0];
+        if(!file) return;
+
+        var maxMb = parseFloat(input.dataset.gcCropMaxMb || "2");
+        if(file.size > maxMb * 1024 * 1024){
+          window.alert("El archivo excede el tamaño máximo permitido de " + maxMb + " MB.");
+          input.value = "";
+          return;
+        }
+
+        var modal = document.getElementById("gc_crop_modal") || document.getElementById("gc_crop_modal_demo");
+        if(!modal || !window.bootstrap || !window.bootstrap.Modal) return;
+        var stage = modal.querySelector(".gc-logo-preview-stage--crop");
+        var nameEl = modal.querySelector(".gc-logo-preview-name");
+        var titleEl = modal.querySelector(".modal-title");
+        var applyBtn = modal.querySelector(".gc-logo-preview-actions .btn-success");
+        if(!stage || !applyBtn) return;
+
+        if(titleEl) titleEl.textContent = input.dataset.gcCropTitle || "Recortar imagen";
+        if(nameEl) nameEl.textContent = file.name;
+
+        var reader = new FileReader();
+        reader.onload = function(evt){
+          loadCroppie(function(){
+            openCropModal(modal, stage, applyBtn, input, evt.target.result);
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+  }
+
 
 
   function bindBusinessUnitGuides(root){
@@ -346,6 +450,7 @@
       bindFlatpickr(root);
       bindMaterializeTimepickers(root);
       bindImagePreviews(root);
+      bindImageCrops(root);
       bindSweetAlertDemos(root);
       bindBusinessUnitGuides(root);
       bindCopyButtons(root);

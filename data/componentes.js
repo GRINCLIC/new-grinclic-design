@@ -1261,102 +1261,101 @@ window.GC_COMPONENTS = [
     id:"carga-logo-imagen",
     catalogExamples: ["gc-formulario-configuraciones"],
     implementations: [
-      { module: "Proveedores", agregar: 128, file: "cplus/views/mostrarProveedores.php", detail: "(variante propia) carga de firma con croppie.js, no el patrón gc-upload del catálogo (líneas 139-156)" },
+      { module: "Mis datos", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "Input #upload con data-gc-crop-* (líneas 461-468), parcial partials/image-crop-modal.php incluido (línea 1200) y core cplus/js/core/gc-image-crop.js con cache busting ?v=filemtime (línea 1203)" },
+      { module: "Proveedores", agregar: 128, file: "cplus/views/mostrarProveedores.php", detail: "(variante propia) carga de firma con croppie.js inline, bloque muerto documentado; candidato natural a migrar a gc-image-crop" },
     ],
     group:"Campos",
     name:"Cargar logo o imagen",
-    description:"Input file para imagen o logo con especificaciones y vista previa en modal Bootstrap pequeño antes de confirmar la carga.",
-    use:"Usarlo para logos empresariales, firmas o imágenes institucionales.",
-    avoid:"No usarlo para documentos PDF o soportes administrativos; para eso usa Cargar archivo PDF.",
-    deps:"Bootstrap CSS + Bootstrap JS Modal + grinclic-forms.css + grinclic-forms.js",
+    description:"Input file para imagen o logo con recorte en modal Bootstrap (gc-image-crop): al seleccionar el archivo se abre el modal con Croppie, el usuario encuadra con arrastre y zoom, y «Cargar imagen» aplica el recorte, actualiza la miniatura y deja el dataURL PNG en el hidden que viaja con el guardado del formulario.",
+    use:"Usarlo para logos empresariales, firmas o imágenes institucionales que deban guardarse con un encuadre fijo.",
+    avoid:"No usarlo para documentos PDF o soportes administrativos; para eso usa Cargar archivo PDF. Con viewports anchos (más de ~360 px) el modal estándar queda estrecho: ajustar el dialog antes de configurarlo así.",
+    deps:"Bootstrap CSS + Bootstrap JS Modal + Croppie vendorizada (includes/croppie/) + cplus/views/partials/image-crop-modal.php + cplus/js/core/gc-image-crop.js, incluido después de croppie y bootstrap y con ?v=filemtime. La demo de la biblioteca usa grinclic-forms.css + grinclic-forms.js + assets/vendor/croppie/; esas piezas no se copian a producción.",
     verified: true,
-    accessibility:"El input conserva accept para limitar formatos. El modal tiene título, imagen alternativa y botones claros para cancelar o confirmar la carga.",
+    accessibility:"El input conserva accept y aria-describedby. El modal declara aria-labelledby con título dinámico (data-gc-crop-title), botón de cierre con aria-label y backdrop estático con Esc deshabilitado: cancelar es explícito con el botón o la X, y cancelar sin aplicar resetea el input sin tocar miniatura ni hidden.",
+    note:"Contrato data-*: <code>data-gc-crop-input</code> activa el componente; <code>data-gc-crop-target</code> es el hidden del POST (requerido), <code>data-gc-crop-preview</code> la img de miniatura a actualizar, <code>data-gc-crop-viewport</code> el encuadre (150x150 por defecto), <code>data-gc-crop-max-mb</code> el peso máximo (2 por defecto) y <code>data-gc-crop-title</code> el título del modal. Los tipos permitidos se derivan del <code>accept</code> del propio input (MIME, comodín image/* o extensión .ext): mantener el texto de <code>gc-upload-specs</code> alineado con ese accept. La salida es siempre PNG dataURL a tamaño viewport, el mismo contrato que el backend ya recibía del recorte inline anterior.",
     states:{
       enabled:`<div class="row g-3">
   <div class="col-lg-6">
     <div class="mb-3 gc-upload-field">
       <label for="logo_vacio_demo" class="form-label">Logo o imagen corporativa</label>
-      <input class="form-control" type="file" id="logo_vacio_demo" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" aria-describedby="logo_vacio_specs" data-gc-image-preview-input data-gc-image-preview-target="#logo_preview_modal_demo">
-      <div id="logo_vacio_specs" class="gc-upload-specs">Formatos permitidos: PNG, JPG, JPEG, WEBP o SVG. Peso máximo recomendado: 5 MB.</div>
-      <div class="gc-upload-empty">Sin archivo cargado. Al seleccionar una imagen se abrirá una vista previa antes de confirmar.</div>
+      <input class="form-control" type="file" id="logo_vacio_demo" accept="image/png,image/jpeg,image/gif" aria-describedby="logo_vacio_specs" data-gc-crop-input data-gc-crop-target="#logo_vacio_hidden" data-gc-crop-viewport="150x150" data-gc-crop-max-mb="2" data-gc-crop-title="Recortar logo">
+      <div id="logo_vacio_specs" class="gc-upload-specs">Formatos permitidos: JPG, JPEG, PNG o GIF. Peso máximo: 2 MB.</div>
+      <div class="gc-upload-empty">Sin archivo cargado. Al seleccionar una imagen se abrirá el modal de recorte antes de confirmar.</div>
+      <input type="hidden" name="logo" id="logo_vacio_hidden">
     </div>
   </div>
   <div class="col-lg-6">
     <div class="mb-3 gc-upload-field">
       <label for="logo_cargado_demo" class="form-label">Logo o imagen corporativa</label>
-      <input class="form-control" type="file" id="logo_cargado_demo" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" aria-describedby="logo_cargado_specs" data-gc-image-preview-input data-gc-image-preview-target="#logo_preview_modal_demo">
-      <div id="logo_cargado_specs" class="gc-upload-specs">Formatos permitidos: PNG, JPG, JPEG, WEBP o SVG. Peso máximo recomendado: 5 MB.</div>
-      <div class="gc-upload-preview" aria-label="Logo cargado">
-        <div class="gc-upload-thumb"><img src="assets/logo-demo.svg" alt="Ejemplo de logo demo"></div>
-        <div class="gc-upload-meta"><strong>logo_empresa.svg</strong><span>Imagen lista para revisar antes de cargar.</span></div>
-        <button class="btn btn-outline-secondary btn-sm ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#logo_preview_modal_demo">Ver vista previa</button>
+      <input class="form-control" type="file" id="logo_cargado_demo" accept="image/png,image/jpeg,image/gif" aria-describedby="logo_cargado_specs" data-gc-crop-input data-gc-crop-target="#logo_cargado_hidden" data-gc-crop-preview="#logo_cargado_thumb" data-gc-crop-viewport="150x150" data-gc-crop-max-mb="2" data-gc-crop-title="Recortar logo">
+      <div id="logo_cargado_specs" class="gc-upload-specs">Formatos permitidos: JPG, JPEG, PNG o GIF. Peso máximo: 2 MB.</div>
+      <div class="gc-upload-preview" aria-label="Logo actual">
+        <div class="gc-upload-thumb"><img src="assets/logo-demo.svg" id="logo_cargado_thumb" alt="Logo actual"></div>
+        <div class="gc-upload-meta"><strong>Logo actual</strong><span>La nueva imagen lo reemplaza al guardar.</span></div>
       </div>
+      <input type="hidden" name="logo" id="logo_cargado_hidden">
     </div>
   </div>
 </div>
-<div class="modal fade" id="logo_preview_modal_demo" tabindex="-1" aria-labelledby="logo_preview_modal_demo_title" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered gc-logo-preview-dialog">
-    <div class="modal-content gc-image-preview-modal">
+<div class="modal fade gc-image-preview-modal" id="gc_crop_modal_demo" tabindex="-1" aria-labelledby="gc_crop_modal_demo_title" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title fs-6" id="logo_preview_modal_demo_title">Vista previa del logo</h2>
+        <h5 class="modal-title" id="gc_crop_modal_demo_title">Recortar imagen</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <div class="gc-logo-preview-stage"><img src="assets/logo-demo.svg" alt="Vista previa del logo" data-gc-image-preview-output></div>
-        <p class="gc-logo-preview-name" data-gc-image-preview-name>logo_empresa.svg</p>
+        <div id="gc_crop_modal_demo_stage" class="gc-logo-preview-stage gc-logo-preview-stage--crop"></div>
+        <p class="gc-logo-preview-name" id="gc_crop_modal_demo_name"></p>
       </div>
-      <div class="gc-logo-preview-actions">
-        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-success" type="button" data-bs-dismiss="modal">Cargar imagen</button>
+      <div class="modal-footer gc-logo-preview-actions">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" id="gc_crop_modal_demo_apply">Cargar imagen</button>
       </div>
     </div>
   </div>
 </div>`,
       error:`<div class="mb-3 gc-upload-field">
   <label for="logo_error" class="form-label">Logo o imagen corporativa</label>
-  <input class="form-control is-invalid" type="file" id="logo_error" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" aria-describedby="logo_error_help logo_error_specs">
-  <div id="logo_error_help" class="gc-help is-invalid">Carga una imagen válida en PNG, JPG, JPEG, WEBP o SVG.</div>
-  <div id="logo_error_specs" class="gc-upload-specs">Formatos permitidos: PNG, JPG, JPEG, WEBP o SVG. Peso máximo recomendado: 5 MB.</div>
+  <input class="form-control is-invalid" type="file" id="logo_error" accept="image/png,image/jpeg,image/gif" aria-describedby="logo_error_help logo_error_specs">
+  <div id="logo_error_help" class="gc-help is-invalid">Carga una imagen válida en JPG, JPEG, PNG o GIF.</div>
+  <div id="logo_error_specs" class="gc-upload-specs">Formatos permitidos: JPG, JPEG, PNG o GIF. Peso máximo: 2 MB.</div>
 </div>`,
       disabled:`<div class="mb-3 gc-upload-field">
   <label for="logo_disabled" class="form-label">Logo o imagen corporativa</label>
-  <input class="form-control" type="file" id="logo_disabled" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" disabled>
-  <div class="gc-upload-specs">Formatos permitidos: PNG, JPG, JPEG, WEBP o SVG. Peso máximo recomendado: 5 MB.</div>
+  <input class="form-control" type="file" id="logo_disabled" accept="image/png,image/jpeg,image/gif" disabled>
+  <div class="gc-upload-specs">Formatos permitidos: JPG, JPEG, PNG o GIF. Peso máximo: 2 MB.</div>
   <div class="gc-upload-preview" aria-label="Logo registrado">
     <div class="gc-upload-thumb"><img src="assets/logo-demo.svg" alt="Logo demo registrado"></div>
     <div class="gc-upload-meta"><strong>logo_actual.svg</strong><span>Imagen registrada no editable.</span></div>
   </div>
 </div>`
     },
-    snippet:`<div class="mb-3 gc-upload-field">
-  <label for="logo" class="form-label">Logo o imagen corporativa</label>
-  <input class="form-control" type="file" id="logo" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" aria-describedby="logo_specs" data-gc-image-preview-input data-gc-image-preview-target="#logo_preview_modal">
-  <div id="logo_specs" class="gc-upload-specs">Formatos permitidos: PNG, JPG, JPEG, WEBP o SVG. Peso máximo recomendado: 5 MB.</div>
-  <div class="gc-upload-preview" aria-label="Logo cargado">
-    <div class="gc-upload-thumb"><img src="assets/logo-demo.svg" alt="Ejemplo de logo demo"></div>
-    <div class="gc-upload-meta"><strong>logo_empresa.svg</strong><span>Imagen lista para revisar antes de cargar.</span></div>
-    <button class="btn btn-outline-secondary btn-sm ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#logo_preview_modal">Ver vista previa</button>
-  </div>
-</div>
-
-<div class="modal fade" id="logo_preview_modal" tabindex="-1" aria-labelledby="logo_preview_modal_title" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered gc-logo-preview-dialog">
-    <div class="modal-content gc-image-preview-modal">
-      <div class="modal-header">
-        <h2 class="modal-title fs-6" id="logo_preview_modal_title">Vista previa del logo</h2>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        <div class="gc-logo-preview-stage"><img src="assets/logo-demo.svg" alt="Vista previa del logo" data-gc-image-preview-output></div>
-        <p class="gc-logo-preview-name" data-gc-image-preview-name>logo_empresa.svg</p>
-      </div>
-      <div class="gc-logo-preview-actions">
-        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-success" type="button" data-bs-dismiss="modal">Cargar imagen</button>
-      </div>
+    snippet:`<div class="gc-upload-field">
+  <label for="upload" class="form-label">Logo o imagen corporativa</label>
+  <input type="file" class="form-control" id="upload" accept="image/png,image/jpeg,image/gif"
+         data-gc-crop-input
+         data-gc-crop-target="#logo"
+         data-gc-crop-preview="#logo-actual"
+         data-gc-crop-viewport="150x150"
+         data-gc-crop-max-mb="2"
+         data-gc-crop-title="Recortar logo"
+         aria-describedby="upload_specs">
+  <div id="upload_specs" class="gc-upload-specs">Formatos permitidos: JPG, JPEG, PNG o GIF. Peso máximo: 2 MB.</div>
+  <div class="gc-upload-preview" aria-label="Logo actual del cliente">
+    <div class="gc-upload-thumb">
+      <img src="includes/verlogo.php?k=<?= cplus_e(TenantContext::get()->tenantBaseEncoded()) ?>" id="logo-actual" alt="Logo actual">
+    </div>
+    <div class="gc-upload-meta">
+      <strong>Logo actual</strong>
+      <span>La nueva imagen lo reemplaza al guardar.</span>
     </div>
   </div>
-</div>`
+  <input type="hidden" name="logo" id="logo">
+</div>
+
+<?php include __DIR__ . '/partials/image-crop-modal.php'; ?>
+<script src="cplus/js/core/gc-image-crop.js?v=<?= @filemtime(__DIR__ . '/../js/core/gc-image-crop.js') ?: '1' ?>"></script>`
   },
   {
     id:"campo-validado",

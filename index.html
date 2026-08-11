@@ -81,6 +81,8 @@
     .gc-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1080;align-items:center;justify-content:center;gap:16px;padding:24px}
     .gc-lightbox.open{display:flex}
     .gc-lightbox-image{max-width:calc(100vw - 140px);max-height:calc(100vh - 60px);object-fit:contain}
+    .gc-preview-entrega{padding:12px}
+    .gc-entrega-frame{width:100%;height:70vh;border:1px solid var(--gc-soft);border-radius:8px;background:#fff;display:block}
   </style>
 </head>
 <body>
@@ -109,10 +111,26 @@
   <script src="assets/grinclic-forms.js"></script>
   <script src="data/componentes.js"></script>
   <script src="data/mockups.js"></script>
+  <script src="data/entregas.js"></script>
   <script>
     (function(){
       var components = window.GC_COMPONENTS || [];
+      var entregas = (window.GC_ENTREGAS || []).map(function(entrega, index){
+        var base = String(entrega.file || "").split("/").pop().replace(/\.html$/i, "");
+        var slug = base.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || String(index);
+        return {
+          id: "entrega-" + slug,
+          group: "Entregas",
+          name: entrega.title || base,
+          entrega: true,
+          file: entrega.file,
+          fecha: entrega.fecha || "",
+          description: "Entrega de diseño render-only. Archivo: " + entrega.file
+        };
+      });
+      components = components.concat(entregas);
       var groupLabels = ["Acciones","Campos","Bloques","Listados","Modales","Feedback","Organización","Formularios"];
+      if(entregas.length) groupLabels.push("Entregas");
       var nav = document.getElementById("componentNav");
       var doc = document.getElementById("componentDoc");
       var activeId = components[0] ? components[0].id : "";
@@ -280,6 +298,19 @@
       function renderDoc(){
         var item = components.find(function(component){ return component.id === activeId; }) || components[0];
         if(!item) return;
+
+        if(item.entrega){
+          doc.innerHTML = '<header class="gc-doc-header">' +
+            '<div class="gc-doc-title"><h1>' + escapeHtml(item.name) + '</h1>' +
+            '<p>Entrega de diseño (solo render) · ' + escapeHtml(item.file) + (item.fecha ? ' · ' + escapeHtml(item.fecha) : '') + '</p></div>' +
+            '<div class="gc-doc-badges"><span class="gc-badge gc-badge-diseno">Entrega</span></div>' +
+            '</header>' +
+            '<section class="gc-preview"><div class="gc-preview-inner gc-preview-entrega">' +
+            '<iframe class="gc-entrega-frame" src="' + escapeHtml(item.file) + '" title="' + escapeHtml(item.name) + '" loading="lazy"></iframe>' +
+            '</div></section>' +
+            '<div class="gc-variant-example"><a class="btn btn-success btn-sm" href="' + escapeHtml(item.file) + '" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Abrir completo</a></div>';
+          return;
+        }
 
         var hasVariants = item.variants && item.variants.length;
         if(hasVariants && activeVariant >= item.variants.length) activeVariant = 0;
@@ -480,6 +511,21 @@
           return components.some(function(item){ return item.group === group; });
         }));
         check("sin ids duplicados", components.length === new Set(components.map(function(item){ return item.id; })).size);
+
+        if((window.GC_ENTREGAS || []).length){
+          var primeraEntrega = components.filter(function(item){ return item.entrega; })[0];
+          activeId = primeraEntrega ? primeraEntrega.id : "";
+          renderDoc();
+          var frame = doc.querySelector(".gc-entrega-frame");
+          check("entrega renderiza iframe del archivo", Boolean(frame) && (frame.getAttribute("src") || "").indexOf("ejemplos/entregas/") === 0);
+          check("entrega sin panel de código", !doc.querySelector(".gc-code-title"));
+        } else {
+          check("entregas: manifiesto vacío o ausente (modo sin entregas)", true);
+        }
+
+        activeId = "checkbox"; activeVariant = 0; renderDoc();
+        var botonCanon = doc.querySelector(".gc-preview .btn");
+        check("radio de botón alineado al token productivo", Boolean(botonCanon) && getComputedStyle(botonCanon).borderTopLeftRadius === "8px");
 
         searchQuery = "gc-formulario";
         renderNav();
