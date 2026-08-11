@@ -1848,8 +1848,30 @@ th.table-actions{text-align:center !important}
 
 /* === Espejo visor: modal C+ estático — fuente cplus/views/mostrarSucursales.php:787-801 (markup canónico).
    Solo el contenedor de demostración: los botones del footer reutilizan el espejo global del kit erp-btn
-   ya presente en este archivo (líneas 1796-1810). Solo demo, no copiar a producción. === */
-.gc-modal-static{background:#eef1f5;border:1px solid var(--gc-soft);border-radius:12px;padding:22px}
+   ya presente en este archivo (líneas 1796-1810). Las variables --bs-modal-* se copian literalmente del
+   bloque .modal de Bootstrap 5.3 (vendor/bootstrap/bootstrap.min.css): en BS 5.3 TODO el estilo del modal
+   (fondo, paddings, bordes) resuelve variables declaradas en .modal, y estos previews pintan .modal-content
+   sin ese ancestro — sin redeclararlas aquí, la tarjeta sale transparente y sin padding aunque Bootstrap
+   cargue. Se omiten zindex/width/margin: son del overlay real, no del preview estático.
+   Solo demo, no copiar a producción. === */
+.gc-modal-static{background:#eef1f5;border:1px solid var(--gc-soft);border-radius:12px;padding:22px;
+  --bs-modal-padding:1rem;
+  --bs-modal-color:var(--bs-body-color);
+  --bs-modal-bg:var(--bs-body-bg);
+  --bs-modal-border-color:var(--bs-border-color-translucent);
+  --bs-modal-border-width:var(--bs-border-width);
+  --bs-modal-border-radius:var(--bs-border-radius-lg);
+  --bs-modal-box-shadow:var(--bs-box-shadow-sm);
+  --bs-modal-inner-border-radius:calc(var(--bs-border-radius-lg) - (var(--bs-border-width)));
+  --bs-modal-header-padding-x:1rem;
+  --bs-modal-header-padding-y:1rem;
+  --bs-modal-header-padding:1rem 1rem;
+  --bs-modal-header-border-color:var(--bs-border-color);
+  --bs-modal-header-border-width:var(--bs-border-width);
+  --bs-modal-title-line-height:1.5;
+  --bs-modal-footer-gap:0.5rem;
+  --bs-modal-footer-border-color:var(--bs-border-color);
+  --bs-modal-footer-border-width:var(--bs-border-width)}
 .gc-modal-static .gc-modal-static-frame{max-width:620px;margin:0 auto}
 .gc-modal-static--lg .gc-modal-static-frame{max-width:860px}
 .gc-modal-static .modal-content{box-shadow:0 18px 44px rgba(15,23,42,.18)}
