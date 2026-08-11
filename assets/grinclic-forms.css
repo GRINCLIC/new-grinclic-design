@@ -93,9 +93,6 @@ input[type=file].form-control::-webkit-file-upload-button{
 }
 textarea.form-control{min-height:86px}
 
-.gc-check-card{border:1px solid var(--gc-soft);border-radius:var(--gc-radius);padding:10px 12px 10px 38px;background:#fff;min-height:44px;display:flex;align-items:center}
-.gc-check-card .form-check-input{margin-top:0}
-
 .gc-help{font-size:.78rem;color:var(--gc-muted);margin-top:5px}
 .gc-help.is-valid{color:var(--gc-green-dark)}
 .gc-help.is-warning,.gc-help.is-invalid{color:var(--gc-orange)}
@@ -360,7 +357,7 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
 
 /* Radio triple y checkboxes */
 .gc-yes-no--triple .btn{min-width:54px;padding:0 12px;white-space:nowrap}
-.form-check{min-height:28px;display:flex;align-items:flex-start;gap:8px;padding-left:0}
+.form-check{min-height:28px;display:flex;align-items:flex-start;gap:10px;padding-left:0}
 .form-check .form-check-input{float:none;margin-left:0;margin-top:.12rem;flex:0 0 auto}
 .form-check-label{cursor:pointer;line-height:1.45}
 
@@ -555,6 +552,10 @@ span.gc-help-button,.gc-alert-review .gc-help-button{cursor:default;flex:0 0 aut
 .form-check{gap:10px;align-items:flex-start}
 .form-check-label{padding-top:.05rem}
 .gc-review-box .form-check{align-items:flex-start}
+
+/* Espejo visor: .gc-check-card va DESPUÉS de toda regla genérica .form-check, igual que en cplus/css/main.css (24631 vs 24873), para que gane la cascada como en producción. Fuente cplus/scss/_gc-forms.scss:435-447. */
+.gc-check-card{border:1px solid var(--gc-soft);border-radius:var(--gc-radius);padding:10px 12px 10px 38px;background:#fff;min-height:44px;display:flex;align-items:center}
+.gc-check-card .form-check-input{margin-top:0}
 
 /* Evita que Materialize cambie estilos globales: no se carga su CSS; esta sección cubre solo su timepicker. */
 .gc-materialize-time{background:#fff!important;cursor:pointer!important}
@@ -1853,27 +1854,31 @@ th.table-actions{text-align:center !important}
 .gc-modal-static--lg .gc-modal-static-frame{max-width:860px}
 .gc-modal-static .modal-content{box-shadow:0 18px 44px rgba(15,23,42,.18)}
 
-/* === Espejo visor: skin del modal de trazabilidad — fuente cplus/scss/_base.scss:278-424, donde las reglas
-   cuelgan del id #myModalT. Aquí se reescriben como clase .gc-modal-trace porque el preview no debe declarar
-   ese id. Variables resueltas: --grinc-primary = #1b7f4d, --grinc-primary-dark = #275420,
-   --grinc-white = #ffffff (cplus/scss/_variables.scss:24, :25, :84). Omitido a propósito el min-width:940px de
-   #myModalT #trazainfo table (_base.scss:351): en el ancho del visor forzaría scroll horizontal permanente.
-   Solo demo, no copiar a producción. === */
+/* === Espejo visor: skin del modal de trazabilidad, rediseño v2 del 2026-08-10 — fuente cplus/scss/_base.scss,
+   bloque #myModalT (rediseñado en la misma tarea que este espejo, junto al markup que inyecta
+   cplus/js/lib/GrincUtils.js: encabezado blanco con línea de detalle gc-trace-modal__detail y pie «Entendido»).
+   Aquí las reglas se reescriben como clase .gc-modal-trace porque el preview no debe declarar ese id.
+   Variables resueltas: --grinc-primary = #1b7f4d, --grinc-primary-dark = #275420 (cplus/scss/_variables.scss:24-25);
+   --grinc-strong, --grinc-muted y --grinc-soft (:96, :97, :91) equivalen a --gc-strong, --gc-muted y --gc-soft de
+   esta hoja. Omitido a propósito el min-width:940px de #myModalT #trazainfo table: en el ancho del visor forzaría
+   scroll horizontal permanente. Solo demo, no copiar a producción. === */
 .gc-modal-trace .modal-content{border:none;border-radius:16px;overflow:hidden;box-shadow:0 24px 70px rgba(15,23,42,.28);background:#fff}
-.gc-modal-trace .modal-header{min-height:120px;align-items:center;padding:26px 36px;border-bottom:1px solid rgba(27,127,77,.16);background-color:#d8ecd6;background-image:linear-gradient(90deg,rgba(232,247,232,.52),rgba(198,235,200,.48));color:#0f3f1d}
-.gc-modal-trace .modal-header .modal-title{margin:0;color:#0d3f1d;font-size:1.45rem;font-weight:800;line-height:1.2}
-.gc-modal-trace .modal-header .btn-close{filter:none;opacity:.72}
+.gc-modal-trace .modal-header{align-items:flex-start;padding:28px 36px 22px;background:#fff;border-bottom:1px solid var(--gc-soft)}
+.gc-modal-trace .gc-trace-modal__heading{min-width:0;padding-right:18px}
+.gc-modal-trace .modal-header .modal-title{margin:0;color:var(--gc-strong);font-size:1.45rem;font-weight:700;line-height:1.2;letter-spacing:-.01em}
+.gc-modal-trace .gc-trace-modal__detail{max-width:760px;margin:8px 0 0;color:var(--gc-muted);font-size:.94rem;line-height:1.48;font-weight:400}
+.gc-modal-trace .modal-header .btn-close{filter:none;opacity:.68}
 .gc-modal-trace .modal-header .btn-close:hover{opacity:1}
-.gc-modal-trace .modal-body{padding:28px 36px 24px;background:#fff}
+.gc-modal-trace .modal-body{padding:26px 36px 24px;background:#fff}
 .gc-modal-trace .table-responsive{max-height:min(56vh,520px);overflow:auto;border:1px solid #e2e8f0;border-radius:10px;background:#fff}
 .gc-modal-trace table{width:100%;margin:0;border-collapse:separate;border-spacing:0;color:#0f172a;font-size:.92rem}
-.gc-modal-trace table thead th{position:sticky;top:0;z-index:2;background:#dcdcdc;color:#000;font-weight:800;text-align:left;padding:14px 16px;border:0;border-bottom:1px solid #c7c7c7;white-space:nowrap}
+.gc-modal-trace table thead th{position:sticky;top:0;z-index:2;background:#dcdcdc;color:#000;font-weight:700;text-align:left;padding:14px 16px;border:0;border-bottom:1px solid #c7c7c7;white-space:nowrap}
 .gc-modal-trace table tbody td{padding:18px 16px;border:0;border-bottom:1px solid #e5e7eb;vertical-align:middle;line-height:1.45;background:#fff;overflow-wrap:anywhere}
 .gc-modal-trace table tbody td.tc-center{text-align:center}
 .gc-modal-trace table tbody tr:last-child td{border-bottom:0}
 .gc-modal-trace table tbody tr:hover td{background:#fbfcfd}
 .gc-modal-trace .modal-footer{padding:18px 36px 26px;background:#fff;border-top:1px solid #eef2f7;justify-content:flex-end}
-.gc-modal-trace .modal-footer .btn{min-width:150px;min-height:44px;border-radius:10px;font-weight:800;color:#ffffff;background:#1b7f4d;border-color:#1b7f4d;box-shadow:0 8px 18px rgba(62,152,54,.18)}
+.gc-modal-trace .modal-footer .btn{min-width:150px;min-height:42px;border-radius:10px;font-weight:700;color:#ffffff;background:#1b7f4d;border-color:#1b7f4d;box-shadow:none}
 .gc-modal-trace .modal-footer .btn:hover,.gc-modal-trace .modal-footer .btn:focus{color:#ffffff;background:#275420;border-color:#275420}
 
 /* === Espejo visor: tabla de listado CPlus (shell V2) — fuente cplus/scss/_components.scss:473-491, 706-790 +
@@ -2079,3 +2084,64 @@ table.dataTable th.dataTables_empty{text-align:center}
 .column-filter-actions .erp-btn{min-height:34px;padding:7px 12px;font-size:.8rem;border-radius:8px}
 .gc-demo-colfilter-code{padding:14px 16px;background:#fff;border:1px solid var(--gc-soft);border-radius:10px}
 .gc-demo-colfilter-code p{margin:0;color:#41564a;font-size:.9rem}
+
+.gc-table-card{border:1px solid var(--gc-soft);border-radius:var(--gc-radius);background:#fff;overflow:hidden}
+.gc-table-scroll{width:100%;overflow-x:auto;background:#fff}
+.gc-table-scroll:focus-visible{outline:0;box-shadow:inset 0 0 0 3px rgba(62,152,54,.14)}
+.gc-field-table{width:100%;min-width:1080px;margin:0;border-collapse:separate;border-spacing:0;color:var(--gc-strong)}
+.gc-field-table__col--title{width:31%}
+.gc-field-table__col--format{width:19%}
+.gc-field-table__col--flag{width:12.5%}
+.gc-field-table thead th{padding:12px;border-bottom:1px solid var(--gc-soft);background:#f7faf7;color:#475569;font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.gc-field-table tbody th,.gc-field-table tbody td{padding:10px 12px;border-bottom:1px solid var(--gc-soft);vertical-align:middle}
+.gc-field-table tbody:last-child tr:last-child th,.gc-field-table tbody:last-child tr:last-child td{border-bottom:0}
+.gc-field-table tbody tr:hover:not(.gc-field-table__section):not(.gc-field-table__rule-head) th,.gc-field-table tbody tr:hover:not(.gc-field-table__section):not(.gc-field-table__rule-head) td{background:#f7faf7}
+.gc-field-table__cell--flag{text-align:center}
+.gc-field-table__check{display:inline-flex;min-height:1rem;margin:0}
+.gc-field-table__section th{padding:14px 12px 8px;border-bottom:0;background:#fff;color:var(--gc-strong);font-size:.8rem;font-weight:700;letter-spacing:.04em;text-align:left;text-transform:uppercase}
+.gc-field-table__rule-head th{padding:8px 12px;border-top:1px solid var(--gc-soft);border-bottom:1px solid var(--gc-soft);background:#f7faf7;color:#475569;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.gc-field-table__rule-label{display:flex;align-items:center;gap:8px;color:var(--gc-strong);font-size:.9rem;font-weight:600;line-height:1.35;text-align:left}
+.gc-field-table .form-control,.gc-field-table .form-select{min-width:0}
+@media (max-width:767.98px){
+  .gc-field-table thead th,.gc-field-table tbody th,.gc-field-table tbody td{padding-right:10px;padding-left:10px}
+}
+
+/* === Espejo visor: encabezado único de pantalla gc-page-header — fuente cplus/scss/_gc-page-header.scss. Variables resueltas desde cplus/scss/_variables.scss (--grinc-strong=#0f172a, --grinc-muted=#7a8798, --grinc-soft=#e8edf2, --screen-primary=#1b7f4d). Solo demo, no copiar a producción. === */
+.gc-page-header{margin:0 0 18px}
+.gc-page-header__layout{min-height:132px;display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,520px);grid-template-areas:'heading side';gap:32px;align-items:start}
+.gc-page-header__heading{grid-area:heading;min-width:0;padding-top:2px}
+.gc-page-header__title{margin:0 0 8px;display:flex;align-items:center;gap:12px;min-width:0;color:#0f172a;font-family:'Montserrat',sans-serif;font-size:2.15rem;font-weight:700;line-height:1.08;letter-spacing:-.02em}
+.gc-page-header__title span{min-width:0}
+.gc-page-header__title-icon{flex:0 0 auto;color:#1b7f4d;font-size:.82em;line-height:1}
+.gc-page-header__desc{margin:0;max-width:44rem;color:#7a8798;font-size:1rem;font-weight:400;line-height:1.42}
+.gc-page-header__side{grid-area:side;justify-self:end;width:100%;max-width:520px;display:grid;gap:18px}
+.gc-page-header__meta{display:grid;grid-template-columns:1fr 1fr;column-gap:32px;row-gap:14px;align-items:start;justify-items:end}
+.gc-page-header__meta-cell{display:grid;gap:6px;min-width:0;width:100%;max-width:244px;padding:0 0 12px;border-bottom:1px solid #e8edf2;justify-items:end;text-align:right}
+.gc-page-header__meta-label{color:#7a8798;font-size:.72rem;font-weight:500;line-height:1.15;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.gc-page-header__meta-value{color:#0f172a;font-size:.94rem;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.gc-page-header__actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+.gc-page-header .gc-page-header__new-btn{min-height:52px;padding:0 26px;border-radius:13px;font-size:1rem;gap:10px}
+.gc-page-header .gc-page-header__new-btn .bi{font-size:1.18rem;line-height:1}
+.gc-page-header--table-simple .gc-page-header__layout{grid-template-columns:minmax(0,1fr) max-content;min-height:96px}
+.gc-page-header--table-simple .gc-page-header__side{width:auto;max-width:none;align-self:end}
+.gc-page-header--table-simple .gc-page-header__actions{align-items:flex-end}
+@media (max-width:991.98px){
+  .gc-page-header__layout{min-height:auto;grid-template-columns:1fr;grid-template-areas:'heading' 'side';gap:18px}
+  .gc-page-header__side{justify-self:end;max-width:560px}
+  .gc-page-header--table-simple .gc-page-header__layout{min-height:auto;grid-template-columns:1fr;grid-template-areas:'heading' 'side'}
+  .gc-page-header--table-simple .gc-page-header__side{width:100%;justify-self:stretch}
+}
+@media (max-width:767.98px){
+  .gc-page-header__title{font-size:1.72rem}
+  .gc-page-header__desc{font-size:.96rem}
+  .gc-page-header__side{max-width:none}
+  .gc-page-header__meta{grid-template-columns:1fr 1fr;column-gap:18px;row-gap:12px}
+  .gc-page-header__actions{width:100%;justify-content:flex-end}
+}
+@media (max-width:575.98px){
+  .gc-page-header__meta{grid-template-columns:1fr}
+  .gc-page-header__meta-cell{max-width:none}
+  .gc-page-header__actions{flex-direction:column;align-items:stretch}
+  .gc-page-header__actions>*{width:100%}
+  .gc-page-header .gc-page-header__new-btn{width:100%}
+}

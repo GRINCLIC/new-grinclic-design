@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
   <link href="../assets/grinclic-forms.css" rel="stylesheet">
 </head>
@@ -16,16 +17,23 @@
     <!-- Organismo: gc-formulario-roles -->
     <!-- Uso conceptual: <gc-formulario-roles></gc-formulario-roles> -->
     <form class="gc-form-shell" method="post" action="/roles/actualizar">
-      <header class="gc-form-head">
-        <div class="gc-form-title">
-          <h1>Mis roles</h1>
-          <p>Configuración básica del rol, módulo asociado y descripción funcional.</p>
-        </div>
-        <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
-          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
-          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
-          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
-          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
+      <header class="gc-page-header" aria-labelledby="gc-page-header-title-1">
+        <div class="gc-page-header__layout">
+          <div class="gc-page-header__heading">
+            <h1 class="gc-page-header__title" id="gc-page-header-title-1">
+              <i class="bi bi-shield-lock gc-page-header__title-icon" aria-hidden="true"></i>
+              <span>Mis roles</span>
+            </h1>
+            <p class="gc-page-header__desc">Configuración básica del rol, módulo asociado y descripción funcional.</p>
+          </div>
+          <aside class="gc-page-header__side">
+            <div class="gc-page-header__meta" role="group" aria-label="Información de auditoría">
+              <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Fecha de creación</span><span class="gc-page-header__meta-value" title="12/03/2026">12/03/2026</span></div>
+              <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Creado por</span><span class="gc-page-header__meta-value" title="Laura Méndez">Laura Méndez</span></div>
+              <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Último cambio</span><span class="gc-page-header__meta-value" title="04/08/2026">04/08/2026</span></div>
+              <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Elaborado por</span><span class="gc-page-header__meta-value" title="Andrés Rojas">Andrés Rojas</span></div>
+            </div>
+          </aside>
         </div>
       </header>
 

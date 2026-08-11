@@ -98,6 +98,18 @@ implementations: [
 
 ## Changelog
 
+- **v1.6 (2026-08-10)** — El catálogo se alinea al **encabezado único de pantalla `gc-page-header`**
+  (`cplus/views/partials/page-head.php`, en producción desde el 2026-08-10): `encabezado-formulario` y
+  `encabezado-modulo` se reescriben como las dos caras del parcial (formulario con retícula de
+  auditoría y listado `--table-simple`), los 6 `ejemplos/*.html` y los 5 organismos `gc-formulario-*`
+  migran su encabezado, la variante «Nuevo del encabezado de módulo» de `boton` pasa a
+  `gc-page-header__actions` y `assets/grinclic-forms.css` suma el espejo visor de
+  `_gc-page-header.scss`. Entradas nuevas: `tabla-campos-opciones` (tabla de campos personalizados de
+  Mis datos con `gc-table-card`/`gc-table-scroll`/`gc-field-table`) y `checklist-opciones` (grilla de
+  tarjetas checkbox `gc-check-card` de los acordeones de Mis datos; traduce el prototipo Tabla_checkbox
+  al sistema). La variante «Trazabilidad» de `modal` se actualiza al rediseño v2 (encabezado blanco,
+  botón «Entendido»). El catálogo pasa de 37 a **39 entradas** (24 verificadas; las dos nuevas quedan
+  sin verificar porque Mis datos sigue parcial en el ledger).
 - **v1.5 (2026-08-10)** — Verde primario del visor unificado a `#328539`, el mismo de
   `.erp-btn-primary`: `gc-module-btn` deja su verde propio y `assets/grinclic-forms.css` suma el
   espejo visor del kit `erp-btn`. El acordeón de unidades de negocio gana la columna «Acciones» y

@@ -752,6 +752,246 @@ window.GC_COMPONENTS = [
 </footer>`
   },
   {
+    id:"checklist-opciones",
+    catalogExamples: ["gc-formulario-configuraciones"],
+    implementations: [
+      { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "Sección Declaraciones del acordeón #accDatos: cinco tarjetas form-check gc-check-card en una grilla row g-3 de columnas col-md-6, incluida la trampa del checkbox invertido checkdupcampos con value=0 (líneas 553-605)" },
+      { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "El mismo patrón se repite en el resto de secciones de módulos del acordeón: 23 tarjetas gc-check-card en total en la vista (líneas 555-1106)" },
+      { module: "Clase compartida", agregar: 150, file: "cplus/scss/_gc-forms.scss", detail: "Definición general de gc-check-card: borde --grinc-soft, radio estándar, padding 10px 12px 10px 38px, fondo blanco, min-height 44px y centrado vertical del input (líneas 435-447)" },
+    ],
+    group:"Bloques",
+    name:"Checklist de opciones",
+    description:"Grilla de tarjetas checkbox para activar o desactivar opciones de configuración independientes: cada opción es un form-check con la clase general gc-check-card (borde suave, fondo blanco, 44px de alto mínimo) dentro de una grilla Bootstrap row g-3 de columnas col-md-6.",
+    use:"Usarlo cuando una pantalla de configuración agrupa banderas independientes por módulo o sección, como los acordeones de Mis datos. La grilla es Bootstrap puro (row g-3 + col-md-6) y la tarjeta reutiliza la clase general gc-check-card de cplus/scss/_gc-forms.scss; el label va asociado por for/id y hace de área de clic completa.",
+    avoid:"No usarlo para la confirmación de revisión que cierra el formulario (eso es gc-review-box) ni para decisiones SI/NO que deban leerse como pregunta (radio-si-no). No copiar del prototipo los contenedores gc-settings-grid ni gc-setting-card: no existen en producción; la grilla productiva es row g-3 con col-md-6 y la tarjeta es gc-check-card. Cuidado con los checkbox invertidos del contrato de Datos (value=\"0\" y marcado envía 0): documentar siempre la inversión en un comentario junto al campo.",
+    deps:"Bootstrap CSS y la clase gc-check-card de cplus/scss/_gc-forms.scss compilada en cplus/css/main.css. En el visor, grinclic-forms.css. Si una opción necesita ayuda contextual, se compone con gc-help-button + Bootstrap Popover, como documenta tabla-campos-opciones.",
+    verified: false,
+    accessibility:"Cada tarjeta asocia el label por for/id, así toda la superficie de texto activa el checkbox; la tarjeta mide 44px de alto mínimo, que cubre el objetivo táctil. El input centra verticalmente con la tarjeta en flex. No convertir la tarjeta en botón ni darle foco propio: el control es el checkbox.",
+    note:"verified queda en false porque Mis datos figura como parcial en el ledger de migración; la entrada no debe usarse como evidencia de migración completa. El prototipo Tabla_checkbox (Campos personalizados — Manifiesto, 2026-08-10) traía estas tarjetas como gc-setting-card con globo de ayuda artesanal: al sistema se traducen como gc-check-card productiva y, si hace falta ayuda, gc-help-button + Popover.",
+    preview:`<section class="gc-form-section">
+  <p class="gc-section-kicker">Cada bloque agrupa el comportamiento de un módulo del aplicativo.</p>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="1" id="demo_check_categorias" checked>
+        <label class="form-check-label" for="demo_check_categorias">Exigir relación de categorías en el declarado</label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="1" id="demo_check_hoja">
+        <label class="form-check-label" for="demo_check_hoja">Requerir hoja de seguridad para residuo SÍ peligroso</label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="0" id="demo_check_dup" checked>
+        <label class="form-check-label" for="demo_check_dup">Replicar frecuencia, precio, unidad y hoja de seguridad al duplicar</label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="1" id="demo_check_gestores">
+        <label class="form-check-label" for="demo_check_gestores">Permitir a gestores asociar sucursales tras aprobar la declaración</label>
+      </div>
+    </div>
+  </div>
+</section>`,
+    snippet:`<div class="row g-3">
+    <div class="col-md-6">
+        <div class="form-check gc-check-card">
+            <input class="form-check-input" type="checkbox" value="1" <?= $dis ?>
+                   name="hab_oblig_categoria_declarado" id="hab_oblig_categoria_declarado"
+                   <?= $chk('hab_oblig_categoria_declarado') ? 'checked' : '' ?>>
+            <label class="form-check-label" for="hab_oblig_categoria_declarado">
+                Exigir relación de categorías en el declarado
+            </label>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-check gc-check-card">
+            <input class="form-check-input" type="checkbox" value="1" <?= $dis ?>
+                   name="hoja_seguridad" id="hoja_seguridad"
+                   <?= $chk('hoja_seguridad') ? 'checked' : '' ?>>
+            <label class="form-check-label" for="hoja_seguridad">
+                Requerir hoja de seguridad para residuo SÍ peligroso
+            </label>
+        </div>
+    </div>
+    <?php /* INVERTIDO: marcado envía 0 (ver update.php). */ ?>
+    <div class="col-md-6">
+        <div class="form-check gc-check-card">
+            <input class="form-check-input" type="checkbox" value="0" <?= $dis ?>
+                   name="checkdupcampos" id="checkdupcampos"
+                   <?= $chkInv('checkdupcampos') ? 'checked' : '' ?>>
+            <label class="form-check-label" for="checkdupcampos">
+                Replicar frecuencia, precio, unidad y hoja de seguridad al duplicar
+            </label>
+        </div>
+    </div>
+</div>`
+  },
+  {
+    id:"tabla-campos-opciones",
+    catalogExamples: [],
+    implementations: [
+      { module:"Mis datos / Configuraciones", agregar:150, file:"cplus/views/mostrarDatos.php", detail:"Bloque interno Campos personalizados Solicitudes: tabla de dos campos, seis columnas y matriz de reglas dentro de #secSolicitudes (líneas 646-783). Conserva el submit nativo de Datos y los nombres del contrato campos_pers_solicitudes." }
+    ],
+    group:"Bloques",
+    name:"Tabla de campos personalizados",
+    description:"Tabla de configuración compacta para dos campos personalizados y sus reglas de carga/descarga. El ejemplo productivo vive dentro de Mis datos, no en otro módulo.",
+    use:"Usarlo cuando una configuración autónoma necesita editar pocas filas homogéneas con texto, selección y banderas relacionadas. Combina gc-table-card, gc-table-scroll y gc-field-table para conservar columnas y semántica en escritorio y móvil.",
+    avoid:"No usarlo para listados de registros, DataTables, paginación ni filtros. No sustituir la tabla por tarjetas en móvil, no nombrar las clases por una pantalla concreta y no copiar popovers o JavaScript de demostración a producción. La ayuda se inicializa de forma acotada desde el JavaScript de la vista.",
+    deps:"Bootstrap CSS + Bootstrap JS (Popover) + grinclic-forms.css en el visor. En producción: cplus/scss/_gc-forms.scss, cplus/js/entities/datos/form-manager.js y el bundle Bootstrap ya cargado por CPlus.",
+    verified: false,
+    accessibility:"La tabla usa caption oculto, th con scope, colgroup de seis columnas y etiquetas accesibles para cada control. gc-table-scroll es enfocable y explica su contenido. Los botones gc-help-button son botones nativos con aria-label; Bootstrap Popover se abre por foco, se cierra al perderlo y también con Escape sin perder el foco del botón.",
+    note:"Los previews y snippets de las variantes reproducen el markup y la lógica PHP de cplus/views/mostrarDatos.php. verified permanece en false porque Mis datos figura como parcial en el ledger de migración; la entrada no debe usarse como evidencia de migración completa.",
+    variants:[
+      {
+        name:"Campos personalizados Solicitudes",
+        description:"Dos filas y seis columnas: título, formato, disponibilidad y obligatoriedad por solicitud de carga y descarga.",
+        preview:`<section class="gc-form-section">
+  <h2 class="gc-section-title">Campos personalizados Solicitudes <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Defina hasta dos campos adicionales y en qué tipo de solicitud se solicitan. Un campo obligatorio debe estar disponible en el mismo tipo de solicitud." aria-describedby="ayuda-campos-solicitudes-preview" aria-label="Ver ayuda de campos personalizados Solicitudes">?</button></h2>
+  <span id="ayuda-campos-solicitudes-preview" class="visually-hidden">Defina hasta dos campos adicionales y en qué tipo de solicitud se solicitan.</span>
+  <p class="gc-section-kicker">Cada campo se habilita por tipo de solicitud; «Obligatorio» exige que esté disponible.</p>
+  <div class="gc-table-card">
+    <div class="gc-table-scroll" tabindex="0" aria-label="Configuración de campos personalizados de Solicitudes">
+      <table class="gc-field-table">
+        <caption class="visually-hidden">Configure los campos personalizados para solicitudes de carga y descarga.</caption>
+        <colgroup>
+          <col class="gc-field-table__col--title"><col class="gc-field-table__col--format">
+          <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+          <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+        </colgroup>
+        <thead><tr><th scope="col">Título</th><th scope="col">Formato</th><th scope="col"><span aria-hidden="true">Disp. sol. carga</span><span class="visually-hidden">Disponible en solicitud de carga</span></th><th scope="col">Oblig.</th><th scope="col"><span aria-hidden="true">Disp. sol. descarga</span><span class="visually-hidden">Disponible en solicitud de descarga</span></th><th scope="col">Oblig.</th></tr></thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="gc-field-table__cell"><input class="form-control" name="campo1S" id="campo1S" value="Nombre de contacto" aria-label="Título del campo 1"></th>
+            <td class="gc-field-table__cell"><select class="form-select" name="formato1S" id="formato1S" aria-label="Formato del campo 1"><option value="1">Alfanumérico</option><option value="2" selected>Numérico</option></select></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="disp_sol_carga" id="disp_sol_carga" checked aria-label="Disponible en solicitud de carga para el campo 1"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo1ObligS" id="campo1ObligS" checked aria-label="Obligatorio en solicitud de carga para el campo 1"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="disp_sol_descarga" id="disp_sol_descarga" aria-label="Disponible en solicitud de descarga para el campo 1"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo1ObligSdes" id="campo1ObligSdes" aria-label="Obligatorio en solicitud de descarga para el campo 1"></div></td>
+          </tr>
+          <tr>
+            <th scope="row" class="gc-field-table__cell"><input class="form-control" name="campo2S" id="campo2S" value="Teléfono de contacto" aria-label="Título del campo 2"></th>
+            <td class="gc-field-table__cell"><select class="form-select" name="formato2S" id="formato2S" aria-label="Formato del campo 2"><option value="1">Alfanumérico</option><option value="2" selected>Numérico</option></select></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="disp_sol_carga2" id="disp_sol_carga2" aria-label="Disponible en solicitud de carga para el campo 2"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo2ObligS" id="campo2ObligS" aria-label="Obligatorio en solicitud de carga para el campo 2"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="disp_sol_descarga2" id="disp_sol_descarga2" checked aria-label="Disponible en solicitud de descarga para el campo 2"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo2ObligSdes2" id="campo2ObligSdes2" aria-label="Obligatorio en solicitud de descarga para el campo 2"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>`,
+        snippet:`<h5 class="gc-section-title mt-4">
+  Campos personalizados Solicitudes
+  <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Defina hasta dos campos adicionales y en qué tipo de solicitud se solicitan. Un campo obligatorio debe estar disponible en el mismo tipo de solicitud." aria-describedby="ayuda-campos-solicitudes" aria-label="Ver ayuda de campos personalizados Solicitudes">?</button>
+</h5>
+<span id="ayuda-campos-solicitudes" class="visually-hidden">Defina hasta dos campos adicionales y en qué tipo de solicitud se solicitan.</span>
+<p class="gc-section-kicker">Cada campo se habilita por tipo de solicitud; «Obligatorio» exige que esté disponible.</p>
+<div class="gc-table-card">
+  <div class="gc-table-scroll" tabindex="0" aria-label="Configuración de campos personalizados de Solicitudes">
+    <table class="gc-field-table">
+      <caption class="visually-hidden">Configure los campos personalizados y sus reglas para solicitudes de carga y descarga.</caption>
+      <colgroup>
+        <col class="gc-field-table__col--title"><col class="gc-field-table__col--format">
+        <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+        <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+      </colgroup>
+      <thead><tr><th scope="col">Título</th><th scope="col">Formato</th><th scope="col"><span aria-hidden="true">Disp. sol. carga</span><span class="visually-hidden">Disponible en solicitud de carga</span></th><th scope="col">Oblig.</th><th scope="col"><span aria-hidden="true">Disp. sol. descarga</span><span class="visually-hidden">Disponible en solicitud de descarga</span></th><th scope="col">Oblig.</th></tr></thead>
+      <tbody>
+        <?php for ($i = 1; $i <= 2; $i++) {
+          $sufDisp = $i === 1 ? 'disp_sol_carga' : 'disp_sol_carga2';
+          $sufDispD = $i === 1 ? 'disp_sol_descarga' : 'disp_sol_descarga2';
+          $sufOblig = $i === 1 ? 'campo1ObligS' : 'campo2ObligS';
+          $sufObligD = $i === 1 ? 'campo1ObligSdes' : 'campo2ObligSdes2';
+          $campoN = 'campo' . $i . 'S';
+          $formatoN = 'formato' . $i . 'S';
+          $fmtVal = (string) ($solVal($formatoN) ?? '');
+        ?>
+        <tr>
+          <th scope="row" class="gc-field-table__cell"><label for="<?= $campoN ?>" class="visually-hidden">Título del campo <?= $i ?></label><input type="text" name="<?= $campoN ?>" id="<?= $campoN ?>" class="form-control" maxlength="150" value="<?= cplus_e((string) ($solVal($campoN) ?? '')) ?>" <?= $ro ?>></th>
+          <td class="gc-field-table__cell"><label for="<?= $formatoN ?>" class="visually-hidden">Formato del campo <?= $i ?></label><select name="<?= $formatoN ?>" id="<?= $formatoN ?>" class="form-select" <?= $dis ?>><option value="1" <?= $fmtVal === '1' ? 'selected' : '' ?>>Alfanumérico</option><option value="2" <?= $fmtVal === '2' ? 'selected' : '' ?>>Numérico</option></select></td>
+          <?php foreach ([[$sufDisp, 'Disponible en solicitud de carga'], [$sufOblig, 'Obligatorio en solicitud de carga'], [$sufDispD, 'Disponible en solicitud de descarga'], [$sufObligD, 'Obligatorio en solicitud de descarga']] as [$name, $label]) { ?>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" <?= $dis ?> name="<?= $name ?>" id="<?= $name ?>" aria-label="<?= cplus_e($label) ?> para el campo <?= $i ?>" <?= ((string) ($solVal($name) ?? '') === '1') ? 'checked' : '' ?>></div></td>
+          <?php } ?>
+        </tr>
+        <?php } ?>
+      </tbody>
+    </table>
+  </div>
+</div>`
+      },
+      {
+        name:"Reglas por solicitud",
+        description:"La misma tabla agrupa las reglas bajo una cabecera y alinea los checkbox de carga y descarga en las dos últimas columnas.",
+        preview:`<div class="gc-table-card">
+  <div class="gc-table-scroll" tabindex="0" aria-label="Reglas de Solicitudes">
+    <table class="gc-field-table">
+      <colgroup>
+        <col class="gc-field-table__col--title"><col class="gc-field-table__col--format">
+        <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+        <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+      </colgroup>
+      <tbody>
+        <tr class="gc-field-table__section"><th colspan="6" scope="rowgroup">Regla</th></tr>
+        <tr class="gc-field-table__rule-head"><th colspan="4" scope="colgroup">Regla</th><th scope="col">Sol. carga</th><th scope="col">Sol. descarga</th></tr>
+        <tr>
+          <th colspan="4" scope="row" class="gc-field-table__rule-label">Exigir adjunto en la solicitud <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Exige un adjunto antes de guardar la solicitud del tipo correspondiente." aria-label="Ver ayuda de exigir adjunto en la solicitud">?</button></th>
+          <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="obligadj_solcarga" id="obligadj_solcarga" aria-label="Exigir adjunto en la solicitud de carga"></div></td>
+          <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="obligadj_soldes" id="obligadj_soldes" checked aria-label="Exigir adjunto en la solicitud de descarga"></div></td>
+        </tr>
+        <tr>
+          <th colspan="4" scope="row" class="gc-field-table__rule-label">Exigir relacionar servicios adicionales en solicitudes</th>
+          <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="hab_oblig_especificaciones" id="hab_oblig_especificaciones" checked aria-label="Exigir relacionar servicios adicionales en solicitud de carga"></div></td>
+          <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="hab_oblig_especificaciones_des" id="hab_oblig_especificaciones_des" aria-label="Exigir relacionar servicios adicionales en solicitud de descarga"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>`,
+        snippet:`<?php foreach ($reglasSolicitud as $regla) { ?>
+  <tr>
+    <th colspan="4" scope="row" class="gc-field-table__rule-label">
+      <span><?= cplus_e($regla['label']) ?></span>
+      <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="<?= cplus_e($regla['help']) ?>" aria-label="Ver ayuda de <?= cplus_e($regla['label']) ?>">?</button>
+    </th>
+    <?php foreach (['carga', 'descarga'] as $tipo) { $name = $regla[$tipo]; ?>
+      <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" <?= $dis ?> name="<?= $name ?>" id="<?= $name ?>" aria-label="<?= cplus_e($regla['label']) ?> para solicitud de <?= $tipo ?>" <?= $chk($name) ? 'checked' : '' ?>></div></td>
+    <?php } ?>
+  </tr>
+<?php } ?>`
+      }
+    ],
+    snippet:`<section class="gc-form-section" aria-label="Campos personalizados de Solicitudes">
+  <h5 class="gc-section-title">Campos personalizados Solicitudes <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Defina hasta dos campos adicionales y en qué tipo de solicitud se solicitan. Un campo obligatorio debe estar disponible en el mismo tipo de solicitud." aria-describedby="ayuda-campos-solicitudes-codigo" aria-label="Ver ayuda de campos personalizados Solicitudes">?</button></h5>
+  <span id="ayuda-campos-solicitudes-codigo" class="visually-hidden">Defina hasta dos campos adicionales y en qué tipo de solicitud se solicitan.</span>
+  <p class="gc-section-kicker">Cada campo se habilita por tipo de solicitud; «Obligatorio» exige que esté disponible.</p>
+  <div class="gc-table-card">
+    <div class="gc-table-scroll" tabindex="0" aria-label="Configuración de campos personalizados de Solicitudes">
+      <table class="gc-field-table">
+        <caption class="visually-hidden">Configure los campos personalizados y sus reglas para solicitudes de carga y descarga.</caption>
+        <colgroup><col class="gc-field-table__col--title"><col class="gc-field-table__col--format"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"></colgroup>
+        <thead><tr><th scope="col">Título</th><th scope="col">Formato</th><th scope="col"><span aria-hidden="true">Disp. sol. carga</span><span class="visually-hidden">Disponible en solicitud de carga</span></th><th scope="col">Oblig.</th><th scope="col"><span aria-hidden="true">Disp. sol. descarga</span><span class="visually-hidden">Disponible en solicitud de descarga</span></th><th scope="col">Oblig.</th></tr></thead>
+        <tbody>
+          <tr><th scope="row" class="gc-field-table__cell"><label for="campo1S" class="visually-hidden">Título del campo 1</label><input type="text" name="campo1S" id="campo1S" class="form-control" maxlength="150" value="Nombre de contacto"></th><td class="gc-field-table__cell"><label for="formato1S" class="visually-hidden">Formato del campo 1</label><select name="formato1S" id="formato1S" class="form-select"><option value="1">Alfanumérico</option><option value="2" selected>Numérico</option></select></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="disp_sol_carga" id="disp_sol_carga" checked aria-label="Disponible en solicitud de carga para el campo 1"></div></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1ObligS" id="campo1ObligS" checked aria-label="Obligatorio en solicitud de carga para el campo 1"></div></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="disp_sol_descarga" id="disp_sol_descarga" aria-label="Disponible en solicitud de descarga para el campo 1"></div></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1ObligSdes" id="campo1ObligSdes" aria-label="Obligatorio en solicitud de descarga para el campo 1"></div></td></tr>
+          <tr><th scope="row" class="gc-field-table__cell"><label for="campo2S" class="visually-hidden">Título del campo 2</label><input type="text" name="campo2S" id="campo2S" class="form-control" maxlength="150" value="Teléfono de contacto"></th><td class="gc-field-table__cell"><label for="formato2S" class="visually-hidden">Formato del campo 2</label><select name="formato2S" id="formato2S" class="form-select"><option value="1">Alfanumérico</option><option value="2" selected>Numérico</option></select></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="disp_sol_carga2" id="disp_sol_carga2" aria-label="Disponible en solicitud de carga para el campo 2"></div></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo2ObligS" id="campo2ObligS" aria-label="Obligatorio en solicitud de carga para el campo 2"></div></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="disp_sol_descarga2" id="disp_sol_descarga2" checked aria-label="Disponible en solicitud de descarga para el campo 2"></div></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo2ObligSdes2" id="campo2ObligSdes2" aria-label="Obligatorio en solicitud de descarga para el campo 2"></div></td></tr>
+        </tbody>
+        <tbody>
+          <tr class="gc-field-table__section"><th colspan="6" scope="rowgroup">Regla</th></tr>
+          <tr class="gc-field-table__rule-head"><th colspan="4" scope="colgroup">Regla</th><th scope="col">Sol. carga</th><th scope="col">Sol. descarga</th></tr>
+          <tr><th colspan="4" scope="row" class="gc-field-table__rule-label">Exigir adjunto en la solicitud <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Exige un adjunto antes de guardar la solicitud del tipo correspondiente." aria-label="Ver ayuda de exigir adjunto en la solicitud">?</button></th><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="obligadj_solcarga" id="obligadj_solcarga" aria-label="Exigir adjunto en la solicitud de carga"></div></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="obligadj_soldes" id="obligadj_soldes" checked aria-label="Exigir adjunto en la solicitud de descarga"></div></td></tr>
+          <tr><th colspan="4" scope="row" class="gc-field-table__rule-label">Exigir relacionar servicios adicionales en solicitudes <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Exige relacionar servicios adicionales antes de guardar la solicitud del tipo correspondiente." aria-label="Ver ayuda de exigir relacionar servicios adicionales en solicitudes">?</button></th><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="hab_oblig_especificaciones" id="hab_oblig_especificaciones" checked aria-label="Exigir relacionar servicios adicionales en solicitud de carga"></div></td><td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="hab_oblig_especificaciones_des" id="hab_oblig_especificaciones_des" aria-label="Exigir relacionar servicios adicionales en solicitud de descarga"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>`
+  },
+  {
     id:"carga-pdf",
     catalogExamples: ["gc-formulario-usuarios","gc-formulario-configuraciones"],
     implementations: [
@@ -1236,32 +1476,54 @@ CplusAlerts.hideLoading();           // cierra el overlay
     id:"encabezado-formulario",
     catalogExamples: ["gc-formulario-usuarios","gc-formulario-clientes"],
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/views/partials/form-head.php", detail: "Parcial compartido gc-form-head: gc-form-title (línea 36) y gc-meta-grid con las cuatro celdas de auditoría (líneas 43-50); Usuarios lo incluye en la línea 273" },
-      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Include del parcial en la línea 143" },
-      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Include del parcial en la línea 96, dentro de form#form-role-permissions" },
-      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Include del parcial en la línea 360" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Include del parcial dentro de form#form pasando solo $phIcono bi-people-fill (líneas 267-270); la retícula de auditoría sale sola de $rowsActualizar y en modo crear el parcial aplica --table-simple" },
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Formulario con la acción dentro del encabezado: $phAcciones lleva el botón submit Guardar salvo en modo consulta (líneas 139-146)" },
+      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Include del formulario en la línea 95, dentro de form#form-role-permissions" },
+      { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Include del formulario en la línea 365" },
     ],
     group:"Organización",
-    name:"Encabezado formulario",
-    description:"Encabezado estándar de formularios: título y descripción opcional a la izquierda, retícula de auditoría a la derecha en dos columnas de dos filas (Fecha de creación, Creado por, Último cambio, Elaborado por).",
-    use:"Usarlo como primer bloque de formularios administrativos. En CPlus no se copia el marcado: se incluye el parcial compartido cplus/views/partials/form-head.php, que mapea fecha, elaboro, fecha_actualizacion y elaboro_actualizacion de la fila en edición.",
-    avoid:"No duplicarlo en secciones internas ni repetir el título de la página, y no usar h1: ese lo aporta el encabezado del módulo. No reintroducir el logo del tenant ni el bloque gc-history con gc-last-change naranja. Las acciones de pantalla van en .module-actions y el cierre del formulario en gc-review.",
-    deps:"Bootstrap CSS + grinclic-forms.css",
+    name:"Encabezado de página (formulario)",
+    description:"Encabezado único de pantalla gc-page-header en su variante de formulario: h1 con icono y descripción a la izquierda, retícula de auditoría a la derecha (Fecha de creación, Creado por, Último cambio, Elaborado por) y, cuando la vista lo pide, las acciones principales dentro del propio encabezado.",
+    use:"Primer bloque del formulario de crear/editar. En CPlus no se copia el marcado: la vista define $titulo, $subtitulo y $phIcono e incluye el parcial compartido cplus/views/partials/page-head.php, que mapea fecha, elaboro, fecha_actualizacion y elaboro_actualizacion de la fila en edición ($fhRow, por defecto $rowsActualizar). Un botón Guardar u otra acción principal se pasa ya escapado en $phAcciones.",
+    avoid:"No usar gc-form-head, gc-form-title ni gc-meta-grid: los reemplazó este parcial el 2026-08-10 y el antiguo form-head.php ya no existe. No declarar dos encabezados con título en la misma pantalla ni copiar el marcado renderizado a la vista. El pie con checkbox de confirmación (gc-review-*) no entra al encabezado: se queda al final del formulario.",
+    deps:"Bootstrap Icons y la hoja compilada cplus/css/main.css (fuente cplus/scss/_gc-page-header.scss). En el visor, grinclic-forms.css.",
     verified: true,
-    accessibility:"Usa h2 porque el h1 lo aporta el module-header. La retícula se agrupa con role=\"group\" y aria-label \"Información de auditoría\". Cada celda es etiqueta más valor en spans de texto plano: no es un control, no le des foco ni lo conviertas en botón. El valor recorta con ellipsis en una línea, por eso el parcial repite el texto completo en title.",
-    note:"La retícula se autorregula: el parcial pinta solo las celdas con valor y en modo crear no emite <code>gc-meta-grid</code>, de modo que el título ocupa el ancho completo. El título se mantiene en 1.5rem porque va bajo el h1 de 1.65rem del module-header.",
-    snippet:`<header class="gc-form-head">
-  <div class="gc-form-title">
-    <h2>Actualizar clientes</h2>
-    <p>Datos generales, ubicación, contactos e integración.</p>
+    accessibility:"El título es el único h1 de la pantalla y el header lo referencia con aria-labelledby; el parcial numera el id por include para las pantallas que montan listado y formulario a la vez. El icono bi-* es decorativo (aria-hidden=\"true\"). La retícula se agrupa con role=\"group\" y aria-label \"Información de auditoría\"; cada valor recorta con ellipsis en una línea, por eso el parcial repite el texto completo en title.",
+    note:"El parcial se autorregula: pinta solo las celdas de auditoría con valor, en modo crear no emite retícula y aplica el modificador <code>--table-simple</code>, y la columna lateral desaparece si no hay ni metadatos ni acciones. El verde del icono del título es <code>--screen-primary</code> (#1b7f4d), distinto a propósito del verde #328539 de los botones de acción.",
+    preview:`<header class="gc-page-header" aria-labelledby="gc-page-header-title-form-demo">
+  <div class="gc-page-header__layout">
+    <div class="gc-page-header__heading">
+      <h1 class="gc-page-header__title" id="gc-page-header-title-form-demo">
+        <i class="bi bi-people-fill gc-page-header__title-icon" aria-hidden="true"></i>
+        <span>Mis usuarios</span>
+      </h1>
+      <p class="gc-page-header__desc">Datos del usuario, acceso al sistema, credenciales, adjuntos y comunicación.</p>
+    </div>
+    <aside class="gc-page-header__side">
+      <div class="gc-page-header__meta" role="group" aria-label="Información de auditoría">
+        <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Fecha de creación</span><span class="gc-page-header__meta-value" title="12/03/2026">12/03/2026</span></div>
+        <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Creado por</span><span class="gc-page-header__meta-value" title="Laura Méndez">Laura Méndez</span></div>
+        <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Último cambio</span><span class="gc-page-header__meta-value" title="04/08/2026">04/08/2026</span></div>
+        <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Elaborado por</span><span class="gc-page-header__meta-value" title="Andrés Rojas">Andrés Rojas</span></div>
+      </div>
+    </aside>
   </div>
-  <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
-    <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
-    <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
-    <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
-    <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
-  </div>
-</header>`
+</header>`,
+    snippet:`<!-- Dentro del <form> de la vista. El parcial emite el marcado; la vista solo declara variables. -->
+<?php
+$phIcono = 'bi-people-fill';
+include 'cplus/views/partials/page-head.php';
+?>
+
+<!-- Con la acción principal dentro del encabezado (mostrarEmbalajes.php): -->
+<?php
+$phIcono    = 'bi-box-seam';
+$phAcciones = empty($ver)
+    ? '<button type="submit" class="erp-btn erp-btn-primary" id="guardar" name="guardar">'
+        . '<i class="bi bi-save"></i> ' . cplus_e($mensaje) . '</button>'
+    : '';
+include 'cplus/views/partials/page-head.php';
+?>`
   },
   {
     id:"opciones-acordeon",
@@ -1470,16 +1732,23 @@ CplusAlerts.hideLoading();           // cierra el overlay
     snippet:`<!-- Organismo: gc-formulario-clientes -->
     <!-- Uso conceptual: <gc-formulario-clientes></gc-formulario-clientes> -->
     <form class="gc-form-shell" method="post" action="/clientes/actualizar">
-      <header class="gc-form-head">
-        <div class="gc-form-title">
-          <h2>Mis clientes</h2>
-          <p>Actualización de información general, ubicación, contactos, configuración comercial e integración.</p>
-        </div>
-        <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
-          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
-          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
-          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
-          <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
+      <header class="gc-page-header" aria-labelledby="gc-page-header-title-1">
+        <div class="gc-page-header__layout">
+          <div class="gc-page-header__heading">
+            <h1 class="gc-page-header__title" id="gc-page-header-title-1">
+              <i class="bi bi-person-vcard gc-page-header__title-icon" aria-hidden="true"></i>
+              <span>Mis clientes</span>
+            </h1>
+            <p class="gc-page-header__desc">Actualización de información general, ubicación, contactos, configuración comercial e integración.</p>
+          </div>
+          <aside class="gc-page-header__side">
+            <div class="gc-page-header__meta" role="group" aria-label="Información de auditoría">
+              <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Fecha de creación</span><span class="gc-page-header__meta-value" title="12/03/2026">12/03/2026</span></div>
+              <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Creado por</span><span class="gc-page-header__meta-value" title="Laura Méndez">Laura Méndez</span></div>
+              <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Último cambio</span><span class="gc-page-header__meta-value" title="04/08/2026">04/08/2026</span></div>
+              <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Elaborado por</span><span class="gc-page-header__meta-value" title="Andrés Rojas">Andrés Rojas</span></div>
+            </div>
+          </aside>
         </div>
       </header>
     
@@ -1842,7 +2111,7 @@ CplusAlerts.hideLoading();           // cierra el overlay
   {
     id:"gc-formulario-usuarios",
     implementations: [
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Shell del formulario: include de partials/form-head.php y las 3 pestañas con los mismos ids del organismo (líneas 273, 293-303)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Shell del formulario: include de partials/page-head.php y las 3 pestañas con los mismos ids del organismo (líneas 267-270, 288-301)" },
       { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Panes Datos del usuario y Credenciales de acceso, cada uno con section.border.rounded-3.p-3.bg-white y h2.gc-section-title (líneas 305-307 y 693-695)" },
       { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Cierre gc-review-footer con checkbox data-gc-review-check que gatea el botón guardar (líneas 1059-1077)" },
     ],
@@ -1853,21 +2122,28 @@ CplusAlerts.hideLoading();           // cierra el overlay
     avoid:"No pegarlo sin ajustar action, permisos, roles disponibles, cliente asociado, validaciones de contraseña, almacenamiento de adjuntos y reglas reales de notificación por correo.",
     deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
     accessibility:"El formulario usa labels asociados, controles nativos, pestañas y acordeones Bootstrap, radiogroups SI/NO con valores explícitos, campos de clave protegidos y confirmación final antes del submit.",
-    note:"<strong>Sin verificar:</strong> es propuesta de diseño y difiere de la vista productiva <code>cplus/views/mostrarUsuarios.php</code> en cuatro puntos: no usa <code>gc-form-shell</code> ni <code>gc-form-section</code> (las secciones son <code>section.border.rounded-3.p-3.bg-white</code>), la pestaña Información adicional no lleva acordeón Bootstrap y el encabezado no se escribe en línea sino que incluye el parcial <code>cplus/views/partials/form-head.php</code>, que titula con h2.",
+    note:"<strong>Sin verificar:</strong> es propuesta de diseño y difiere de la vista productiva <code>cplus/views/mostrarUsuarios.php</code> en cuatro puntos: no usa <code>gc-form-shell</code> ni <code>gc-form-section</code> (las secciones son <code>section.border.rounded-3.p-3.bg-white</code>), la pestaña Información adicional no lleva acordeón Bootstrap y el encabezado no se escribe en línea sino que incluye el parcial <code>cplus/views/partials/page-head.php</code>, que emite el mismo gc-page-header del organismo.",
     example:"ejemplos/formulario-usuarios.html",
     snippet:`<!-- Organismo: gc-formulario-usuarios -->
 <!-- Uso conceptual: <gc-formulario-usuarios></gc-formulario-usuarios> -->
 <form class="gc-form-shell" method="post" action="/usuarios/actualizar" enctype="multipart/form-data">
-  <header class="gc-form-head">
-    <div class="gc-form-title">
-      <h2>Mis usuarios</h2>
-      <p>Datos del usuario, acceso al sistema, credenciales, adjuntos y comunicación.</p>
-    </div>
-    <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
+  <header class="gc-page-header" aria-labelledby="gc-page-header-title-1">
+    <div class="gc-page-header__layout">
+      <div class="gc-page-header__heading">
+        <h1 class="gc-page-header__title" id="gc-page-header-title-1">
+          <i class="bi bi-people-fill gc-page-header__title-icon" aria-hidden="true"></i>
+          <span>Mis usuarios</span>
+        </h1>
+        <p class="gc-page-header__desc">Datos del usuario, acceso al sistema, credenciales, adjuntos y comunicación.</p>
+      </div>
+      <aside class="gc-page-header__side">
+        <div class="gc-page-header__meta" role="group" aria-label="Información de auditoría">
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Fecha de creación</span><span class="gc-page-header__meta-value" title="12/03/2026">12/03/2026</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Creado por</span><span class="gc-page-header__meta-value" title="Laura Méndez">Laura Méndez</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Último cambio</span><span class="gc-page-header__meta-value" title="04/08/2026">04/08/2026</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Elaborado por</span><span class="gc-page-header__meta-value" title="Andrés Rojas">Andrés Rojas</span></div>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -2142,16 +2418,23 @@ CplusAlerts.hideLoading();           // cierra el overlay
     example:"ejemplos/formulario-configuraciones.html",
     snippet:`<!-- Organismo: gc-formulario-configuraciones -->
 <form class="gc-form-shell" method="post" action="/configuraciones/actualizar" enctype="multipart/form-data">
-  <header class="gc-form-head">
-    <div class="gc-form-title">
-      <h2>Mis datos / Configuraciones</h2>
-      <p>Datos generales de la empresa, parámetros operativos, alertas y funcionalidades del sistema.</p>
-    </div>
-    <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
+  <header class="gc-page-header" aria-labelledby="gc-page-header-title-1">
+    <div class="gc-page-header__layout">
+      <div class="gc-page-header__heading">
+        <h1 class="gc-page-header__title" id="gc-page-header-title-1">
+          <i class="bi bi-sliders gc-page-header__title-icon" aria-hidden="true"></i>
+          <span>Mis datos / Configuraciones</span>
+        </h1>
+        <p class="gc-page-header__desc">Datos generales de la empresa, parámetros operativos, alertas y funcionalidades del sistema.</p>
+      </div>
+      <aside class="gc-page-header__side">
+        <div class="gc-page-header__meta" role="group" aria-label="Información de auditoría">
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Fecha de creación</span><span class="gc-page-header__meta-value" title="12/03/2026">12/03/2026</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Creado por</span><span class="gc-page-header__meta-value" title="Laura Méndez">Laura Méndez</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Último cambio</span><span class="gc-page-header__meta-value" title="04/08/2026">04/08/2026</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Elaborado por</span><span class="gc-page-header__meta-value" title="Andrés Rojas">Andrés Rojas</span></div>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -3054,7 +3337,7 @@ CplusAlerts.hideLoading();           // cierra el overlay
   {
     id:"gc-formulario-roles",
     implementations: [
-      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "form#form-role-permissions con include de partials/form-head.php y la fila Nombre / Descripción / Estado (líneas 94-125)" },
+      { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "form#form-role-permissions con include de partials/page-head.php y la fila Nombre / Descripción / Estado (líneas 94-125)" },
       { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Selector de módulo real: div#rbac-form-modules con role=radiogroup y radios por módulo, no el select del organismo (líneas 152-171)" },
       { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Cierre gc-review-footer con #gc_review_roles que gatea #btn-submit-role (líneas 185-197)" },
     ],
@@ -3070,16 +3353,23 @@ CplusAlerts.hideLoading();           // cierra el overlay
     snippet:`<!-- Organismo: gc-formulario-roles -->
 <!-- Uso conceptual: <gc-formulario-roles></gc-formulario-roles> -->
 <form class="gc-form-shell" method="post" action="/roles/actualizar">
-  <header class="gc-form-head">
-    <div class="gc-form-title">
-      <h2>Mis roles</h2>
-      <p>Configuración básica del rol, módulo asociado y descripción funcional.</p>
-    </div>
-    <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
+  <header class="gc-page-header" aria-labelledby="gc-page-header-title-1">
+    <div class="gc-page-header__layout">
+      <div class="gc-page-header__heading">
+        <h1 class="gc-page-header__title" id="gc-page-header-title-1">
+          <i class="bi bi-shield-lock gc-page-header__title-icon" aria-hidden="true"></i>
+          <span>Mis roles</span>
+        </h1>
+        <p class="gc-page-header__desc">Configuración básica del rol, módulo asociado y descripción funcional.</p>
+      </div>
+      <aside class="gc-page-header__side">
+        <div class="gc-page-header__meta" role="group" aria-label="Información de auditoría">
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Fecha de creación</span><span class="gc-page-header__meta-value" title="12/03/2026">12/03/2026</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Creado por</span><span class="gc-page-header__meta-value" title="Laura Méndez">Laura Méndez</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Último cambio</span><span class="gc-page-header__meta-value" title="04/08/2026">04/08/2026</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Elaborado por</span><span class="gc-page-header__meta-value" title="Andrés Rojas">Andrés Rojas</span></div>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -3135,7 +3425,7 @@ CplusAlerts.hideLoading();           // cierra el overlay
   {
     id:"gc-formulario-elementos-chequeo",
     implementations: [
-      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "form#formularioRegistrar con include de partials/form-head.php y la caja informativa gc-info-box (líneas 84-92)" },
+      { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "form#formularioRegistrar con include de partials/page-head.php y la caja informativa gc-info-box (líneas 84-92)" },
       { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Los tres únicos campos reales hoy: Nombre, Descripción y Estado en una sola fila (líneas 94-112)" },
       { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Cierre gc-review-footer con #gc_review_elementos que gatea #guardar (líneas 117-133)" },
     ],
@@ -3151,16 +3441,23 @@ CplusAlerts.hideLoading();           // cierra el overlay
     snippet:`<!-- Organismo: gc-formulario-elementos-chequeo -->
 <!-- Uso conceptual: <gc-formulario-elementos-chequeo></gc-formulario-elementos-chequeo> -->
 <form class="gc-form-shell" method="post" action="/elementos-chequeo/actualizar">
-  <header class="gc-form-head">
-    <div class="gc-form-title">
-      <h2>Elementos de chequeo</h2>
-      <p>Configuración de preguntas, obligatoriedad, respuesta esperada, sección y orden de visualización.</p>
-    </div>
-    <div class="gc-meta-grid" role="group" aria-label="Información de auditoría">
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Fecha de creación</span><span class="gc-meta-cell__value">12/03/2026</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Creado por</span><span class="gc-meta-cell__value">Laura Méndez</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Último cambio</span><span class="gc-meta-cell__value">04/08/2026</span></div>
-      <div class="gc-meta-cell"><span class="gc-meta-cell__label">Elaborado por</span><span class="gc-meta-cell__value">Andrés Rojas</span></div>
+  <header class="gc-page-header" aria-labelledby="gc-page-header-title-1">
+    <div class="gc-page-header__layout">
+      <div class="gc-page-header__heading">
+        <h1 class="gc-page-header__title" id="gc-page-header-title-1">
+          <i class="bi bi-clipboard-check gc-page-header__title-icon" aria-hidden="true"></i>
+          <span>Elementos de chequeo</span>
+        </h1>
+        <p class="gc-page-header__desc">Configuración de preguntas, obligatoriedad, respuesta esperada, sección y orden de visualización.</p>
+      </div>
+      <aside class="gc-page-header__side">
+        <div class="gc-page-header__meta" role="group" aria-label="Información de auditoría">
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Fecha de creación</span><span class="gc-page-header__meta-value" title="12/03/2026">12/03/2026</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Creado por</span><span class="gc-page-header__meta-value" title="Laura Méndez">Laura Méndez</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Último cambio</span><span class="gc-page-header__meta-value" title="04/08/2026">04/08/2026</span></div>
+          <div class="gc-page-header__meta-cell"><span class="gc-page-header__meta-label">Elaborado por</span><span class="gc-page-header__meta-value" title="Andrés Rojas">Andrés Rojas</span></div>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -3292,11 +3589,11 @@ CplusAlerts.hideLoading();           // cierra el overlay
     id:"boton",
     catalogExamples: ["opciones-acordeon"],
     implementations: [
-      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "El kit en el módulo más simple: Nuevo del encabezado (línea 123) y Guardar del formulario (línea 187). Ojo: la tarjeta de filtros con su botón Buscar está COMENTADA (líneas 201-240), así que ese botón no se renderiza" },
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "El kit en el módulo más simple: Nuevo del encabezado del listado (líneas 115-124) y Guardar dentro del encabezado del formulario vía $phAcciones (líneas 139-146). Ojo: la tarjeta de filtros con su botón Buscar está COMENTADA, así que ese botón no se renderiza" },
       { module: "Clientes", agregar: 130, file: "cplus/views/mostrarClientes.php", detail: "Buscar de la tarjeta de filtros, con el bloque vivo: erp-btn erp-btn-primary dentro de div.filters-actions (líneas 107-111)" },
       { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Cancelar secundario + Guardar primario en form-actions (líneas 750-755) y el mismo par en el pie del modal de horarios (líneas 796-797)" },
       { module: "Usuarios / Roles / Elementos de chequeo", agregar: 105, file: "cplus/js/core/gc-validate.js", detail: "La forma CPlus real de deshabilitar: bindReviewCheck fija targets[i].disabled = !check.checked sobre los submit del formulario (línea 117) y les pone el title de bloqueo (líneas 120-124). Lo activan los checkbox data-gc-review-check de mostrarUsuarios.php:1062, mostrarRoles.php:188 y mostrarElementosChequeo.php:120" },
-      { module: "Cargue de sucursales (parte de la migración validada de Sucursales, REQ-1026)", agregar: 146, file: "cplus/views/mostrarCarguesSucursales.php", detail: "Descargar plantilla con erp-btn erp-btn-excel dentro de module-actions, apuntando al endpoint BFF de plantilla por modo (líneas 113-116)" },
+      { module: "Cargue de sucursales (parte de la migración validada de Sucursales, REQ-1026)", agregar: 146, file: "cplus/views/mostrarCarguesSucursales.php", detail: "Descargar plantilla con erp-btn erp-btn-excel pasado en $phAcciones del encabezado único, apuntando al endpoint BFF de plantilla por modo (líneas 109-115)" },
       { module: "Sucursales", agregar: 127, file: "cplus/js/core/datatable-v2-shell.js", detail: "buildToolbar arma el botón Exportar con erp-btn erp-btn-excel table-tool-btn: modo dropdown en las líneas 163-177 y botón único en las 179-186. Sucursales lo activa en modo dropdown declarando export: 'dropdown' en cplus/js/entities/sucursales/datatable.js:104, que GrincDataTable traduce a data-cplus-export-mode (GrincDataTable.js:386-391)" },
     ],
     group:"Acciones",
@@ -3426,29 +3723,29 @@ CplusAlerts.hideLoading();           // cierra el overlay
       },
       {
         name:"Nuevo del encabezado de módulo",
-        description:"El botón de creación del encabezado, dentro de .module-actions: primario con icono bi-plus-lg y etiqueta Nuevo. En producción es un enlace con onclick, así que no admite disabled: si la acción no está disponible, se omite el botón. Cuando está condicionada, el disabled lo pone gc-validate.js sobre el submit.",
-        preview:`<section class="module-header">
-  <h1 class="section-title">
-    <i class="bi bi-box-seam section-title-icon"></i>
-    <span>Embalajes</span>
-  </h1>
-  <div class="module-actions">
-    <a href="#" class="erp-btn erp-btn-primary">
-      <i class="bi bi-plus-lg"></i> Nuevo
-    </a>
+        description:"El botón de creación del encabezado, dentro de gc-page-header__actions: primario con gc-page-header__new-btn (52px de alto mínimo), icono bi-plus-lg y etiqueta Nuevo. En producción es un enlace con onclick que la vista pasa en $phAcciones, así que no admite disabled: si la acción no está disponible, se omite el botón. Cuando está condicionada, el disabled lo pone gc-validate.js sobre el submit.",
+        preview:`<header class="gc-page-header gc-page-header--table-simple" aria-labelledby="gc-page-header-title-btn-demo">
+  <div class="gc-page-header__layout">
+    <div class="gc-page-header__heading">
+      <h1 class="gc-page-header__title" id="gc-page-header-title-btn-demo">
+        <i class="bi bi-box-seam gc-page-header__title-icon" aria-hidden="true"></i>
+        <span>Tipo de embalaje</span>
+      </h1>
+    </div>
+    <aside class="gc-page-header__side">
+      <div class="gc-page-header__actions" role="group" aria-label="Acciones principales">
+        <a href="#" class="erp-btn erp-btn-primary gc-page-header__new-btn" onclick="return false;"><i class="bi bi-plus-lg"></i><span>Nuevo</span></a>
+      </div>
+    </aside>
   </div>
-</section>`,
-        snippet:`<section class="module-header">
-  <h1 class="section-title">
-    <i class="bi bi-box-seam section-title-icon"></i>
-    <span>Embalajes</span>
-  </h1>
-  <div class="module-actions">
-    <a href="#" class="erp-btn erp-btn-primary" onclick="mostrar(); return false;">
-      <i class="bi bi-plus-lg"></i> Nuevo
-    </a>
-  </div>
-</section>
+</header>`,
+        snippet:`<?php
+$phAcciones = (empty($actualizar) && $canCreate)
+    ? '<a href="#" class="erp-btn erp-btn-primary gc-page-header__new-btn" onclick="mostrar(); return false;">'
+        . '<i class="bi bi-plus-lg"></i><span>Nuevo</span></a>'
+    : '';
+include 'cplus/views/partials/page-head.php';
+?>
 
 <!-- Acción condicionada: el disabled lo pone gc-validate.js:117-124 al leer el checkbox de revisión -->
 <div class="form-check">
@@ -3809,7 +4106,7 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
       { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Modal #modalHorarios, el canónico: es el único cuyo footer usa el kit erp-btn en los dos botones (líneas 787-801)" },
       { module: "Roles", agregar: 124, file: "cplus/js/entities/roles/datatable-constructor.js", detail: "Sobrescribe window.vertraza con una versión propia que consulta por BFF y pinta el MISMO modal centralizado #myModalT: localiza #myModalT, #trazainfo y #titulotraza, mete un spinner en el cuerpo y abre con bootstrap.Modal.getOrCreateInstance (líneas 100-125)" },
       { module: "Residuos inventariables", agregar: 126, file: "cplus/views/mostrarResiduosInventariables.php", detail: "Tres modales de formulario: #modalAcopios en modal-lg (línea 398), #modalDeclarados en modal-xl (484) y #modalDuplicarResiduo (653), este último con el form POST al proxy BFF DENTRO del .modal-content y el cuerpo en row g-3 con dos col-md-6 (líneas 662-670)" },
-      { module: "Traza global (transversal; consumida por Embalajes 106, Usuarios 105, Sucursales 127 y Roles 124)", agregar: 106, file: "cplus/js/lib/GrincUtils.js", detail: "Markup de #myModalT inyectado en toda vista C+ (líneas 19-36, pie de un solo botón «Enterado» en las 29-31) y window.vertraza() que lo abre (líneas 86-146). El camino genérico es cplus/js/core/standard-actions.js:139-147, que registra el evento de traza para toda entidad declarada con withTraza: true — así lo hacen embalajes/datatable.js:20, usuarios/datatable.js:25-30, sucursales/datatable.js:19-24 y roles/datatable.js:9" },
+      { module: "Traza global (transversal; consumida por Embalajes 106, Usuarios 105, Sucursales 127 y Roles 124)", agregar: 106, file: "cplus/js/lib/GrincUtils.js", detail: "Markup de #myModalT inyectado en toda vista C+ (líneas 19-42, rediseño v2: encabezado con gc-trace-modal__heading/__detail y pie de un solo botón «Entendido» en las 36-37) y window.vertraza() que lo abre (líneas 154-214). El camino genérico es cplus/js/core/standard-actions.js:139-147, que registra el evento de traza para toda entidad declarada con withTraza: true — así lo hacen embalajes/datatable.js:20, usuarios/datatable.js:25-30, sucursales/datatable.js:19-24 y roles/datatable.js:9" },
     ],
     group:"Modales",
     name:"Modal",
@@ -3849,7 +4146,7 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
 </section>`,
         snippet:`<!-- Footer con el kit erp-btn, como el modal canónico de Sucursales (cplus/views/mostrarSucursales.php:796-797).
      Divergencia abierta: el modal transversal #myModalT cierra con "btn btn-secondary" crudo
-     (cplus/js/lib/GrincUtils.js:30-31), no con el kit erp-btn. -->
+     (cplus/js/lib/GrincUtils.js:36-37), no con el kit erp-btn. -->
 <div class="modal fade" id="modalCompartir" tabindex="-1" aria-labelledby="modalCompartirLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -4032,12 +4329,15 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
       },
       {
         name:"Trazabilidad",
-        description:"Modal centralizado #myModalT, inyectado por cplus/js/lib/GrincUtils.js en toda vista C+. Una vista nueva no copia markup: declara tipoTrza de su entidad en cplus/config/entities.php y llama a window.vertraza(documento, nombre) desde la acción de la fila.",
+        description:"Modal centralizado #myModalT, inyectado por cplus/js/lib/GrincUtils.js en toda vista C+. Rediseño v2 del 2026-08-10: encabezado blanco con el título fuerte y una línea de detalle fija (gc-trace-modal__detail), tabla con encabezado gris pegajoso y pie con un único botón verde «Entendido». Una vista nueva no copia markup: declara tipoTrza de su entidad en cplus/config/entities.php y llama a window.vertraza(documento, nombre) desde la acción de la fila. La columna Sucursal solo la emite el renderer legacy cuando tipo=1; el resto de entidades pinta Fecha/Elaboró/Motivo/Detalle.",
         preview:`<section class="gc-modal-static gc-modal-static--lg gc-modal-trace">
   <div class="gc-modal-static-frame">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Trazabilidad (Residuos peligrosos - Sede Norte)</h5>
+        <div class="gc-trace-modal__heading">
+          <h5 class="modal-title">Trazabilidad (Aceite usado)</h5>
+          <p class="gc-trace-modal__detail">Consulta el historial de cambios registrados para este registro: qué se modificó, cuándo, quién lo hizo y el detalle de cada cambio.</p>
+        </div>
         <button type="button" class="btn-close" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
@@ -4049,32 +4349,42 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
                 <th>Elaboro</th>
                 <th>Motivo</th>
                 <th>Detalle</th>
+                <th>Sucursal</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="tc-center"><strong>2026-08-04</strong></td>
-                <td class="tc-center"><strong>ANA MARIA ROJAS</strong></td>
-                <td>Actualización</td>
-                <td>Cambio de frecuencia de 30 a 15 días.</td>
+                <td class="tc-center"><strong>2026-07-25</strong></td>
+                <td class="tc-center"><strong>NATALIA BOTERO</strong></td>
+                <td>Actualización de manejo</td>
+                <td>Se deseleccionó «Celda de seguridad» del declarado Aceite usado.</td>
+                <td>Sede principal - Cra 12 # 34-56</td>
+              </tr>
+              <tr>
+                <td class="tc-center"><strong>2026-07-24</strong></td>
+                <td class="tc-center"><strong>ANDREA MURCIA</strong></td>
+                <td>Cambio de sucursal</td>
+                <td>Se añadió la sucursal Patio industrial norte al declarado.</td>
+                <td>Centro logístico - Cll 80 # 10-20</td>
               </tr>
               <tr>
                 <td class="tc-center"><strong>2026-07-22</strong></td>
-                <td class="tc-center"><strong>CARLOS PEREZ</strong></td>
+                <td class="tc-center"><strong>CARLOS RAMÍREZ</strong></td>
                 <td>Creación</td>
-                <td>Declaración creada desde el módulo de clientes.</td>
+                <td>Creación inicial del declarado con manejo, sucursal y criterios de validación.</td>
+                <td>Sede principal - Cra 12 # 34-56</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary">Enterado</button>
+        <button type="button" class="btn btn-secondary">Entendido</button>
       </div>
     </div>
   </div>
 </section>`,
-        snippet:`<!-- NO copies el markup: #myModalT lo inyecta cplus/js/lib/GrincUtils.js (líneas 19-36) en toda vista C+.
+        snippet:`<!-- NO copies el markup: #myModalT lo inyecta cplus/js/lib/GrincUtils.js (líneas 19-42) en toda vista C+.
      1) Declara 'tipoTrza' de la entidad en cplus/config/entities.php; includes/menu_cplus.php lo publica
         en window.CplusEntityTrza y GrincUtils.js lo resuelve solo.
      2) Dispara el modal desde la acción de trazabilidad de la fila. -->
@@ -4093,7 +4403,8 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
      el único modal de un módulo validado y el único con el kit erp-btn en los dos botones del pie.
      El aria-labelledby del contenedor .modal es una MEJORA PROPUESTA del catálogo: ninguna vista
      de módulo validado lo declara; el único precedente en el árbol es el modal transversal
-     #myModalT (cplus/js/lib/GrincUtils.js:20-21). -->
+     #myModalT (cplus/js/lib/GrincUtils.js:20-22, que además referencia el título real con
+     aria-labelledby="titulotraza" y el detalle con aria-describedby="trazadetalle"). -->
 <div class="modal fade" id="modalEjemplo" tabindex="-1" aria-labelledby="modalEjemploLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -4788,124 +5099,123 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
     id:"encabezado-modulo",
     catalogExamples: ["encabezado-formulario","badge-estado","opciones-acordeon"],
     implementations: [
-      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Piloto canónico V2: section-title con bi-box-seam y module-actions con el botón Nuevo (líneas 116-128)" },
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Mismo patrón con bi-people-fill; el botón Nuevo se autooculta al abrir el formulario (líneas 244-259)" },
-      { module: "Configuraciones del sistema", agregar: 133, file: "cplus/views/mostrarConfiguracionesSistema.php", detail: "Variante solo título: module-header sin module-actions (líneas 115-120)" },
-      { module: "Unidades de negocio / Líneas de servicio", agregar: 120, file: "cplus/views/mostrarLineasNegocio.php", detail: "Migrada el 2026-08-10 al encabezado único cplus/views/partials/page-head.php: arma $phAcciones con el Nuevo primario más el secundario Volver, y pasa $subtitulo. Con la migración desaparecieron sus dos divergencias — un botón gc-module-btn duplicado dentro del propio header y una etiqueta de cierre desapareada &lt;/header&gt; para un &lt;section class=&quot;module-header&quot;&gt;" },
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Listado canónico: $phVariante 'listado', icono bi-box-seam y $phAcciones con el Nuevo primario gc-page-header__new-btn, omitido si no hay permiso de crear (líneas 115-124)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Mismo patrón con bi-people-fill; el botón Nuevo se autooculta al abrir el formulario (líneas 243-255)" },
+      { module: "Configuraciones del sistema", agregar: 133, file: "cplus/views/mostrarConfiguracionesSistema.php", detail: "Variante solo título: la vista no define $phAcciones y el parcial omite la columna lateral completa (líneas 115-121)" },
+      { module: "Unidades de negocio / Líneas de servicio", agregar: 120, file: "cplus/views/mostrarLineasNegocio.php", detail: "Con acción secundaria: $phAcciones concatena el Nuevo primario y el Volver erp-btn-secondary según el modo, y pasa $subtitulo solo en el listado (líneas 150-172)" },
     ],
     group:"Organización",
-    name:"Encabezado de módulo (listado)",
-    description:"Encabezado de la página de listado: título con icono a la izquierda y acciones globales del módulo a la derecha, dentro de section.standard-screen. Es el primer bloque de las vistas cplus migradas a V2, antes de la card de filtros y la tabla.",
-    use:"Primer bloque de una vista de listado cplus (mostrarXxx.php). Aquí van el título del módulo, su icono bi-* y las acciones globales (Nuevo, Volver al listado). El h1 lleva section-title; el icono, section-title-icon; el grupo de botones, module-actions.",
-    avoid:"No usarlo dentro del formulario de crear/editar: ahí va encabezado-formulario, que titula el registro. No declarar dos module-header en la misma vista. No usar gc-module-header, gc-module-title ni gc-module-btn: son el duplicado de la maqueta, no el kit V2.",
-    deps:"Bootstrap Icons (icono bi-*) y la hoja compilada cplus/css/main.css. No necesita JavaScript propio.",
+    name:"Encabezado de página (listado)",
+    description:"Encabezado único de pantalla gc-page-header con el modificador --table-simple: h1 con icono y descripción a la izquierda y las acciones globales del módulo (Nuevo, Volver) dentro del propio encabezado, con la columna lateral encogida a su contenido. Es el primer bloque de las vistas cplus, antes de la card de filtros y la tabla.",
+    use:"Primer bloque de una vista de listado cplus (mostrarXxx.php). La vista define $titulo, $subtitulo, $phVariante = 'listado' y $phIcono, arma $phAcciones con el enlace Nuevo (erp-btn erp-btn-primary gc-page-header__new-btn) e incluye el parcial compartido cplus/views/partials/page-head.php. En 'listado' el parcial nunca pinta metadatos de auditoría y aplica --table-simple por sí solo.",
+    avoid:"No escribir module-header, section-title ni module-actions nuevos: los reemplazó gc-page-header el 2026-08-10 y sobreviven solo en vistas aún no migradas (Informe general, Parafiscales, Tutoriales y el listado de Declaraciones). No usar gc-module-header, gc-module-title ni gc-module-btn, y no declarar dos encabezados con título en la misma pantalla.",
+    deps:"Bootstrap Icons y la hoja compilada cplus/css/main.css (fuente cplus/scss/_gc-page-header.scss). No necesita JavaScript propio. En el visor, grinclic-forms.css.",
     verified: true,
-    accessibility:"El h1.section-title debe ser el único h1 de la vista, con el nombre del módulo en un span. El icono bi-* es decorativo y producción lo emite sin aria-hidden: al copiar el patrón, añádelo. El botón Nuevo es un enlace con onclick: mantén el texto visible junto al icono.",
-    note:"Dos divergencias registradas. El eyebrow module-context existe en el SCSS y tiene helper (cplus_render_module_context), pero ninguna vista lo usa: por eso no va en el snippet. Y data-cplus-skip-header solo se lee en document.body, no en el section.standard-screen donde lo declaran las vistas: lo que evita la doble inyección del shell es el .module-header ya presente.",
+    accessibility:"El h1 del encabezado debe ser el único h1 de la vista; el header lo referencia con aria-labelledby y el icono bi-* va con aria-hidden=\"true\". Las acciones se agrupan con role=\"group\" y aria-label \"Acciones principales\". El botón Nuevo es un enlace con onclick: mantén el texto visible junto al icono.",
+    note:"data-cplus-skip-header=\"1\" sigue declarado en el section.standard-screen por convención, pero el shell lo lee solo en document.body: lo que evita la doble inyección es el encabezado ya presente en la vista. El CTA Nuevo se realza con <code>gc-page-header__new-btn</code> (52px de alto mínimo). En pantallas que montan listado y formulario, el parcial numera el id del título por include.",
     variants:[
       {
         name:"Título más botón Nuevo (canónico)",
-        description:"La forma estándar del listado: h1 con icono a la izquierda y module-actions con el botón primario Nuevo a la derecha.",
-        preview:`<section class="standard-screen">
-  <section class="module-header">
-    <h1 class="section-title">
-      <i class="bi bi-box-seam section-title-icon" aria-hidden="true"></i>
-      <span>Embalajes</span>
-    </h1>
-    <div class="module-actions">
-      <a href="#" class="erp-btn erp-btn-primary" onclick="return false;">
-        <i class="bi bi-plus-lg"></i> Nuevo
-      </a>
+        description:"La forma estándar del listado: h1 con icono y descripción a la izquierda y el botón primario Nuevo, realzado con gc-page-header__new-btn, dentro de las acciones del encabezado.",
+        preview:`<header class="gc-page-header gc-page-header--table-simple" aria-labelledby="gc-page-header-title-list-demo">
+  <div class="gc-page-header__layout">
+    <div class="gc-page-header__heading">
+      <h1 class="gc-page-header__title" id="gc-page-header-title-list-demo">
+        <i class="bi bi-box-seam gc-page-header__title-icon" aria-hidden="true"></i>
+        <span>Tipo de embalaje</span>
+      </h1>
+      <p class="gc-page-header__desc">Nombre del embalaje, capacidad, unidad de medida y estado.</p>
     </div>
-  </section>
-</section>`,
-        snippet:`<!-- data-cplus-skip-header="1" es la convención que usan las 28 vistas cplus para declarar
-     "esta vista trae su propio header". OJO: el shell lo lee solo en <body> (datatable-v2-shell.js:31),
-     así que aquí es decorativo; lo que de verdad evita la doble inyección es el .module-header de abajo
-     (datatable-v2-shell.js:32). -->
-<section class="standard-screen container" data-cplus-skip-header="1">
+    <aside class="gc-page-header__side">
+      <div class="gc-page-header__actions" role="group" aria-label="Acciones principales">
+        <a href="#" class="erp-btn erp-btn-primary gc-page-header__new-btn" onclick="return false;"><i class="bi bi-plus-lg"></i><span>Nuevo</span></a>
+      </div>
+    </aside>
+  </div>
+</header>`,
+        snippet:`<section class="standard-screen container" data-cplus-skip-header="1">
 
-  <section class="module-header">
-    <h1 class="section-title">
-      <i class="bi bi-box-seam section-title-icon" aria-hidden="true"></i>
-      <span>Embalajes</span>
-    </h1>
-    <div class="module-actions">
-      <a href="#" class="erp-btn erp-btn-primary" onclick="mostrar(); return false;">
-        <i class="bi bi-plus-lg"></i> Nuevo
-      </a>
-    </div>
-  </section>
-
-</section>`
+    <!-- Encabezado único de pantalla (título + botón Nuevo) — cplus/views/partials/page-head.php -->
+    <?php
+    $phVariante = 'listado';
+    $phIcono    = 'bi-box-seam';
+    $phAcciones = (empty($actualizar) && $canCreate)
+        ? '<a href="#" class="erp-btn erp-btn-primary gc-page-header__new-btn" onclick="mostrar(); return false;">'
+            . '<i class="bi bi-plus-lg"></i><span>Nuevo</span></a>'
+        : '';
+    include 'cplus/views/partials/page-head.php';
+    ?>`
       },
       {
         name:"Solo título",
-        description:"Cuando el módulo no crea registros no se emite module-actions: solo el h1 y su icono.",
-        preview:`<section class="standard-screen">
-  <section class="module-header">
-    <h1 class="section-title">
-      <i class="bi bi-gear-fill section-title-icon" aria-hidden="true"></i>
-      <span>Configuraciones del sistema</span>
-    </h1>
-  </section>
-</section>`,
-        snippet:`<section class="module-header">
-  <h1 class="section-title">
-    <i class="bi bi-gear-fill section-title-icon" aria-hidden="true"></i>
-    <span>Configuraciones del sistema</span>
-  </h1>
-</section>`
+        description:"Cuando el módulo no crea registros la vista no define $phAcciones y el parcial omite la columna lateral completa: solo el h1 con su icono.",
+        preview:`<header class="gc-page-header gc-page-header--table-simple" aria-labelledby="gc-page-header-title-solo-demo">
+  <div class="gc-page-header__layout">
+    <div class="gc-page-header__heading">
+      <h1 class="gc-page-header__title" id="gc-page-header-title-solo-demo">
+        <i class="bi bi-gear-fill gc-page-header__title-icon" aria-hidden="true"></i>
+        <span>Configuraciones del sistema</span>
+      </h1>
+    </div>
+  </div>
+</header>`,
+        snippet:`<!-- Encabezado único de pantalla — cplus/views/partials/page-head.php -->
+<?php
+$titulo     = 'Configuraciones del sistema';
+$phVariante = 'listado';
+$phIcono    = 'bi-gear-fill';
+include 'cplus/views/partials/page-head.php';
+?>`
       },
       {
         name:"Con acción secundaria",
-        description:"En vistas que abren detalle o formulario a página completa, module-actions suma un erp-btn-secondary de retorno junto al primario.",
-        preview:`<section class="standard-screen">
-  <section class="module-header">
-    <h1 class="section-title">
-      <i class="bi bi-diagram-3 section-title-icon" aria-hidden="true"></i>
-      <span>Unidades de negocio / Líneas de servicio</span>
-    </h1>
-    <div class="module-actions">
-      <a href="#" class="erp-btn erp-btn-primary" onclick="return false;">
-        <i class="bi bi-plus-lg"></i> Nuevo
-      </a>
-      <a href="#" class="erp-btn erp-btn-secondary" onclick="return false;">
-        <i class="bi bi-arrow-left"></i> Volver al listado
-      </a>
+        description:"En vistas que abren detalle o formulario a página completa, $phAcciones concatena un erp-btn-secondary de retorno junto al Nuevo primario.",
+        preview:`<header class="gc-page-header gc-page-header--table-simple" aria-labelledby="gc-page-header-title-sec-demo">
+  <div class="gc-page-header__layout">
+    <div class="gc-page-header__heading">
+      <h1 class="gc-page-header__title" id="gc-page-header-title-sec-demo">
+        <i class="bi bi-diagram-3 gc-page-header__title-icon" aria-hidden="true"></i>
+        <span>Unidades de negocio / Líneas de servicio</span>
+      </h1>
+      <p class="gc-page-header__desc">Administra las unidades de negocio y sus líneas de servicio.</p>
     </div>
-  </section>
-</section>`,
-        snippet:`<section class="module-header">
-  <h1 class="section-title">
-    <i class="bi bi-diagram-3 section-title-icon" aria-hidden="true"></i>
-    <span>Unidades de negocio / Líneas de servicio</span>
-  </h1>
-  <div class="module-actions">
-    <a href="#" class="erp-btn erp-btn-primary" onclick="mostrar(); return false;">
-      <i class="bi bi-plus-lg"></i> Nuevo
-    </a>
-    <a href="incluir.php?agregar=120" class="erp-btn erp-btn-secondary">
-      <i class="bi bi-arrow-left"></i> Volver al listado
-    </a>
+    <aside class="gc-page-header__side">
+      <div class="gc-page-header__actions" role="group" aria-label="Acciones principales">
+        <a href="#" class="erp-btn erp-btn-primary gc-page-header__new-btn" onclick="return false;"><i class="bi bi-plus-lg"></i><span>Nuevo</span></a>
+        <a href="#" class="erp-btn erp-btn-secondary" onclick="return false;"><i class="bi bi-arrow-left"></i> Volver al listado</a>
+      </div>
+    </aside>
   </div>
-</section>`
+</header>`,
+        snippet:`<?php
+if ($isView && ! $esLinea) {
+    $phAcciones .= '<a href="incluir.php?agregar=120" class="erp-btn erp-btn-secondary">'
+        . '<i class="bi bi-arrow-left"></i> Volver al listado</a>';
+} elseif ($isLineCreate) {
+    $phAcciones .= '<a href="incluir.php?agregar=120" class="erp-btn erp-btn-secondary">'
+        . '<i class="bi bi-arrow-left"></i> Volver a unidades</a>';
+}
+
+$titulo     = $pageTitulo;
+$subtitulo  = $isListOnly ? 'Administra las unidades de negocio y sus líneas de servicio.' : '';
+$phVariante = 'listado';
+$phIcono    = 'bi-diagram-3';
+include 'cplus/views/partials/page-head.php';
+?>`
       }
     ],
-    snippet:`<!-- data-cplus-skip-header="1": la vista trae su propio header, el shell JS no debe inyectar otro. -->
-<section class="standard-screen container" data-cplus-skip-header="1">
+    snippet:`<section class="standard-screen container" data-cplus-skip-header="1">
 
-  <section class="module-header">
-    <h1 class="section-title">
-      <i class="bi bi-box-seam section-title-icon" aria-hidden="true"></i>
-      <span>Embalajes</span>
-    </h1>
-    <div class="module-actions">
-      <a href="#" class="erp-btn erp-btn-primary" onclick="mostrar(); return false;">
-        <i class="bi bi-plus-lg"></i> Nuevo
-      </a>
-    </div>
-  </section>
+    <!-- Encabezado único de pantalla (título + botón Nuevo) — cplus/views/partials/page-head.php -->
+    <?php
+    $phVariante = 'listado';
+    $phIcono    = 'bi-box-seam';
+    $phAcciones = (empty($actualizar) && $canCreate)
+        ? '<a href="#" class="erp-btn erp-btn-primary gc-page-header__new-btn" onclick="mostrar(); return false;">'
+            . '<i class="bi bi-plus-lg"></i><span>Nuevo</span></a>'
+        : '';
+    include 'cplus/views/partials/page-head.php';
+    ?>
 
 </section>`
   },
@@ -4985,17 +5295,17 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
     id:"caja-informativa",
     catalogExamples: ["encabezado-formulario","alertas-librerias","gc-formulario-elementos-chequeo"],
     implementations: [
-      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Forma mayoritaria: h4 + p justo después del include de form-head.php, dentro del gate empty($ver) (líneas 145-150)" },
-      { module: "Manejo del residuo", agregar: 116, file: "cplus/views/mostrarManejoResiduo.php", detail: "Misma forma h4 + p tras el include de form-head.php, dentro del gate empty($ver) (línea 146)" },
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Dos cajas en la misma vista: la de cabecera con h4 + p (líneas 274-279) y la de \"Información adicional\", solo h4, que abre el bloque #optadd (líneas 840-842)" },
+      { module: "Embalajes", agregar: 106, file: "cplus/views/mostrarEmbalajes.php", detail: "Forma mayoritaria: h4 + p justo después del include de page-head.php, dentro del gate empty($ver) (líneas 148-153)" },
+      { module: "Manejo del residuo", agregar: 116, file: "cplus/views/mostrarManejoResiduo.php", detail: "Forma corta solo h4 tras el include de page-head.php, dentro del gate empty($ver) (líneas 148-152)" },
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Dos cajas en la misma vista: la de cabecera con h4 + p tras el include de page-head.php (líneas 271-275) y la de \"Información adicional\", solo h4, que abre el bloque #optadd" },
       { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Forma corta en una sola línea, solo h4 y sin párrafo: div.gc-info-box con h4 «Información del elemento de chequeo» (línea 91). La misma forma corta está en mostrarClasificaciones.php:91, mostrarEstadosRecorrido.php:91 y mostrarDestinoAliado.php:91" },
       { module: "Proveedores", agregar: 128, file: "cplus/views/mostrarProveedores.php", detail: "Única instancia sin el gate empty($ver): también se pinta en modo Ver (líneas 58-61)" },
     ],
     group:"Organización",
     name:"Caja informativa de formulario",
     description:"Callout estático que abre un formulario y explica en una frase qué se va a registrar. Es texto fijo escrito en la vista, no una respuesta del sistema: nunca cambia. Va después del encabezado de formulario y antes de la primera fila de campos.",
-    use:"Usarla como primer bloque dentro de form-card, justo tras el include de cplus/views/partials/form-head.php, para decir de qué registro se trata. La forma mayoritaria es un h4 con la entidad y un p con la instrucción. Envolverla en el gate empty($ver) para que no salga en modo Ver.",
-    avoid:"No usarla para feedback: los mensajes que responden a una acción son de CplusAlerts. Para la ayuda de un campo está gc-help. Sin botones, sin JavaScript y sin repetir el título de gc-form-head.",
+    use:"Usarla como primer bloque dentro de form-card, justo tras el include de cplus/views/partials/page-head.php, para decir de qué registro se trata. La forma mayoritaria es un h4 con la entidad y un p con la instrucción. Envolverla en el gate empty($ver) para que no salga en modo Ver.",
+    avoid:"No usarla para feedback: los mensajes que responden a una acción son de CplusAlerts. Para la ayuda de un campo está gc-help. Sin botones, sin JavaScript y sin repetir el título del encabezado de página gc-page-header.",
     deps:"Bootstrap CSS. La clase se define en cplus/scss/_gc-forms.scss y se compila a cplus/css/main.css. No necesita JavaScript.",
     verified: true,
     accessibility:"Es texto estático: no lleva role=\"alert\" ni aria-live, porque anunciarlo como alerta interrumpiría al lector de pantalla con información que ya estaba en la página. Su título es h4 y el del encabezado es h2, así que se salta el nivel h3; si la vista añade luego sus propios h3, la jerarquía queda desordenada. No es un control: no debe recibir foco. Contraste del cuerpo: 9,7:1.",
@@ -5048,7 +5358,7 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
     snippet:`<div id="adicionar" class="form-card">
     <form name="formularioRegistrar" id="formularioRegistrar" method="post" autocomplete="off">
 
-        <?php include 'cplus/views/partials/form-head.php'; ?>
+        <?php include 'cplus/views/partials/page-head.php'; ?>
 
         <?php if (empty($ver)) { ?>
             <div class="gc-info-box">
