@@ -690,24 +690,31 @@ window.GC_COMPONENTS = [
   },
   {
     id:"checkbox",
-    catalogExamples: ["gc-formulario-usuarios","gc-formulario-roles"],
+    catalogExamples: ["gc-formulario-usuarios","gc-formulario-roles","gc-formulario-configuraciones"],
     implementations: [
       { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Seleccionar-todas + checkboxes por sucursal + gc-review (líneas 970-1064)" },
       { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "aplica_acopio y declaraciones[] (líneas 683-711)" },
       { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Checkbox gc-review de confirmación con data-gc-review-check, que gatea el submit #guardar (líneas 119-122)" },
       { module: "Roles", agregar: 124, file: "cplus/views/mostrarRoles.php", detail: "Checkbox gc-review de confirmación (líneas 187-188)" },
       { module: "Zonas", agregar: 118, file: "cplus/views/mostrarZonas.php", detail: "TODAS + checkboxes por ciudad (líneas 227-244)" },
+      { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "Tarjetas gc-check-card en las secciones del acordeón #accDatos, incluida la trampa del checkbox invertido checkdupcampos con value=0 (líneas 553-605)" },
+      { module: "Clase compartida", agregar: 150, file: "cplus/scss/_gc-forms.scss", detail: "Definición general de gc-check-card: borde --grinc-soft, radio estándar, padding 10px 12px 10px 38px, fondo blanco, min-height 44px y centrado vertical del input (líneas 418-429)" },
     ],
     group:"Campos",
     name:"Checkbox",
-    description:"Checkbox Bootstrap de mayor tamaño para opciones independientes y confirmaciones de revisión.",
-    use:"Usarlo para permisos, confirmaciones y opciones no excluyentes. El ejemplo con fondo verde tenue muestra cómo cerrar un formulario con confirmación de revisión.",
-    avoid:"No usarlo para decisiones SI/NO que deban verse como pregunta compacta.",
-    deps:"Bootstrap CSS + grinclic-forms.css + grinclic-forms.js cuando active o desactive un botón final.",
+    description:"Checkbox Bootstrap de mayor tamaño para opciones independientes y confirmaciones de revisión. La variante «Tarjeta de opción» lo envuelve en la clase general gc-check-card cuando la opción debe leerse como bloque dentro de una grilla de configuración.",
+    use:"Usarlo para permisos, confirmaciones y opciones no excluyentes. La variante Estándar incluye el cierre de formulario con confirmación de revisión (fondo verde tenue). La variante Tarjeta de opción usa la clase general gc-check-card en grillas Bootstrap row g-3 con col-md-6, como los acordeones de configuración de Mis datos.",
+    avoid:"No usarlo para decisiones SI/NO que deban verse como pregunta compacta (eso es radio-si-no). La tarjeta no es un botón ni recibe foco propio: el control sigue siendo el checkbox y el label se asocia por for/id. Cuidado con los checkbox invertidos del contrato de Datos (value=\"0\" y marcado envía 0): documentar siempre la inversión en un comentario junto al campo.",
+    deps:"Bootstrap CSS + grinclic-forms.css + grinclic-forms.js cuando active o desactive un botón final. La tarjeta de opción usa la clase general gc-check-card de cplus/scss/_gc-forms.scss compilada en cplus/css/main.css.",
     verified: true,
-    accessibility:"El área de selección es más amplia y el label se asocia por for/id para evitar selección equivocada.",
-    states:{
-      enabled:`<div class="form-check mb-3">
+    accessibility:"El área de selección es más amplia y el label se asocia por for/id para evitar selección equivocada. En la tarjeta de opción, toda la superficie del label activa el checkbox y el bloque mide 44px de alto mínimo, que cubre el objetivo táctil.",
+    note:"verified aplica a la variante Estándar, con evidencia en módulos validados. La evidencia de la variante Tarjeta de opción vive en Mis datos, parcial en el ledger de migración: no usarla como prueba de migración completa. La grilla completa de tarjetas está documentada en la entrada checklist-opciones y la tabla con ayuda contextual en tabla-campos-opciones.",
+    variants:[
+      {
+        name:"Estándar",
+        description:"Checkbox Bootstrap suelto y confirmación de revisión que gatea el botón Guardar.",
+        states:{
+          enabled:`<div class="form-check mb-3">
   <input class="form-check-input" type="checkbox" value="1" id="crear_demo" name="crear_solicitudes" checked>
   <label class="form-check-label" for="crear_demo">Crear solicitudes</label>
 </div>
@@ -723,17 +730,17 @@ window.GC_COMPONENTS = [
     </div>
   </div>
 </footer>`,
-      error:`<div class="form-check mb-1">
+          error:`<div class="form-check mb-1">
   <input class="form-check-input is-invalid" type="checkbox" value="1" id="crear_error" name="crear_solicitudes" aria-describedby="crear_error_help">
   <label class="form-check-label" for="crear_error">Crear solicitudes</label>
 </div>
 <div id="crear_error_help" class="gc-help is-invalid">Debes confirmar esta opción.</div>`,
-      disabled:`<div class="form-check mb-3">
+          disabled:`<div class="form-check mb-3">
   <input class="form-check-input" type="checkbox" value="1" id="crear_disabled" name="crear_solicitudes" checked disabled>
   <label class="form-check-label" for="crear_disabled">Crear solicitudes</label>
 </div>`
-    },
-    snippet:`<div class="form-check mb-3">
+        },
+        snippet:`<div class="form-check mb-3">
   <input class="form-check-input" type="checkbox" value="1" id="crear_solicitudes" name="crear_solicitudes" checked>
   <label class="form-check-label" for="crear_solicitudes">Crear solicitudes</label>
 </div>
@@ -750,6 +757,52 @@ window.GC_COMPONENTS = [
     </div>
   </div>
 </footer>`
+      },
+      {
+        name:"Tarjeta de opción (gc-check-card)",
+        description:"El mismo form-check envuelto en la clase general gc-check-card: borde suave, fondo blanco y 44px de alto mínimo, para grillas de configuración row g-3 con col-md-6.",
+        stateOrder:["normal","marcado","disabled"],
+        stateLabels:{
+          normal:"Opción sin marcar, debe verse así.",
+          marcado:"Opción marcada, debe verse así."
+        },
+        states:{
+          normal:`<div class="form-check gc-check-card">
+  <input class="form-check-input" type="checkbox" value="1" id="card_demo_normal" name="hoja_seguridad">
+  <label class="form-check-label" for="card_demo_normal">Requerir hoja de seguridad para residuo SÍ peligroso</label>
+</div>`,
+          marcado:`<div class="form-check gc-check-card">
+  <input class="form-check-input" type="checkbox" value="1" id="card_demo_marcado" name="hab_oblig_categoria_declarado" checked>
+  <label class="form-check-label" for="card_demo_marcado">Exigir relación de categorías en el declarado</label>
+</div>`,
+          disabled:`<div class="form-check gc-check-card">
+  <input class="form-check-input" type="checkbox" value="1" id="card_demo_disabled" name="rel_sucdes_gestores" checked disabled>
+  <label class="form-check-label" for="card_demo_disabled">Permitir a gestores asociar sucursales tras aprobar la declaración</label>
+</div>`
+        },
+        snippet:`<div class="col-md-6">
+    <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="1" <?= $dis ?>
+               name="hoja_seguridad" id="hoja_seguridad"
+               <?= $chk('hoja_seguridad') ? 'checked' : '' ?>>
+        <label class="form-check-label" for="hoja_seguridad">
+            Requerir hoja de seguridad para residuo SÍ peligroso
+        </label>
+    </div>
+</div>
+<?php /* INVERTIDO: marcado envía 0 (ver update.php). */ ?>
+<div class="col-md-6">
+    <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="0" <?= $dis ?>
+               name="checkdupcampos" id="checkdupcampos"
+               <?= $chkInv('checkdupcampos') ? 'checked' : '' ?>>
+        <label class="form-check-label" for="checkdupcampos">
+            Replicar frecuencia, precio, unidad y hoja de seguridad al duplicar
+        </label>
+    </div>
+</div>`
+      }
+    ]
   },
   {
     id:"checklist-opciones",
@@ -757,7 +810,7 @@ window.GC_COMPONENTS = [
     implementations: [
       { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "Sección Declaraciones del acordeón #accDatos: cinco tarjetas form-check gc-check-card en una grilla row g-3 de columnas col-md-6, incluida la trampa del checkbox invertido checkdupcampos con value=0 (líneas 553-605)" },
       { module: "Mis datos / Configuraciones", agregar: 150, file: "cplus/views/mostrarDatos.php", detail: "El mismo patrón se repite en el resto de secciones de módulos del acordeón: 23 tarjetas gc-check-card en total en la vista (líneas 555-1106)" },
-      { module: "Clase compartida", agregar: 150, file: "cplus/scss/_gc-forms.scss", detail: "Definición general de gc-check-card: borde --grinc-soft, radio estándar, padding 10px 12px 10px 38px, fondo blanco, min-height 44px y centrado vertical del input (líneas 435-447)" },
+      { module: "Clase compartida", agregar: 150, file: "cplus/scss/_gc-forms.scss", detail: "Definición general de gc-check-card: borde --grinc-soft, radio estándar, padding 10px 12px 10px 38px, fondo blanco, min-height 44px y centrado vertical del input (líneas 418-429)" },
     ],
     group:"Bloques",
     name:"Checklist de opciones",
@@ -833,9 +886,10 @@ window.GC_COMPONENTS = [
   },
   {
     id:"tabla-campos-opciones",
-    catalogExamples: [],
+    catalogExamples: ["gc-formulario-configuraciones"],
     implementations: [
-      { module:"Mis datos / Configuraciones", agregar:150, file:"cplus/views/mostrarDatos.php", detail:"Bloque interno Campos personalizados Solicitudes: tabla de dos campos, seis columnas y matriz de reglas dentro de #secSolicitudes (líneas 646-783). Conserva el submit nativo de Datos y los nombres del contrato campos_pers_solicitudes." }
+      { module:"Mis datos / Configuraciones", agregar:150, file:"cplus/views/mostrarDatos.php", detail:"Bloque interno Campos personalizados Solicitudes: tabla de dos campos, seis columnas y matriz de reglas dentro de #secSolicitudes (líneas 646-783). Conserva el submit nativo de Datos y los nombres del contrato campos_pers_solicitudes." },
+      { module:"Mis datos / Configuraciones", agregar:150, file:"cplus/bff/entities/datos/proxies/update.php", detail:"Contrato Manifiesto ya admitido por el BFF para la variante pendiente: campoN, campoNUnidad, formatoN, campoNMfRecoleccion, campoNOblig, campoNMfRecepcion, campoNOblig2 y las opciones oblig_pesos_globales, hab_precio_descarga, hab_tirilla_descarga (líneas 115-153)." }
     ],
     group:"Bloques",
     name:"Tabla de campos personalizados",
@@ -845,7 +899,7 @@ window.GC_COMPONENTS = [
     deps:"Bootstrap CSS + Bootstrap JS (Popover) + grinclic-forms.css en el visor. En producción: cplus/scss/_gc-forms.scss, cplus/js/entities/datos/form-manager.js y el bundle Bootstrap ya cargado por CPlus.",
     verified: false,
     accessibility:"La tabla usa caption oculto, th con scope, colgroup de seis columnas y etiquetas accesibles para cada control. gc-table-scroll es enfocable y explica su contenido. Los botones gc-help-button son botones nativos con aria-label; Bootstrap Popover se abre por foco, se cierra al perderlo y también con Escape sin perder el foco del botón.",
-    note:"Los previews y snippets de las variantes reproducen el markup y la lógica PHP de cplus/views/mostrarDatos.php. verified permanece en false porque Mis datos figura como parcial en el ledger de migración; la entrada no debe usarse como evidencia de migración completa.",
+    note:"Los previews y snippets de las variantes Solicitudes reproducen el markup y la lógica PHP de cplus/views/mostrarDatos.php. verified permanece en false porque Mis datos figura como parcial en el ledger de migración; la entrada no debe usarse como evidencia de migración completa. La variante «Campos personalizados Manifiesto» es el diseño aprobado del prototipo Tabla_checkbox (2026-08-10) traducido a las clases generales y está PENDIENTE de implementar en CPlus: sus nombres provienen del contrato ya admitido por el BFF (update.php), no de una vista productiva; su snippet es el marcado de diseño listo para implementar, no código en producción.",
     variants:[
       {
         name:"Campos personalizados Solicitudes",
@@ -964,6 +1018,148 @@ window.GC_COMPONENTS = [
     <?php } ?>
   </tr>
 <?php } ?>`
+      },
+      {
+        name:"Campos personalizados Manifiesto",
+        description:"Diseño aprobado del prototipo Tabla_checkbox: cinco campos con unidad, formato y disponibilidad/obligatoriedad por manifiesto de recolección y recepción (siete columnas), más las opciones de manifiesto como tarjetas gc-check-card con ayuda contextual. Pendiente de implementar en CPlus; los nombres provienen del contrato real del BFF.",
+        preview:`<section class="gc-form-section">
+  <h2 class="gc-section-title">Campos personalizados — Manifiesto <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Defina hasta cinco campos adicionales y en qué manifiesto se solicitan. Un campo obligatorio debe estar disponible en el mismo manifiesto." aria-label="Ver ayuda de campos personalizados de Manifiesto">?</button></h2>
+  <p class="gc-section-kicker">Hasta 5 campos extra. Cada campo se habilita por manifiesto; «Oblig.» exige que esté disponible.</p>
+  <div class="gc-table-card">
+    <div class="gc-table-scroll" tabindex="0" aria-label="Configuración de campos personalizados del Manifiesto">
+      <table class="gc-field-table">
+        <caption class="visually-hidden">Configure los campos personalizados para manifiestos de recolección y recepción.</caption>
+        <colgroup>
+          <col class="gc-field-table__col--title"><col class="gc-field-table__col--format"><col class="gc-field-table__col--format">
+          <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+        </colgroup>
+        <thead><tr><th scope="col">Título</th><th scope="col">Unidad</th><th scope="col">Formato</th><th scope="col"><span aria-hidden="true">MF recolección</span><span class="visually-hidden">Disponible en manifiesto de recolección</span></th><th scope="col">Oblig.</th><th scope="col"><span aria-hidden="true">MF recepción</span><span class="visually-hidden">Disponible en manifiesto de recepción</span></th><th scope="col">Oblig.</th></tr></thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="gc-field-table__cell"><input class="form-control" name="campo1" id="demo_campo1" value="Numero de UND" aria-label="Título del campo 1"></th>
+            <td class="gc-field-table__cell"><select class="form-select" name="campo1Unidad" id="demo_campo1Unidad" aria-label="Unidad del campo 1"><option selected>Und</option><option>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+            <td class="gc-field-table__cell"><select class="form-select" name="formato1" id="demo_formato1" aria-label="Formato del campo 1"><option selected>Numérico</option><option>Alfanumérico</option><option>Fecha</option></select></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo1MfRecoleccion" id="demo_campo1MfRecoleccion" checked aria-label="Disponible en manifiesto de recolección para el campo 1"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo1Oblig" id="demo_campo1Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 1"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo1MfRecepcion" id="demo_campo1MfRecepcion" checked aria-label="Disponible en manifiesto de recepción para el campo 1"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo1Oblig2" id="demo_campo1Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 1"></div></td>
+          </tr>
+          <tr>
+            <th scope="row" class="gc-field-table__cell"><input class="form-control" name="campo2" id="demo_campo2" value="Bolsas" aria-label="Título del campo 2"></th>
+            <td class="gc-field-table__cell"><select class="form-select" name="campo2Unidad" id="demo_campo2Unidad" aria-label="Unidad del campo 2"><option>Und</option><option selected>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+            <td class="gc-field-table__cell"><select class="form-select" name="formato2" id="demo_formato2" aria-label="Formato del campo 2"><option>Numérico</option><option selected>Alfanumérico</option><option>Fecha</option></select></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo2MfRecoleccion" id="demo_campo2MfRecoleccion" checked aria-label="Disponible en manifiesto de recolección para el campo 2"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo2Oblig" id="demo_campo2Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 2"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo2MfRecepcion" id="demo_campo2MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 2"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo2Oblig2" id="demo_campo2Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 2"></div></td>
+          </tr>
+          <tr>
+            <th scope="row" class="gc-field-table__cell"><input class="form-control" name="campo3" id="demo_campo3" value="Sustancia" aria-label="Título del campo 3"></th>
+            <td class="gc-field-table__cell"><select class="form-select" name="campo3Unidad" id="demo_campo3Unidad" aria-label="Unidad del campo 3"><option>Und</option><option selected>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+            <td class="gc-field-table__cell"><select class="form-select" name="formato3" id="demo_formato3" aria-label="Formato del campo 3"><option>Numérico</option><option selected>Alfanumérico</option><option>Fecha</option></select></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo3MfRecoleccion" id="demo_campo3MfRecoleccion" checked aria-label="Disponible en manifiesto de recolección para el campo 3"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo3Oblig" id="demo_campo3Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 3"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo3MfRecepcion" id="demo_campo3MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 3"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo3Oblig2" id="demo_campo3Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 3"></div></td>
+          </tr>
+          <tr>
+            <th scope="row" class="gc-field-table__cell"><input class="form-control" name="campo4" id="demo_campo4" placeholder="Título campo 4" aria-label="Título del campo 4"></th>
+            <td class="gc-field-table__cell"><select class="form-select" name="campo4Unidad" id="demo_campo4Unidad" aria-label="Unidad del campo 4"><option>Und</option><option selected>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+            <td class="gc-field-table__cell"><select class="form-select" name="formato4" id="demo_formato4" aria-label="Formato del campo 4"><option selected>Numérico</option><option>Alfanumérico</option><option>Fecha</option></select></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo4MfRecoleccion" id="demo_campo4MfRecoleccion" aria-label="Disponible en manifiesto de recolección para el campo 4"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo4Oblig" id="demo_campo4Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 4"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo4MfRecepcion" id="demo_campo4MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 4"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo4Oblig2" id="demo_campo4Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 4"></div></td>
+          </tr>
+          <tr>
+            <th scope="row" class="gc-field-table__cell"><input class="form-control" name="campo5" id="demo_campo5" placeholder="Título campo 5" aria-label="Título del campo 5"></th>
+            <td class="gc-field-table__cell"><select class="form-select" name="campo5Unidad" id="demo_campo5Unidad" aria-label="Unidad del campo 5"><option>Und</option><option selected>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+            <td class="gc-field-table__cell"><select class="form-select" name="formato5" id="demo_formato5" aria-label="Formato del campo 5"><option>Numérico</option><option selected>Alfanumérico</option><option>Fecha</option></select></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo5MfRecoleccion" id="demo_campo5MfRecoleccion" aria-label="Disponible en manifiesto de recolección para el campo 5"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo5Oblig" id="demo_campo5Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 5"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo5MfRecepcion" id="demo_campo5MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 5"></div></td>
+            <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" name="campo5Oblig2" id="demo_campo5Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 5"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row g-3 mt-1">
+    <div class="col-md-6">
+      <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="1" id="demo_oblig_pesos_globales" name="oblig_pesos_globales">
+        <label class="form-check-label" for="demo_oblig_pesos_globales">Exigir registro de peso lleno y peso vacío en el manifiesto de recolección</label>
+        <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Solicita ambos pesos antes de permitir el cierre del manifiesto." aria-label="Ver ayuda de exigir registro de peso">?</button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="1" id="demo_hab_precio_descarga" name="hab_precio_descarga" checked>
+        <label class="form-check-label" for="demo_hab_precio_descarga">Ver precio de compra en manifiesto de recepción</label>
+        <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Muestra el valor de compra en la recepción para usuarios autorizados." aria-label="Ver ayuda de precio de compra">?</button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-check gc-check-card">
+        <input class="form-check-input" type="checkbox" value="1" id="demo_hab_tirilla_descarga" name="hab_tirilla_descarga">
+        <label class="form-check-label" for="demo_hab_tirilla_descarga">Habilitar recibo tipo tirilla en manifiesto de recepción</label>
+        <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Permite generar un comprobante compacto para impresión térmica." aria-label="Ver ayuda de recibo tipo tirilla">?</button>
+      </div>
+    </div>
+  </div>
+</section>`,
+        snippet:`<h5 class="gc-section-title">
+  Campos personalizados — Manifiesto
+  <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Defina hasta cinco campos adicionales y en qué manifiesto se solicitan. Un campo obligatorio debe estar disponible en el mismo manifiesto." aria-label="Ver ayuda de campos personalizados de Manifiesto">?</button>
+</h5>
+<p class="gc-section-kicker">Hasta 5 campos extra. Cada campo se habilita por manifiesto; «Oblig.» exige que esté disponible.</p>
+<div class="gc-table-card">
+  <div class="gc-table-scroll" tabindex="0" aria-label="Configuración de campos personalizados del Manifiesto">
+    <table class="gc-field-table">
+      <caption class="visually-hidden">Configure los campos personalizados para manifiestos de recolección y recepción.</caption>
+      <colgroup>
+        <col class="gc-field-table__col--title"><col class="gc-field-table__col--format"><col class="gc-field-table__col--format">
+        <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+      </colgroup>
+      <thead><tr><th scope="col">Título</th><th scope="col">Unidad</th><th scope="col">Formato</th><th scope="col">MF recolección</th><th scope="col">Oblig.</th><th scope="col">MF recepción</th><th scope="col">Oblig.</th></tr></thead>
+      <tbody>
+        <!-- Una fila por campo N = 1..5; nombres del contrato BFF (update.php) -->
+        <tr>
+          <th scope="row" class="gc-field-table__cell"><input class="form-control" type="text" name="campo1" id="campo1" maxlength="150" aria-label="Título del campo 1"></th>
+          <td class="gc-field-table__cell"><select class="form-select" name="campo1Unidad" id="campo1Unidad" aria-label="Unidad del campo 1"><option>Und</option><option>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+          <td class="gc-field-table__cell"><select class="form-select" name="formato1" id="formato1" aria-label="Formato del campo 1"><option>Numérico</option><option>Alfanumérico</option><option>Fecha</option></select></td>
+          <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1MfRecoleccion" id="campo1MfRecoleccion" aria-label="Disponible en manifiesto de recolección para el campo 1"></div></td>
+          <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1Oblig" id="campo1Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 1"></div></td>
+          <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1MfRecepcion" id="campo1MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 1"></div></td>
+          <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1Oblig2" id="campo1Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 1"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row g-3 mt-1">
+  <div class="col-md-6">
+    <div class="form-check gc-check-card">
+      <input class="form-check-input" type="checkbox" value="1" name="oblig_pesos_globales" id="oblig_pesos_globales">
+      <label class="form-check-label" for="oblig_pesos_globales">Exigir registro de peso lleno y peso vacío en el manifiesto de recolección</label>
+      <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Solicita ambos pesos antes de permitir el cierre del manifiesto." aria-label="Ver ayuda de exigir registro de peso">?</button>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-check gc-check-card">
+      <input class="form-check-input" type="checkbox" value="1" name="hab_precio_descarga" id="hab_precio_descarga">
+      <label class="form-check-label" for="hab_precio_descarga">Ver precio de compra en manifiesto de recepción</label>
+      <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Muestra el valor de compra en la recepción para usuarios autorizados." aria-label="Ver ayuda de precio de compra">?</button>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-check gc-check-card">
+      <input class="form-check-input" type="checkbox" value="1" name="hab_tirilla_descarga" id="hab_tirilla_descarga">
+      <label class="form-check-label" for="hab_tirilla_descarga">Habilitar recibo tipo tirilla en manifiesto de recepción</label>
+      <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Permite generar un comprobante compacto para impresión térmica." aria-label="Ver ayuda de recibo tipo tirilla">?</button>
+    </div>
+  </div>
+</div>`
       }
     ],
     snippet:`<section class="gc-form-section" aria-label="Campos personalizados de Solicitudes">

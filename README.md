@@ -98,6 +98,20 @@ implementations: [
 
 ## Changelog
 
+- **v1.7 (2026-08-11)** — La entrada `checkbox` (grupo Campos) se reestructura a **dos variantes**:
+  «Estándar» (checkbox suelto + confirmación de revisión gc-review, estados enabled/error/disabled)
+  y **«Tarjeta de opción (gc-check-card)»** con estados propios normal/marcado/disabled y snippet real
+  de `cplus/views/mostrarDatos.php` (incluida la trampa del checkbox invertido `checkdupcampos value="0"`).
+  Suma las implementaciones de Mis datos (150) y de la clase compartida `cplus/scss/_gc-forms.scss:418-429`,
+  cita corregida también en `checklist-opciones` (antes 435-447, desplazada). Además, `tabla-campos-opciones`
+  suma la variante **«Campos personalizados Manifiesto»** — el diseño aprobado del prototipo Tabla_checkbox:
+  tabla de 7 columnas (título, unidad, formato, MF recolección/recepción con obligatoriedad) más las tres
+  opciones como tarjetas `gc-check-card` con `gc-help-button`, todo con los nombres del contrato BFF
+  (`campoN`, `campoNUnidad`, `formatoN`, `campoNMfRecoleccion/Recepcion`, `campoNOblig/Oblig2`,
+  `oblig_pesos_globales`, `hab_precio_descarga`, `hab_tirilla_descarga`), pendiente de implementar en CPlus —
+  y el ejemplo `gc-formulario-configuraciones` reemplaza su pestaña «Campos Manifiesto» (acordeones por campo)
+  por ese mismo diseño, ahora enlazado desde `catalogExamples` de la entrada. Sin entradas nuevas: 39 en
+  total, 24 verificadas; `verified` de `checkbox` sigue aplicando solo a la variante Estándar (ver `note`).
 - **v1.6 (2026-08-10)** — El catálogo se alinea al **encabezado único de pantalla `gc-page-header`**
   (`cplus/views/partials/page-head.php`, en producción desde el 2026-08-10): `encabezado-formulario` y
   `encabezado-modulo` se reescriben como las dos caras del parcial (formulario con retícula de

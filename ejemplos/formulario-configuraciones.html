@@ -265,229 +265,89 @@
       </div>
 
       <div class="tab-pane fade" id="campos-manifiesto" role="tabpanel" tabindex="0" aria-labelledby="manifiesto-tab">
-        <h2 class="gc-section-title">Campos personalizados del Manifiesto</h2>
-        <p class="gc-section-kicker">Configura hasta cinco campos adicionales para Manifiesto. Cada grupo conserva título, unidad, formato y obligatoriedad.</p>
-        <div class="accordion" id="configManifiestoAccordion">
-    <div class="accordion-item">
-      <h3 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_1">
-          Campo personalizado Manifiesto 1
-        </button>
-      </h3>
-      <div id="config_manifiesto_campo_1" class="accordion-collapse collapse show" data-bs-parent="#configManifiestoAccordion">
-        <div class="accordion-body">
-          <div class="row g-3">
-      <div class="col-lg-5">
-        <label for="manifiesto_titulo_campo_1" class="form-label">Título campo 1</label>
-        <input type="text" class="form-control" id="manifiesto_titulo_campo_1" name="manifiesto_titulo_campo_1" maxlength="80">
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_unidad_campo_1" class="form-label">Unidad</label>
-        <select class="form-select" id="manifiesto_unidad_campo_1" name="manifiesto_unidad_campo_1">
-          <option value="kg" selected>kg</option>
-          <option value="Ton">Ton</option>
-          <option value="Und">Und</option>
-          <option value="m3">m³</option>
-          <option value="Gal">Gal</option>
-          <option value="Lot">Lot</option>
-        </select>
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_formato_campo_1" class="form-label">Formato</label>
-        <select class="form-select" id="manifiesto_formato_campo_1" name="manifiesto_formato_campo_1">
-          <option value="texto" selected>Texto</option>
-          <option value="numero">Número</option>
-          <option value="decimal">Decimal</option>
-          <option value="fecha">Fecha</option>
-          <option value="lista">Lista desplegable</option>
-        </select>
-      </div>
-      <div class="col-lg-1 d-flex align-items-end">
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_1" name="manifiesto_obligatorio_campo_1" value="1">
-          <label class="form-check-label" for="manifiesto_obligatorio_campo_1">Obligatorio</label>
-        </div>
-      </div>
+        <h2 class="gc-section-title">Campos personalizados — Manifiesto <button class="gc-help-button" type="button" data-bs-toggle="popover" data-bs-content="Defina hasta cinco campos adicionales y en qué manifiesto se solicitan. Un campo obligatorio debe estar disponible en el mismo manifiesto." aria-label="Ver ayuda de campos personalizados de Manifiesto">?</button></h2>
+        <p class="gc-section-kicker">Hasta 5 campos extra. Cada campo se habilita por manifiesto; «Oblig.» exige que esté disponible.</p>
+        <div class="gc-table-card">
+          <div class="gc-table-scroll" tabindex="0" aria-label="Configuración de campos personalizados del Manifiesto">
+            <table class="gc-field-table">
+              <caption class="visually-hidden">Configure los campos personalizados para manifiestos de recolección y recepción.</caption>
+              <colgroup>
+                <col class="gc-field-table__col--title"><col class="gc-field-table__col--format"><col class="gc-field-table__col--format">
+                <col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag"><col class="gc-field-table__col--flag">
+              </colgroup>
+              <thead><tr><th scope="col">Título</th><th scope="col">Unidad</th><th scope="col">Formato</th><th scope="col"><span aria-hidden="true">MF recolección</span><span class="visually-hidden">Disponible en manifiesto de recolección</span></th><th scope="col">Oblig.</th><th scope="col"><span aria-hidden="true">MF recepción</span><span class="visually-hidden">Disponible en manifiesto de recepción</span></th><th scope="col">Oblig.</th></tr></thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="gc-field-table__cell"><input class="form-control" type="text" name="campo1" id="campo1" maxlength="150" value="Numero de UND" aria-label="Título del campo 1"></th>
+                  <td class="gc-field-table__cell"><select class="form-select" name="campo1Unidad" id="campo1Unidad" aria-label="Unidad del campo 1"><option selected>Und</option><option>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+                  <td class="gc-field-table__cell"><select class="form-select" name="formato1" id="formato1" aria-label="Formato del campo 1"><option selected>Numérico</option><option>Alfanumérico</option><option>Fecha</option></select></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1MfRecoleccion" id="campo1MfRecoleccion" checked aria-label="Disponible en manifiesto de recolección para el campo 1"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1Oblig" id="campo1Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 1"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1MfRecepcion" id="campo1MfRecepcion" checked aria-label="Disponible en manifiesto de recepción para el campo 1"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo1Oblig2" id="campo1Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 1"></div></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="gc-field-table__cell"><input class="form-control" type="text" name="campo2" id="campo2" maxlength="150" value="Bolsas" aria-label="Título del campo 2"></th>
+                  <td class="gc-field-table__cell"><select class="form-select" name="campo2Unidad" id="campo2Unidad" aria-label="Unidad del campo 2"><option>Und</option><option selected>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+                  <td class="gc-field-table__cell"><select class="form-select" name="formato2" id="formato2" aria-label="Formato del campo 2"><option>Numérico</option><option selected>Alfanumérico</option><option>Fecha</option></select></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo2MfRecoleccion" id="campo2MfRecoleccion" checked aria-label="Disponible en manifiesto de recolección para el campo 2"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo2Oblig" id="campo2Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 2"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo2MfRecepcion" id="campo2MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 2"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo2Oblig2" id="campo2Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 2"></div></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="gc-field-table__cell"><input class="form-control" type="text" name="campo3" id="campo3" maxlength="150" value="Sustancia" aria-label="Título del campo 3"></th>
+                  <td class="gc-field-table__cell"><select class="form-select" name="campo3Unidad" id="campo3Unidad" aria-label="Unidad del campo 3"><option>Und</option><option selected>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+                  <td class="gc-field-table__cell"><select class="form-select" name="formato3" id="formato3" aria-label="Formato del campo 3"><option>Numérico</option><option selected>Alfanumérico</option><option>Fecha</option></select></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo3MfRecoleccion" id="campo3MfRecoleccion" checked aria-label="Disponible en manifiesto de recolección para el campo 3"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo3Oblig" id="campo3Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 3"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo3MfRecepcion" id="campo3MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 3"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo3Oblig2" id="campo3Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 3"></div></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="gc-field-table__cell"><input class="form-control" type="text" name="campo4" id="campo4" maxlength="150" placeholder="Título campo 4" aria-label="Título del campo 4"></th>
+                  <td class="gc-field-table__cell"><select class="form-select" name="campo4Unidad" id="campo4Unidad" aria-label="Unidad del campo 4"><option>Und</option><option selected>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+                  <td class="gc-field-table__cell"><select class="form-select" name="formato4" id="formato4" aria-label="Formato del campo 4"><option selected>Numérico</option><option>Alfanumérico</option><option>Fecha</option></select></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo4MfRecoleccion" id="campo4MfRecoleccion" aria-label="Disponible en manifiesto de recolección para el campo 4"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo4Oblig" id="campo4Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 4"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo4MfRecepcion" id="campo4MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 4"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo4Oblig2" id="campo4Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 4"></div></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="gc-field-table__cell"><input class="form-control" type="text" name="campo5" id="campo5" maxlength="150" placeholder="Título campo 5" aria-label="Título del campo 5"></th>
+                  <td class="gc-field-table__cell"><select class="form-select" name="campo5Unidad" id="campo5Unidad" aria-label="Unidad del campo 5"><option>Und</option><option selected>Métrica</option><option>Kg</option><option>Litros</option></select></td>
+                  <td class="gc-field-table__cell"><select class="form-select" name="formato5" id="formato5" aria-label="Formato del campo 5"><option>Numérico</option><option selected>Alfanumérico</option><option>Fecha</option></select></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo5MfRecoleccion" id="campo5MfRecoleccion" aria-label="Disponible en manifiesto de recolección para el campo 5"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo5Oblig" id="campo5Oblig" aria-label="Obligatorio en manifiesto de recolección para el campo 5"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo5MfRecepcion" id="campo5MfRecepcion" aria-label="Disponible en manifiesto de recepción para el campo 5"></div></td>
+                  <td class="gc-field-table__cell gc-field-table__cell--flag"><div class="form-check gc-field-table__check"><input class="form-check-input" type="checkbox" value="1" name="campo5Oblig2" id="campo5Oblig2" aria-label="Obligatorio en manifiesto de recepción para el campo 5"></div></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h3 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_2">
-          Campo personalizado Manifiesto 2
-        </button>
-      </h3>
-      <div id="config_manifiesto_campo_2" class="accordion-collapse collapse" data-bs-parent="#configManifiestoAccordion">
-        <div class="accordion-body">
-          <div class="row g-3">
-      <div class="col-lg-5">
-        <label for="manifiesto_titulo_campo_2" class="form-label">Título campo 2</label>
-        <input type="text" class="form-control" id="manifiesto_titulo_campo_2" name="manifiesto_titulo_campo_2" maxlength="80">
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_unidad_campo_2" class="form-label">Unidad</label>
-        <select class="form-select" id="manifiesto_unidad_campo_2" name="manifiesto_unidad_campo_2">
-          <option value="kg" selected>kg</option>
-          <option value="Ton">Ton</option>
-          <option value="Und">Und</option>
-          <option value="m3">m³</option>
-          <option value="Gal">Gal</option>
-          <option value="Lot">Lot</option>
-        </select>
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_formato_campo_2" class="form-label">Formato</label>
-        <select class="form-select" id="manifiesto_formato_campo_2" name="manifiesto_formato_campo_2">
-          <option value="texto" selected>Texto</option>
-          <option value="numero">Número</option>
-          <option value="decimal">Decimal</option>
-          <option value="fecha">Fecha</option>
-          <option value="lista">Lista desplegable</option>
-        </select>
-      </div>
-      <div class="col-lg-1 d-flex align-items-end">
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_2" name="manifiesto_obligatorio_campo_2" value="1">
-          <label class="form-check-label" for="manifiesto_obligatorio_campo_2">Obligatorio</label>
-        </div>
-      </div>
+        <div class="row g-3 mt-1">
+          <div class="col-md-6">
+            <div class="form-check gc-check-card">
+              <input class="form-check-input" type="checkbox" value="1" name="oblig_pesos_globales" id="oblig_pesos_globales">
+              <label class="form-check-label" for="oblig_pesos_globales">Exigir registro de peso lleno y peso vacío en el manifiesto de recolección</label>
+              <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Solicita ambos pesos antes de permitir el cierre del manifiesto." aria-label="Ver ayuda de exigir registro de peso">?</button>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h3 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_3">
-          Campo personalizado Manifiesto 3
-        </button>
-      </h3>
-      <div id="config_manifiesto_campo_3" class="accordion-collapse collapse" data-bs-parent="#configManifiestoAccordion">
-        <div class="accordion-body">
-          <div class="row g-3">
-      <div class="col-lg-5">
-        <label for="manifiesto_titulo_campo_3" class="form-label">Título campo 3</label>
-        <input type="text" class="form-control" id="manifiesto_titulo_campo_3" name="manifiesto_titulo_campo_3" maxlength="80">
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_unidad_campo_3" class="form-label">Unidad</label>
-        <select class="form-select" id="manifiesto_unidad_campo_3" name="manifiesto_unidad_campo_3">
-          <option value="kg" selected>kg</option>
-          <option value="Ton">Ton</option>
-          <option value="Und">Und</option>
-          <option value="m3">m³</option>
-          <option value="Gal">Gal</option>
-          <option value="Lot">Lot</option>
-        </select>
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_formato_campo_3" class="form-label">Formato</label>
-        <select class="form-select" id="manifiesto_formato_campo_3" name="manifiesto_formato_campo_3">
-          <option value="texto" selected>Texto</option>
-          <option value="numero">Número</option>
-          <option value="decimal">Decimal</option>
-          <option value="fecha">Fecha</option>
-          <option value="lista">Lista desplegable</option>
-        </select>
-      </div>
-      <div class="col-lg-1 d-flex align-items-end">
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_3" name="manifiesto_obligatorio_campo_3" value="1">
-          <label class="form-check-label" for="manifiesto_obligatorio_campo_3">Obligatorio</label>
-        </div>
-      </div>
+          <div class="col-md-6">
+            <div class="form-check gc-check-card">
+              <input class="form-check-input" type="checkbox" value="1" name="hab_precio_descarga" id="hab_precio_descarga" checked>
+              <label class="form-check-label" for="hab_precio_descarga">Ver precio de compra en manifiesto de recepción</label>
+              <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Muestra el valor de compra en la recepción para usuarios autorizados." aria-label="Ver ayuda de precio de compra">?</button>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h3 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_4">
-          Campo personalizado Manifiesto 4
-        </button>
-      </h3>
-      <div id="config_manifiesto_campo_4" class="accordion-collapse collapse" data-bs-parent="#configManifiestoAccordion">
-        <div class="accordion-body">
-          <div class="row g-3">
-      <div class="col-lg-5">
-        <label for="manifiesto_titulo_campo_4" class="form-label">Título campo 4</label>
-        <input type="text" class="form-control" id="manifiesto_titulo_campo_4" name="manifiesto_titulo_campo_4" maxlength="80">
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_unidad_campo_4" class="form-label">Unidad</label>
-        <select class="form-select" id="manifiesto_unidad_campo_4" name="manifiesto_unidad_campo_4">
-          <option value="kg" selected>kg</option>
-          <option value="Ton">Ton</option>
-          <option value="Und">Und</option>
-          <option value="m3">m³</option>
-          <option value="Gal">Gal</option>
-          <option value="Lot">Lot</option>
-        </select>
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_formato_campo_4" class="form-label">Formato</label>
-        <select class="form-select" id="manifiesto_formato_campo_4" name="manifiesto_formato_campo_4">
-          <option value="texto" selected>Texto</option>
-          <option value="numero">Número</option>
-          <option value="decimal">Decimal</option>
-          <option value="fecha">Fecha</option>
-          <option value="lista">Lista desplegable</option>
-        </select>
-      </div>
-      <div class="col-lg-1 d-flex align-items-end">
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_4" name="manifiesto_obligatorio_campo_4" value="1">
-          <label class="form-check-label" for="manifiesto_obligatorio_campo_4">Obligatorio</label>
-        </div>
-      </div>
+          <div class="col-md-6">
+            <div class="form-check gc-check-card">
+              <input class="form-check-input" type="checkbox" value="1" name="hab_tirilla_descarga" id="hab_tirilla_descarga">
+              <label class="form-check-label" for="hab_tirilla_descarga">Habilitar recibo tipo tirilla en manifiesto de recepción</label>
+              <button class="gc-help-button ms-auto" type="button" data-bs-toggle="popover" data-bs-content="Permite generar un comprobante compacto para impresión térmica." aria-label="Ver ayuda de recibo tipo tirilla">?</button>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h3 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#config_manifiesto_campo_5">
-          Campo personalizado Manifiesto 5
-        </button>
-      </h3>
-      <div id="config_manifiesto_campo_5" class="accordion-collapse collapse" data-bs-parent="#configManifiestoAccordion">
-        <div class="accordion-body">
-          <div class="row g-3">
-      <div class="col-lg-5">
-        <label for="manifiesto_titulo_campo_5" class="form-label">Título campo 5</label>
-        <input type="text" class="form-control" id="manifiesto_titulo_campo_5" name="manifiesto_titulo_campo_5" maxlength="80">
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_unidad_campo_5" class="form-label">Unidad</label>
-        <select class="form-select" id="manifiesto_unidad_campo_5" name="manifiesto_unidad_campo_5">
-          <option value="kg" selected>kg</option>
-          <option value="Ton">Ton</option>
-          <option value="Und">Und</option>
-          <option value="m3">m³</option>
-          <option value="Gal">Gal</option>
-          <option value="Lot">Lot</option>
-        </select>
-      </div>
-      <div class="col-lg-3">
-        <label for="manifiesto_formato_campo_5" class="form-label">Formato</label>
-        <select class="form-select" id="manifiesto_formato_campo_5" name="manifiesto_formato_campo_5">
-          <option value="texto" selected>Texto</option>
-          <option value="numero">Número</option>
-          <option value="decimal">Decimal</option>
-          <option value="fecha">Fecha</option>
-          <option value="lista">Lista desplegable</option>
-        </select>
-      </div>
-      <div class="col-lg-1 d-flex align-items-end">
-        <div class="form-check mb-2">
-          <input class="form-check-input" type="checkbox" id="manifiesto_obligatorio_campo_5" name="manifiesto_obligatorio_campo_5" value="1">
-          <label class="form-check-label" for="manifiesto_obligatorio_campo_5">Obligatorio</label>
-        </div>
-      </div>
-          </div>
-        </div>
-      </div>
-    </div>
         </div>
       </div>
 
