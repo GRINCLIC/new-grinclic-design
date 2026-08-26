@@ -5872,6 +5872,87 @@ include 'cplus/views/partials/page-head.php';
       }
     ]
   }
+  ,
+  {
+    id:"pantalla-publica-auth",
+    catalogExamples: [],
+    implementations: [
+      { module: "Login CPlus · genérica", agregar: null, file: "cplus/views/auth/_generico.php", detail: "Se entra directo, sin link: fondo fotográfico, degradado de marca, hexágonos, logo GRINCLIC y acción en el primario verde" },
+      { module: "Login CPlus · por link de cliente", agregar: null, file: "cplus/views/auth/_cliente.php", detail: "Llega con `lk` y trae el logo de la empresa: lienzo claro y neutro, título y bajada, campos con ver/ocultar, acción gris e isotipo GRINCLIC al pie (diseño v2)" },
+      { module: "Login CPlus", agregar: null, file: "cplus/scss/_gc-auth.scss", detail: "Las dos envolventes. La tarjeta es .form-card--auth de _components.scss: aquí solo vive lo que ninguna clase previa resolvía" },
+    ],
+    group:"Bloques",
+    name:"Pantalla pública (gc-auth)",
+    description:"Envolvente de las pantallas a las que se entra sin sesión. Son <strong>dos diseños</strong> con la misma estructura: <code>.gc-auth</code> lleva la marca completa cuando se entra directo, y <code>.gc-auth--cliente</code> apaga el escenario cuando la pantalla llega por link y muestra el logo de una empresa, para que ese logo sea el protagonista.",
+    use:"Usarla en pantallas públicas y centradas, sin chrome ni menú: login y, cuando se migren, recuperación de contraseña y el acceso auxiliar de operadores logísticos. La tarjeta interior es siempre <code>.form-card--auth</code>.",
+    avoid:"No poner el logo del cliente directamente sobre el lienzo: muchos PNG traen fondo blanco horneado y se recortan como un parche. No usar el primario verde como acción en la variante de cliente: 9 de cada 12 logos de cliente son verdes y competiría con ellos. No meter dentro un <code>&lt;footer&gt;</code>: <code>cplus/scss/_base.scss:55</code> tiene un selector global <code>footer { background-color: var(--grinc-primary) }</code> que lo pinta de verde; para los textos legales existe <code>.gc-auth__legal</code>.",
+    deps:"Solo cplus/css/main.min.css y un script propio de menos de 4 KB. Deliberadamente NO carga el bundle vendor (357 KB), ni los 22 scripts core, ni la fuente de iconos (134 KB): una pantalla pública que hace POST clásico no los necesita.",
+    verified: true,
+    accessibility:"Los hexágonos y el fondo son ornamento: van con aria-hidden y alt vacío. Medido en Chrome el 2026-08-26 sobre la implementación real de la variante de cliente: título 7,23:1, label 10,35:1, texto legal 6,03:1, enlaces 7,23:1, bajada 4,89:1 y botón gris 7,23:1 con texto blanco; todos sobre el mínimo AA. A 390px la tarjeta cabe sin desborde. La zona del logo reserva 88px de alto fijo para que un tenant con logo apaisado no descuadre la tarjeta.",
+    note:"CUATRO divergencias documentadas, ninguna decidida en silencio. (1) El diseño v2 pide #858584 para la bajada: a 14,4px da 3,69:1 y no alcanza AA, así que se aclara solo un 10% desde $grinc-text y queda en 4,89:1. (2) Los enlaces del párrafo legal van subrayados y en negrita: dentro de un bloque de texto, un enlace que solo se distingue por color no es identificable. (3) Los enlaces se declaran dentro de .gc-auth__shell porque cplus/scss/_layout.scss repite a { color: white } SIN acotar a ningún padre en cinco media queries (:214, :219, :235, :256, :269), lo que en cualquier viewport de 1400px o menos deja blancos los enlaces de todas las vistas cplus — defecto preexistente, aquí solo se neutraliza. (4) La entrada campo-password de este catálogo dice que la contraseña debe verse siempre oculta; el login vivo trae el botón de ver/ocultar y ambas variantes lo conservan con aria-pressed. En la variante de cliente el diseño v2 va más lejos y oculta también el usuario empresarial, que en GRINCLIC es una credencial y no un nombre.",
+    states:{
+      enabled:`<!-- Variante POR LINK DE CLIENTE: el logo ajeno manda -->
+<main class="gc-auth gc-auth--cliente">
+  <img class="gc-auth__bg" src="cplus/img/auth/login-bg-cliente.png" alt="" aria-hidden="true">
 
+  <div class="gc-auth__shell">
+    <div class="form-card form-card--auth">
+
+      <div class="gc-auth__logo-zone">
+        <img class="gc-auth__logo" src="includes/verlogo.php?k=BASE64_DE_LA_BASE" alt="Logo de la empresa">
+      </div>
+
+      <h1 class="gc-auth__titulo">Iniciar sesión</h1>
+      <p class="gc-auth__bajada">Accede con tus credenciales empresariales para ingresar al sistema.</p>
+
+      <form action="validar.php" method="POST" autocomplete="off" novalidate>
+        <div class="mb-3">
+          <label for="user" class="form-label"><span class="gc-required">*</span>Usuario empresarial</label>
+          <div class="input-group">
+            <input type="password" class="form-control" id="user" name="user" required autocomplete="username">
+            <button type="button" class="erp-btn erp-btn-secondary" aria-label="Mostrar usuario empresarial" aria-pressed="false">…</button>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center mb-4">
+          <button type="submit" class="gc-auth__submit">Iniciar sesión</button>
+        </div>
+      </form>
+
+      <div class="gc-auth__legal text-center">
+        <p class="mb-3"><img class="gc-auth__isotipo" src="cplus/img/auth/isotipo-grinclic.svg" alt="Grinclic"></p>
+        <p class="mb-0">Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </div>
+</main>`
+    },
+    snippet:`<!-- GENÉRICA: marca completa. Quitar --cliente y usar erp-btn-primary. -->
+<main class="gc-auth">
+  <picture>
+    <source media="(max-width: 767.98px)" srcset="cplus/img/auth/login-bg-mobile.webp" type="image/webp">
+    <img class="gc-auth__bg" src="cplus/img/auth/login-bg-desktop.webp" alt="" aria-hidden="true">
+  </picture>
+  <div class="gc-auth__overlay" aria-hidden="true"></div>
+
+  <div class="gc-auth__decor gc-auth__decor--arriba" aria-hidden="true">
+    <img src="cplus/img/auth/hexagono-arriba.svg" alt="">
+  </div>
+
+  <div class="gc-auth__shell">
+    <div class="form-card form-card--auth">
+      <!-- Zona segura: alto fijo y fondo blanco OPACO, para que el logo se lea
+           igual sea cual sea su color y su relacion de aspecto. -->
+      <div class="gc-auth__logo-zone">
+        <img class="gc-auth__logo" src="images/grinclic-logo-verde.png" alt="Grinclic">
+      </div>
+
+      <!-- Accion principal: erp-btn-primary en la generica, .gc-auth__submit
+           en la de cliente. Los legales van en .gc-auth__legal, NUNCA en un
+           <footer>. -->
+    </div>
+  </div>
+</main>`
+  }
 
 ];
