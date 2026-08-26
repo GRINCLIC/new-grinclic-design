@@ -2190,3 +2190,53 @@ table.dataTable th.dataTables_empty{text-align:center}
    La estación croppie del modal (cplus/views/partials/image-crop-modal.php) anula el marco
    del stage para que croppie pinte su propio lienzo. Solo demo, no copiar a producción. === */
 .gc-logo-preview-stage--crop{padding:0;min-height:250px;display:block;background:transparent;border:none}
+
+/* === Espejo visor: pantalla pública de ingreso (gc-auth) — fuente cplus/scss/_gc-auth.scss, compilada en
+   cplus/css/main.css:26383-26614. Se incluye también .form-card--auth (cplus/scss/_components.scss, compilado
+   en :24298-24307) porque .form-card base se deja fuera de esta biblioteca a propósito (ver línea 1965) y el
+   modificador redefine fondo, radio, sombra y padding, así que se sostiene solo. Variables resueltas a literal
+   desde cplus/scss/_variables.scss: --screen-border = #c4c4c4 (:98, :222). Los rgb() con decimales son la
+   salida literal de Sass y se conservan tal cual para que el espejo sea idéntico a producción.
+   Solo demo, no copiar a producción. === */
+.gc-auth{position:relative;min-height:100vh;overflow:hidden;background:linear-gradient(135deg,#67B136 0%,#275420 100%)}
+.gc-auth__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:blur(2px);transform:scale(1.03)}
+.gc-auth__overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(103,177,54,.7) 0%,rgba(39,84,32,.62) 100%)}
+.gc-auth__decor{position:absolute;z-index:1;opacity:.82;pointer-events:none}
+.gc-auth__decor img{display:block;width:100%;height:auto}
+.gc-auth__decor--arriba{top:0;left:0;width:20vw;max-width:320px}
+.gc-auth__decor--abajo{right:-15vw;bottom:-3vw;width:100vw;max-width:1400px}
+.gc-auth__shell{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 12px}
+.gc-auth__shell a{color:#D63A08;text-decoration:none}
+.gc-auth__shell a:hover,.gc-auth__shell a:focus-visible{color:#FB480D;text-decoration:underline}
+.gc-auth__logo-zone{display:flex;align-items:center;justify-content:center;height:88px;margin-bottom:20px}
+.gc-auth__logo{max-width:220px;max-height:88px;width:auto;height:auto;object-fit:contain}
+.gc-auth__legal{padding-top:8px;border-top:1px solid #c4c4c4;font-size:.74rem;line-height:1.4;color:rgb(88.4228813559,99.5830508475,114.1771186441)}
+.gc-auth__legal p{margin-bottom:6px}
+.gc-auth__legal p:last-child{margin-bottom:0}
+.gc-auth--cliente{background:linear-gradient(135deg,#efefef 0%,#f7f7f7 100%)}
+.gc-auth--cliente .gc-auth__bg{filter:none;transform:none}
+.gc-auth--cliente .gc-auth__decor{display:none}
+.gc-auth--cliente .gc-auth__shell a{color:#575756}
+.gc-auth--cliente .gc-auth__shell a:hover,.gc-auth--cliente .gc-auth__shell a:focus-visible{color:rgb(66.4820809249,66.4820809249,65.7179190751);text-decoration:underline}
+.gc-auth--cliente .gc-auth__legal a{font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.gc-auth__titulo{font-size:clamp(1.7rem,3.4vw,2.3rem);font-weight:800;letter-spacing:-.03em;color:#575756;text-align:center;margin-bottom:8px}
+.gc-auth__bajada{max-width:400px;margin:0 auto 24px;font-size:.9rem;line-height:1.45;color:rgb(112.6473988439,112.6473988439,111.3526011561);text-align:center}
+.gc-auth__submit{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:50px;padding:0 30px;border:1px solid #575756;border-radius:10px;background:#575756;color:#ffffff;font-size:.95rem;font-weight:700;box-shadow:0 8px 18px rgba(87,87,86,.18)}
+.gc-auth__submit:hover:not(:disabled),.gc-auth__submit:focus-visible:not(:disabled){background:rgb(66.4820809249,66.4820809249,65.7179190751);border-color:rgb(66.4820809249,66.4820809249,65.7179190751);color:#ffffff}
+.gc-auth__submit:disabled{opacity:.6}
+.gc-auth__isotipo{width:42px;height:42px;object-fit:contain;opacity:.85}
+.form-card--auth{width:100%;max-width:480px;margin-bottom:0;padding:40px 32px 28px;border-radius:24px;background:#ffffff;box-shadow:0 20px 48px rgba(16,24,40,.2)}
+@media (max-width:991.98px){.gc-auth__decor--arriba{width:220px}.gc-auth__decor--abajo{width:260px;right:-40px}.form-card--auth{padding:32px 24px 24px}}
+@media (max-width:575.98px){.gc-auth__decor--arriba{width:150px}.gc-auth__decor--abajo{width:190px}.gc-auth__logo-zone{height:72px;margin-bottom:16px}.gc-auth__logo{max-height:72px;max-width:190px}.gc-auth__titulo{font-size:clamp(1.55rem,6.5vw,2rem)}.gc-auth__bajada{font-size:.84rem;margin-bottom:18px}.gc-auth__shell{padding:16px 10px}.gc-auth__shell .form-card--auth{padding:26px 18px 20px;border-radius:20px}}
+@media (max-height:620px){.gc-auth,.gc-auth__shell{min-height:auto}.gc-auth__shell{padding-top:32px;padding-bottom:32px}.gc-auth__logo-zone{height:64px;margin-bottom:14px}.gc-auth__logo{max-height:64px}}
+@media (prefers-reduced-motion:reduce){.gc-auth__bg{transform:none}}
+/* Ajustes SOLO del visor, nunca de producción: la pantalla real mide 100vh y sus hexágonos se dimensionan en
+   vw, que es correcto ocupando la pantalla entera y absurdo dentro de la ficha de un catálogo. Se acotan aquí
+   dentro de .gc-state-example, el contenedor que monta el visor (index.html:289), sin tocar las clases. */
+.gc-state-example .gc-auth,.gc-state-example .gc-auth__shell{min-height:520px}
+.gc-state-example .gc-auth__decor--arriba{width:150px}
+.gc-state-example .gc-auth__decor--abajo{width:300px;right:-40px;bottom:-16px}
+.gc-state-example .gc-auth__shell{padding:32px 16px}
+/* La pantalla publica es a sangre: dentro de su ficha el marco de 14px de .gc-state-example (linea 336) se
+   leeria como un error de maqueta. Se anula solo cuando la ficha contiene una .gc-auth. */
+.gc-state-example:has(.gc-auth){padding:0;overflow:hidden}
