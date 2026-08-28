@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="61.89 61.28 463.97 281.68" role="img" aria-label="Grinclic">
+  <!-- Isotipo GRINCLIC dibujandose en bucle perfecto, EN SENTIDO INVERSO.
+
+       La geometria esta MEDIDA sobre la animacion que entrego diseno, fotograma a
+       fotograma: los cinco trazos son arcos de las dos circunferencias del simbolo.
+       Sobre esa medicion se aplica un espejo exacto —orden de los trazos, sentido de
+       cada arco y linea de tiempo—, de modo que el trazo recorre el simbolo al reves
+       que el original. Arranca por el cuerpo de la G y termina por el arco superior
+       izquierdo; el circulo izquierdo va ahora en antihorario y el derecho en horario.
+       Volver al sentido original es cambiar una bandera en el generador y regenerar.
+
+       Cada arco se revela con stroke-dashoffset sobre la linea media de su propio arco.
+       Con dasharray "100 100" el mismo offset sirve para las dos mitades del ciclo: de
+       100 a 0 entra la cabeza y de 0 a -100 sale la cola, siempre en el mismo sentido.
+       La cola va un recorrido completo por detras, asi que el simbolo llega a estar
+       entero un instante y enseguida empieza a vaciarse sin detenerse. En -100 se ve
+       exactamente lo mismo que en 100 (nada), de modo que el salto del final del ciclo
+       es invisible: no hay reinicio, no hay costura.
+
+       Las animaciones CSS de un SVG usado como imagen si corren; los scripts no, y aqui
+       no hace falta ninguno. -->
+  <defs>
+    <style>
+      .cls-2 { fill: #3e9836; }
+      .cls-3 { fill: #1b7f4d; }
+      .gc-t1 { animation: gc-t1 2.36s linear infinite; }
+      @keyframes gc-t1 {
+        0%, 0.00%     { stroke-dashoffset: 100 }   /* aun no ha llegado la cabeza */
+        8.47%, 50.00% { stroke-dashoffset: 0 }     /* trazo completo */
+        58.47%, 100%  { stroke-dashoffset: -100 }  /* la cola ya paso */
+      }
+      .gc-t2 { animation: gc-t2 2.36s linear infinite; }
+      @keyframes gc-t2 {
+        0%, 10.17%     { stroke-dashoffset: 100 }   /* aun no ha llegado la cabeza */
+        21.19%, 60.17% { stroke-dashoffset: 0 }     /* trazo completo */
+        71.19%, 100%  { stroke-dashoffset: -100 }  /* la cola ya paso */
+      }
+      .gc-t3 { animation: gc-t3 2.36s linear infinite; }
+      @keyframes gc-t3 {
+        0%, 22.03%     { stroke-dashoffset: 100 }   /* aun no ha llegado la cabeza */
+        26.27%, 72.03% { stroke-dashoffset: 0 }     /* trazo completo */
+        76.27%, 100%  { stroke-dashoffset: -100 }  /* la cola ya paso */
+      }
+      .gc-t4 { animation: gc-t4 2.36s linear infinite; }
+      @keyframes gc-t4 {
+        0%, 28.81%     { stroke-dashoffset: 100 }   /* aun no ha llegado la cabeza */
+        38.98%, 78.81% { stroke-dashoffset: 0 }     /* trazo completo */
+        88.98%, 100%  { stroke-dashoffset: -100 }  /* la cola ya paso */
+      }
+      .gc-t5 { animation: gc-t5 2.36s linear infinite; }
+      @keyframes gc-t5 {
+        0%, 42.37%     { stroke-dashoffset: 100 }   /* aun no ha llegado la cabeza */
+        49.15%, 92.37% { stroke-dashoffset: 0 }     /* trazo completo */
+        99.15%, 100%  { stroke-dashoffset: -100 }  /* la cola ya paso */
+      }
+      /* Menos movimiento: el simbolo se queda completo y quieto. */
+      @media (prefers-reduced-motion: reduce) {
+        .gc-t1, .gc-t2, .gc-t3, .gc-t4, .gc-t5 { animation: none; stroke-dashoffset: 0; }
+      }
+    </style>
+    <mask id="gcm1" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="420">
+      <path class="gc-t1" d="M87.80,190.04 A78.0,78.0 0 0,0 204.68,257.12" fill="none" stroke="#fff"
+            stroke-width="165" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100"/>
+    </mask>
+    <mask id="gcm2" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="420">
+      <path class="gc-t2" d="M174.15,354.29 A165.0,165.0 0 0,0 302.27,96.76" fill="none" stroke="#fff"
+            stroke-width="175" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100"/>
+    </mask>
+    <mask id="gcm3" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="420">
+      <path class="gc-t3" d="M392.51,95.23 A114.1,114.1 0 0,1 499.62,163.07" fill="none" stroke="#fff"
+            stroke-width="78" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100"/>
+    </mask>
+    <mask id="gcm4" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="420">
+      <path class="gc-t4" d="M495.23,236.64 A103.6,103.6 0 0,1 302.50,255.36" fill="none" stroke="#fff"
+            stroke-width="75" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100"/>
+    </mask>
+    <mask id="gcm5" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="420">
+      <path class="gc-t5" d="M258.45,148.05 A101.5,101.5 0 0,0 84.31,128.98" fill="none" stroke="#fff"
+            stroke-width="78" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100"/>
+    </mask>
+  </defs>
+    <g mask="url(#gcm1)"><path class="cls-2" d="M147.41,337.12l21.05-26.91-21.47-26.98c-.06-.07-.1-.14-.13-.21-9.55-1.56-18.89-4.21-26.77-8.09v-37.84h66.17c0-25.92-21.01-46.92-46.92-46.92h-73.45v107.85c29.18,26.41,58.57,35.99,81.53,39.12,0,0,0,0,0,0Z"/></g>
+    <g mask="url(#gcm2)"><path class="cls-2" d="M370.29,67.17c-.4.06-.8.11-1.2.17-65.28,10.11-115.42,66.7-115.42,134.77,0,45.27-36.83,82.09-82.09,82.09v.08l20.28,25.71-20.21,28.5c75.17-.04,136.31-61.2,136.31-136.38,0-37.77,25.64-69.65,60.42-79.18l21.67-30.12-19.76-25.64Z"/></g>
+    <g mask="url(#gcm3)"><path class="cls-2" d="M501.51,118.76c-8.24-10.94-17.9-20.39-28.97-28.34-11.08-7.96-23.3-14.13-36.64-18.53-13.36-4.41-27.27-6.6-41.76-6.6-.84,0-1.68.02-2.52.03l22.48,28.35-20.73,25.75c.4,0,.8-.01,1.2-.01,17.61,0,33.16,5.04,46.66,15.13,13.49,10.08,23.08,22.8,28.76,38.14l50.7-17.9c-4.55-13.07-10.94-25.07-19.17-36Z"/></g>
+    <g mask="url(#gcm4)"><path class="cls-3" d="M470.24,229.67c-5.79,15.61-15.55,28.56-29.27,38.82-13.74,10.27-29.57,15.4-47.49,15.4-11.28,0-21.83-2.17-31.66-6.51-9.83-4.34-18.43-10.19-25.8-17.56-4.57-4.57-8.53-9.62-11.88-15.13-2.76,10.57-6.66,20.53-11.65,29.72-4.75,8.76-10.41,16.76-16.9,23.9.25.25.49.51.74.76,12.43,12.43,26.96,22.19,43.59,29.27,16.62,7.09,34.33,10.62,53.13,10.62,14.75,0,28.91-2.24,42.5-6.72,13.59-4.48,26.02-10.77,37.3-18.87,11.28-8.09,21.1-17.71,29.49-28.84,8.38-11.13,14.89-23.34,19.52-36.65l-51.61-18.22Z"/></g>
+    <g mask="url(#gcm5)"><path class="cls-2" d="M238.55,158.83c-12.03-22.37-35.33-39.81-74.72-39.81-25.79-.38-49.35,13.25-63.55,23.84l-28.79-43.52c26.92-20.43,54.58-34.06,94.21-34.06,42.15,0,76.49,14.59,100.76,37.96,0,0-23.63,24.8-27.91,55.59Z"/></g>
+</svg>

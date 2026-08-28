@@ -6033,5 +6033,104 @@ include 'cplus/views/partials/page-head.php';
   </div>
 </main>`
   }
+  ,
+  {
+    id:"indicador-carga",
+    catalogExamples: [],
+    implementations: [
+      { module: "cplus · núcleo", agregar: null, file: "cplus/js/core/loading.js", detail: "CplusLoading es el dueño ÚNICO del velo: show/hide con conteo de referencias, during() para envolver una promesa y overlayOn() para acotarlo a un contenedor" },
+      { module: "cplus · estilos", agregar: null, file: "cplus/scss/_gc-loading.scss", detail: "Las tres piezas: el velo, su variante acotada y la marca animada" },
+      { module: "cplus · tablas", agregar: null, file: "cplus/js/core/datatable-defaults.js", detail: "El indicador `processing` de DataTables usa la misma marca; el círculo verde nativo quedó retirado" },
+    ],
+    group:"Bloques",
+    name:"Indicador de carga (gc-loading)",
+    description:"La <strong>única</strong> señal de espera de cplus: la animación del isotipo GRINCLIC sobre un velo oscuro y desenfocado. Sustituye a los tres indicadores que convivían antes —el <code>spinner-border</code> claro del velo, el círculo verde de DataTables y los ad-hoc de cada módulo— y retira el rótulo «Cargando…»: la marca ya dice qué está pasando.",
+    use:"Se muestra al entrar a un módulo, al cargar o repaginar una tabla, al abrir la trazabilidad o una previsualización de documento y al navegar a otra vista. En código NUNCA se escribe el marcado del velo: se llama a <code>CplusLoading.show()</code> / <code>hide()</code>, o mejor a <code>CplusLoading.during(promesa)</code>, que lo apaga también cuando la promesa falla. Para acotarlo a una tarjeta o a una tabla, <code>CplusLoading.overlayOn(el, { className: \"gc-loading--claro\" })</code>: sobre una superficie blanca el velo va en claro, que oscurecerla entera sería desproporcionado para una espera corta.",
+    avoid:"No escribir <code>&lt;div class=\"gc-loading\"&gt;</code> a mano en una vista: el velo es un Singleton con conteo de referencias y dos dueños compiten. No usar la marca por debajo de unos 40px: es un logotipo y a tamaño de icono no se lee — para el estado ocupado de un botón o de un badge sigue estando <code>spinner-border-sm</code> de Bootstrap. No añadirle texto: el rótulo se retiró a propósito.",
+    deps:"Solo cplus/css/main.min.css, cplus/js/core/loading.js y los dos vectores de cplus/img/: isotipo-grinclic.svg (la silueta del fantasma) y loading-grinclic.svg (el trazo que se dibuja, con su animación dentro). Sin dependencias de terceros y sin imagen de mapa de bits.",
+    verified: true,
+    accessibility:"El velo lleva <code>role=\"status\"</code>, <code>aria-busy=\"true\"</code> y <code>aria-label=\"Cargando\"</code>; la marca va con <code>aria-hidden</code> porque es decorativa. Así el lector de pantalla anuncia la espera aunque en la pantalla ya no haya ni una palabra. Con <code>prefers-reduced-motion</code> se retiran el desenfoque y el barrido, y la marca se queda completa y a color: quien pide menos movimiento igual necesita saber que el sistema está trabajando, solo que sin movimiento.",
+    note:"TODO es vectorial y el bucle es continuo: no hay fondo blanco que recortar. Se apilan dos capas: <code>::before</code> es el fantasma —una silueta plana resuelta con <code>mask</code> para que el color lo ponga el contexto: claro sobre el velo oscuro, oscuro sobre una tarjeta blanca— y <code>::after</code> es <code>loading-grinclic.svg</code>, el mismo isotipo dibujándose trazo a trazo. · La animación vive DENTRO del SVG, no en la hoja de estilos: las animaciones CSS de un SVG usado como imagen sí corren (los scripts no, y aquí no hace falta ninguno), así que el CSS no necesita <code>@property</code> ni máscaras cónicas y el marcado sigue siendo un <code>&lt;div&gt;</code> pelado en los veinte call-sites. · No es una aproximación: la secuencia, el sentido y los tiempos están MEDIDOS sobre la animación que entregó diseño, fotograma a fotograma. Los cinco trazos resultaron ser arcos de las dos circunferencias del símbolo y cada uno se revela con <code>stroke-dashoffset</code> sobre la línea media de su arco. Sobre esa medición se aplica después un <strong>espejo exacto</strong> —orden de los trazos, sentido de cada arco y línea de tiempo—, porque el recorrido se pidió al revés: arranca por el cuerpo de la G y termina por el arco superior izquierdo, con el círculo izquierdo en antihorario y el derecho en horario. Volver al sentido original es cambiar una bandera en el generador y regenerar el SVG. · Vino de una animación WebP de 1080x1080 y 255 KB con el fondo blanco horneado; los dos vectores juntos pesan 8 KB. · Sobre el velo a pantalla completa la marca NO va en verde de marca: lleva <code>filter: grayscale(1) brightness(2.2)</code>. En escala de grises el verde claro cae a #7e7e7e y el oscuro a #666, dos grises medios que sobre ese velo quedan al mismo valor que el fondo, y entonces el fantasma se ve MÁS que el trazo ya dibujado y la animación se lee al revés, como si el símbolo se borrara; al subir el brillo el trazo llega a casi blanco y recupera el contraste. El filtro excluye <code>--claro</code> a propósito: ese velo es blanco y una marca casi blanca encima sería invisible, así que en la tabla sigue mandando el verde. Regla general que salió de comparar seis combinaciones el 2026-08-27: si el trazo dibujado y el fantasma se acercan en valor, la animación deja de contar que el símbolo se está llenando. · El bucle no se detiene nunca. El original remataba con un fotograma fijo de 1700 ms; aquí la cabeza entra por un lado y la cola sale por el otro un recorrido completo por detrás, en el mismo orden y sentido, así que el símbolo llega a estar entero un instante y enseguida empieza a vaciarse sin pausa. Con <code>stroke-dasharray: 100 100</code> el mismo <code>stroke-dashoffset</code> sirve para las dos mitades: de 100 a 0 entra y de 0 a -100 sale. En -100 se ve exactamente lo mismo que en 100 —nada—, de modo que el salto del final del ciclo es invisible: no hay reinicio ni costura. Ciclo de 2360 ms, la mitad dibujando y la mitad vaciando. · El indicador nativo de DataTables NO se usa: se retira, no se corrige. El tema lo declara <code>position: absolute</code> pero nunca posiciona <code>div.dataTables_wrapper</code>, así que acababa colgando del primer antepasado posicionado que hubiera —la tarjeta, la vista o la propia página— y aparecía en una esquina; y encima <code>div.dataTables_processing &gt; div:last-child</code> le imponía 80x15 px a lo que hubiera dentro. El indicador de carga de la tabla lo monta el propio componente: <code>GrincDataTable.js</code> ancla un velo <code>gc-loading--inline gc-loading--claro</code> a <code>settings.nTableWrapper</code>, que en cplus contiene solo la tabla porque el shell V2 saca la barra y el pie fuera como hermanos. Medido sobre la estructura real: desvío de 0,0 px en los dos ejes respecto al centro de la tabla. · Dos avisos de entorno: en el visor el velo se ancla al contenedor del ejemplo porque en producción es <code>position: fixed</code>; y el fantasma va incrustado como data URI porque los <code>mask</code> de CSS son origin-restricted y, por <code>file://</code>, cada archivo local es un origen opaco.",
+    stateOrder:["velo","tabla","bloque","acotado"],
+    stateLabels:{
+      velo:"AL CARGAR EL MÓDULO — velo oscuro a pantalla completa, al 70 %, con la marca en gris casi blanco: la pantalla de atrás se adivina lo justo para entender que sigue ahí y que no se puede tocar. Lo monta <code>CplusLoading.show()</code>; aquí se ancla a la ficha para que no tape el catálogo.",
+      tabla:"AL RECARGAR LA TABLA — el velo se ancla a la tabla, no a la página, y en claro. Lo monta <code>GrincDataTable</code> sobre <code>nTableWrapper</code>: la barra y el pie siguen legibles, y se lee que lo que carga es la tabla.",
+      bloque:"CARGA EN FLUJO — cuerpo de un modal, previsualización de un documento, lista que aún no llega. Sin velo: la marca sola, centrada.",
+      acotado:"VELO ACOTADO A UNA TARJETA — lo monta <code>CplusLoading.overlayOn(el)</code> cuando solo se está recargando una parte de la pantalla."
+    },
+    states:{
+      velo:`<div style="padding:16px">
+  <h2 style="font-size:18px;margin:0 0 12px">Módulo de ejemplo</h2>
+  <table class="table table-sm">
+    <thead><tr><th>Nombre</th><th>NIT</th><th>Ciudad</th></tr></thead>
+    <tbody>
+      <tr><td>Empresa demo uno</td><td>900.123.456</td><td>Bogotá</td></tr>
+      <tr><td>Empresa demo dos</td><td>900.222.111</td><td>Medellín</td></tr>
+      <tr><td>Empresa demo tres</td><td>901.555.000</td><td>Cali</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Lo monta CplusLoading; NO se escribe a mano en una vista. -->
+<div class="gc-loading" role="status" aria-busy="true" aria-label="Cargando">
+  <div class="gc-loading__mark" aria-hidden="true"></div>
+</div>`,
+      tabla:`<div class="erp-card table-card" style="position:relative;overflow:hidden">
+  <div class="table-toolbar" style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #eef1f4">
+    <h2 class="card-title" style="margin:0;font-size:15px">Zonas<span class="text-muted"> · 128 registros</span></h2>
+    <button class="erp-btn erp-btn-secondary" type="button">Exportar</button>
+  </div>
+
+  <!-- El wrapper de DataTables: en cplus contiene SOLO la tabla. -->
+  <div class="dataTables_wrapper" style="position:relative">
+    <table class="table dataTable" style="width:100%;border-collapse:collapse">
+      <thead><tr><th>Nombre</th><th>NIT</th><th>Ciudad</th></tr></thead>
+      <tbody>
+        <tr><td>Empresa demo uno</td><td>900.123.456</td><td>Bogotá</td></tr>
+        <tr><td>Empresa demo dos</td><td>900.222.111</td><td>Medellín</td></tr>
+        <tr><td>Empresa demo tres</td><td>901.555.000</td><td>Cali</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Lo monta CplusLoading.overlayOn(nTableWrapper, {className:"gc-loading--claro"}) -->
+    <div class="gc-loading gc-loading--inline gc-loading--claro" role="status" aria-busy="true" aria-label="Cargando">
+      <div class="gc-loading__mark gc-loading__mark--sm" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="table-footer" style="display:flex;justify-content:space-between;padding:12px 16px;border-top:1px solid #eef1f4;font-size:12px;color:#4b5563">
+    <span>Mostrando 1 a 3 de 128</span><span>1 2 3 …</span>
+  </div>
+</div>`,
+      bloque:`<div class="gc-loading-block" role="status" aria-busy="true" aria-label="Cargando">
+  <div class="gc-loading__mark gc-loading__mark--sm" aria-hidden="true"></div>
+</div>`,
+      acotado:`<div style="position:relative;min-height:180px;border:1px solid #d7dbe0;border-radius:12px;overflow:hidden">
+  <div style="padding:16px">
+    <h3 style="font-size:15px;margin:0 0 6px">Trazabilidad</h3>
+    <p class="text-muted" style="margin:0">El contenido de la tarjeta sigue detrás del velo acotado.</p>
+  </div>
+
+  <div class="gc-loading gc-loading--inline" role="status" aria-busy="true" aria-label="Cargando">
+    <div class="gc-loading__mark gc-loading__mark--sm" aria-hidden="true"></div>
+  </div>
+</div>`
+    },
+    snippet:`// A pantalla completa: nunca se escribe el marcado, se pide el velo.
+CplusLoading.show();
+CplusLoading.hide();                       // conteo de referencias: se apaga en el ultimo hide
+
+// Preferible: se apaga tambien si la promesa falla.
+CplusLoading.during(GrincApiClient.post('/entities/zonas/proxies/cities', { pais_id: 1 }));
+
+// Acotado a una tarjeta; done() REMUEVE el nodo, no lo oculta.
+var loader = CplusLoading.overlayOn(document.getElementById('trazainfo'));
+loader.done();
+
+/* Carga EN FLUJO, cuando el hueco ya esta en la pagina (cuerpo de modal, lista):
+<div class="gc-loading-block" role="status" aria-busy="true" aria-label="Cargando">
+  <div class="gc-loading__mark gc-loading__mark--sm" aria-hidden="true"></div>
+</div> */`
+  }
 
 ];
