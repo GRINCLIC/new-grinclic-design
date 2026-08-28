@@ -2240,3 +2240,90 @@ table.dataTable th.dataTables_empty{text-align:center}
 /* La pantalla publica es a sangre: dentro de su ficha el marco de 14px de .gc-state-example (linea 336) se
    leeria como un error de maqueta. Se anula solo cuando la ficha contiene una .gc-auth. */
 .gc-state-example:has(.gc-auth){padding:0;overflow:hidden}
+
+/* === Espejo visor: familia general de tarjetas gc-card-grid / gc-metric-card / gc-quick-access / gc-tool-card / gc-chip — fuente cplus/scss/_gc-cards.scss — más el andamiaje .gc-dashboard* de cplus/scss/_home-admin.scss, que el ejemplo tablero-inicio.html necesita para ser fiel. Variables resueltas desde cplus/scss/_variables.scss. Las tres --gc-metric-* se conservan como var(): son el mecanismo del modificador de acento. Solo demo, no copiar a producción. === */
+.gc-card-grid{display:grid;align-items:stretch;gap:10px}
+.gc-card-grid--2{grid-template-columns:repeat(2, minmax(0, 1fr))}
+.gc-card-grid--3{grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr))}
+.gc-card-grid--6{grid-template-columns:repeat(auto-fit, minmax(min(100%, 210px), 1fr))}
+@media(max-width: 620px){
+.gc-card-grid--2{grid-template-columns:1fr}
+}
+.gc-metric-card{position:relative;display:flex;flex-direction:column;min-height:190px;padding:16px;border:1px solid var(--gc-metric-border, #e8edf2);border-radius:14px;background:var(--gc-metric-bg, #ffffff)}
+.gc-metric-card--accent-verde{--gc-metric-color: #1b7f4d;--gc-metric-bg: #dff2df;--gc-metric-border: #b8dbbb}
+.gc-metric-card--accent-naranja{--gc-metric-color: #e3600e;--gc-metric-bg: #ffe9da;--gc-metric-border: #f4c09d}
+.gc-metric-card__top{display:flex;align-items:flex-start;justify-content:space-between;min-height:28px}
+.gc-metric-card__icon{color:var(--gc-metric-color, #1b7f4d);font-size:1.45rem;line-height:1}
+.gc-metric-card__value{display:flex;align-items:flex-end;min-height:56px;margin:10px 0 0;color:#0f172a;font-size:2.55rem;font-weight:700;letter-spacing:-0.035em;line-height:1}
+.gc-metric-card__value-error{color:#575756;font-weight:600}
+.gc-metric-card__skeleton{display:block;width:78px;height:36px;border-radius:6px;background:linear-gradient(90deg, rgba(15, 23, 42, 0.07) 25%, rgba(15, 23, 42, 0.13) 37%, rgba(15, 23, 42, 0.07) 63%);background-size:400% 100%;animation:gc-card-skeleton 1.4s ease infinite}
+@keyframes gc-card-skeleton{0%{background-position:100% 50%}100%{background-position:0 50%}}
+@media(prefers-reduced-motion: reduce){
+.gc-metric-card__skeleton{animation:none}
+}
+.gc-metric-card__title{min-height:44px;margin:10px 0 0;color:#0f172a;font-size:.95rem;font-weight:700;line-height:1.3}
+.gc-metric-card__foot{display:flex;justify-content:flex-end;margin-top:auto;padding-top:8px}
+.gc-metric-card__link,a.gc-metric-card__link{display:inline-flex;align-items:center;gap:5px;color:#275420;font-size:.83rem;font-weight:700;text-decoration:none}
+.gc-metric-card__link:hover,.gc-metric-card__link:focus-visible{text-decoration:underline}
+.gc-metric-card__link--muted,a.gc-metric-card__link--muted{color:#7a8798;font-weight:600}
+.gc-metric-card__retry{padding:5px 10px;font-size:.76rem}
+.gc-metric-card.is-error{border-style:dashed}
+.gc-metric-card--inline{min-height:0;padding:14px;border-color:#c4c4c4;background:#ffffff}
+.gc-metric-card__inline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.gc-metric-card__label{display:flex;align-items:flex-start;gap:10px}
+.gc-metric-card__label i{margin-top:2px;color:#7a8798;font-size:1.1rem}
+.gc-metric-card--inline .gc-metric-card__title{min-height:0;margin:0}
+.gc-metric-card__value--inline{min-height:0;margin:0;font-size:2.3rem;font-weight:600;white-space:nowrap}
+.gc-metric-card--inline .gc-metric-card__foot{padding-top:0}
+.gc-chip-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.gc-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border:1px solid #c4c4c4;border-radius:999px;background:#ffffff;color:#575756;font-size:.72rem;font-weight:600}
+.gc-quick-access,a.gc-quick-access{display:grid;grid-template-columns:20px minmax(0, 1fr) auto 14px;align-items:center;gap:10px;min-height:54px;padding:11px 13px;border:1px solid #c4c4c4;border-radius:14px;background:#ffffff;color:#0f172a;text-align:left;text-decoration:none;transition:background .16s ease,border-color .16s ease,color .16s ease}
+.gc-quick-access:hover,.gc-quick-access:focus-visible{border-color:#b8dbbb;background:#eef8f0}
+.gc-quick-access>i{color:#7a8798;font-size:.95rem}
+.gc-quick-access__name{color:#0f172a;font-size:.9rem;font-weight:600}
+.gc-quick-access__arrow{color:#7a8798;font-size:.76rem}
+.gc-quick-access:hover>i,.gc-quick-access:hover .gc-quick-access__name,.gc-quick-access:hover .gc-quick-access__arrow,.gc-quick-access:focus-visible>i,.gc-quick-access:focus-visible .gc-quick-access__name,.gc-quick-access:focus-visible .gc-quick-access__arrow{color:#1b7f4d}
+.gc-quick-access__count{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:26px;padding:4px 10px;border:1px solid #b8dbbb;border-radius:999px;background:#dff2df;color:#275420;font-size:.78rem;font-weight:700;text-align:center}
+.gc-quick-access__count--empty{border-color:#c4c4c4;background:#ffffff;color:#7a8798}
+.gc-tool-card,a.gc-tool-card{display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-height:124px;padding:15px;border:1px solid #c4c4c4;border-radius:14px;background:#ffffff;color:#0f172a;text-align:left;text-decoration:none;transition:background .16s ease,border-color .16s ease,color .16s ease}
+.gc-tool-card:hover,.gc-tool-card:focus-visible{border-color:#b8dbbb;background:#eef8f0}
+.gc-tool-card>i{color:#1b7f4d;font-size:1.2rem}
+.gc-tool-card__name{color:#0f172a;font-size:.9rem;line-height:1.3}
+.gc-tool-card__cta{display:inline-flex;align-items:center;gap:4px;color:#575756;font-size:.74rem;font-weight:600}
+.gc-tool-card:hover .gc-tool-card__name,.gc-tool-card:hover .gc-tool-card__cta,.gc-tool-card:focus-visible .gc-tool-card__name,.gc-tool-card:focus-visible .gc-tool-card__cta{color:#1b7f4d}
+.gc-kicker{margin:0 0 4px;color:#1b7f4d;font-size:.74rem;font-weight:700;letter-spacing:.06em;line-height:1.2;text-transform:uppercase}
+.gc-dashboard.container-fluid,.gc-dashboard{max-width:none;padding-inline:16px}
+@media(min-width: 992px){
+.gc-dashboard.container-fluid,.gc-dashboard{padding-inline:24px}
+}
+.gc-dashboard__panel{margin-bottom:18px;padding:20px 22px}
+.gc-dashboard__intro{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #c4c4c4}
+.gc-dashboard__identity{display:flex;align-items:center;gap:20px;min-width:0}
+.gc-dashboard__identity-text{min-width:0}
+.gc-company-logo{display:grid;flex:0 0 160px;place-items:center;min-width:160px;min-height:138px;padding:6px;border:1px solid #c4c4c4;border-radius:14px;background:#ffffff}
+.gc-company-logo img{width:140px;max-height:122px;object-fit:contain}
+.gc-dashboard__welcome{margin:0;color:#0f172a;font-size:1.5rem;font-weight:700;line-height:1.15}
+.gc-dashboard__date{display:inline-flex;align-items:center;gap:8px;margin:10px 0 0;color:#575756;font-size:.84rem;font-weight:600}
+.gc-dashboard__date i{color:#1b7f4d}
+.gc-dashboard__section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 2px 12px}
+.gc-dashboard__panel-head{margin-bottom:12px}
+.gc-dashboard__section-title{margin:0;color:#0f172a;font-size:1.12rem;font-weight:700;line-height:1.2}
+.gc-dashboard__panel .gc-dashboard__section-title{margin-bottom:0}
+.gc-dashboard__stamp{min-height:32px;margin:0;padding:7px 12px;border:1px solid #c4c4c4;border-radius:999px;background:#ffffff;color:#7a8798;font-size:.8rem;white-space:nowrap}
+.gc-dashboard__summary{margin-bottom:18px}
+.gc-dashboard__lower{display:grid;grid-template-columns:2fr 1fr;gap:18px;align-items:start}
+@media(max-width: 1320px){
+.gc-dashboard__lower{grid-template-columns:1fr}
+}
+@media(max-width: 920px){
+.gc-dashboard__identity{flex-direction:column;align-items:flex-start}
+}
+@media(max-width: 660px){
+.gc-dashboard__panel{padding:16px}
+.gc-dashboard__section-head{flex-direction:column;align-items:flex-start}
+.gc-dashboard__stamp{white-space:normal}
+.gc-dashboard__welcome{font-size:1.28rem}
+}
+
+/* `.erp-card` es de cplus/scss/_components.scss:473 y en el visor solo se espeja ACOTADA, para no soltar la clase sobre toda la biblioteca (misma convención que .gc-table-listado-preview .erp-card, línea 1916). El tablero la usa como panel de sección. */
+.gc-dashboard .erp-card{background:#fff;border:1px solid #c4c4c4;border-radius:14px;box-shadow:0 10px 25px rgba(15,23,42,.06)}

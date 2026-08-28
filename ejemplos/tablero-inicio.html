@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tablero de inicio - Grinclic</title>
+  <link href="../assets/vendor/fonts.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/grinclic-forms.css" rel="stylesheet">
+</head>
+<body>
+  <main class="gc-page gc-dashboard">
+    <!-- Organismo: tarjetas-resumen -->
+    <!-- Uso conceptual: <gc-tablero-inicio></gc-tablero-inicio> -->
+    <!--
+      Réplica fiel del tablero del home administrativo (cplus/views/mostrarHomeAdmin.php,
+      agregar=151). Las cifras son de muestra; en producción las rellena el JS con UNA
+      sola respuesta del BFF. Se conservan a propósito los tres estados que importan:
+      una tarjeta con datos, un CERO REAL y una tarjeta en ERROR reintentable — que
+      nunca se pinta como cero.
+    -->
+
+    <!-- Enfoque principal: identidad del tenant + pendientes, en UNA sola caja.
+         Esta pantalla NO usa gc-page-header: el <h1> es el saludo y vive dentro
+         del panel, según el mockup del tablero. -->
+    <section class="erp-card gc-dashboard__panel" aria-labelledby="ej-pendientes">
+      <div class="gc-dashboard__intro">
+        <div class="gc-dashboard__identity">
+          <div class="gc-company-logo">
+            <!-- Marcador: en producción es el logo de la EMPRESA, servido por
+                 includes/verlogo.php con la base del tenant. Aquí va un SVG
+                 embebido para que el ejemplo abra con doble clic, sin red. -->
+            <img alt="Logo de la empresa" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 110'%3E%3Crect width='140' height='110' rx='10' fill='%23eef8f0'/%3E%3Ccircle cx='70' cy='46' r='22' fill='%231b7f4d'/%3E%3Ctext x='70' y='90' text-anchor='middle' font-family='Montserrat,Arial' font-size='15' font-weight='700' fill='%231b7f4d'%3EDEMO%3C/text%3E%3C/svg%3E">
+          </div>
+          <div class="gc-dashboard__identity-text">
+            <p class="gc-kicker">Inicio operativo</p>
+            <h1 class="gc-dashboard__welcome">Bienvenido, Laura Martínez Gómez</h1>
+            <p class="gc-dashboard__date">
+              <i class="bi bi-calendar-check" aria-hidden="true"></i>
+              <span>Fecha de ingreso: 03 de agosto de 2026</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gc-dashboard__section-head">
+        <div>
+          <p class="gc-kicker">Enfoque principal</p>
+          <h2 class="gc-dashboard__section-title" id="ej-pendientes">Pendientes que requieren acción inmediata</h2>
+        </div>
+        <p class="gc-dashboard__stamp">Última actualización: hoy · 10:35 a.&nbsp;m.</p>
+      </div>
+
+      <div class="gc-card-grid gc-card-grid--6">
+        <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="false">
+          <div class="gc-metric-card__top"><i class="bi bi-file-earmark-check gc-metric-card__icon" aria-hidden="true"></i></div>
+          <p class="gc-metric-card__value">1.663</p>
+          <h3 class="gc-metric-card__title">Declaraciones por aprobar</h3>
+          <div class="gc-metric-card__foot">
+            <a class="gc-metric-card__link" href="#">Ir al detalle <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </article>
+
+        <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="false">
+          <div class="gc-metric-card__top"><i class="bi bi-ui-checks-grid gc-metric-card__icon" aria-hidden="true"></i></div>
+          <p class="gc-metric-card__value">392</p>
+          <h3 class="gc-metric-card__title">Solicitudes por aprobar</h3>
+          <div class="gc-metric-card__foot">
+            <a class="gc-metric-card__link" href="#">Ir al detalle <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </article>
+
+        <article class="gc-metric-card gc-metric-card--accent-naranja" aria-busy="false">
+          <div class="gc-metric-card__top"><i class="bi bi-signpost-split gc-metric-card__icon" aria-hidden="true"></i></div>
+          <p class="gc-metric-card__value">8 / 16</p>
+          <h3 class="gc-metric-card__title">Rutas por completar</h3>
+          <div class="gc-metric-card__foot">
+            <a class="gc-metric-card__link" href="#">Ir al detalle <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </article>
+
+        <!-- Con ayuda contextual: el rótulo no basta para saber qué se cuenta -->
+        <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="false">
+          <div class="gc-metric-card__top">
+            <i class="bi bi-journal-text gc-metric-card__icon" aria-hidden="true"></i>
+            <button type="button" class="gc-help-button" data-bs-toggle="popover"
+                    data-bs-content="Documentos cuyo estado sigue siendo Pendiente: ninguna de sus filas se ha realizado todavía."
+                    aria-label="Ayuda sobre Manifiestos por realizar">?</button>
+          </div>
+          <p class="gc-metric-card__value">50</p>
+          <h3 class="gc-metric-card__title">Manifiestos por realizar</h3>
+          <div class="gc-metric-card__foot">
+            <a class="gc-metric-card__link" href="#">Ir al detalle <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </article>
+
+        <!-- ERROR reintentable: jamás un cero -->
+        <article class="gc-metric-card gc-metric-card--accent-naranja is-error" aria-busy="false">
+          <div class="gc-metric-card__top"><i class="bi bi-check2-square gc-metric-card__icon" aria-hidden="true"></i></div>
+          <p class="gc-metric-card__value">
+            <span class="gc-metric-card__value-error" aria-hidden="true">&mdash;</span>
+            <span class="visually-hidden">No se pudo cargar</span>
+          </p>
+          <h3 class="gc-metric-card__title">Conciliaciones pendientes</h3>
+          <div class="gc-metric-card__foot">
+            <button type="button" class="erp-btn erp-btn-secondary gc-metric-card__retry">
+              <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Reintentar
+            </button>
+          </div>
+        </article>
+
+        <!-- CERO REAL: es un dato, no un fallo -->
+        <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="false">
+          <div class="gc-metric-card__top">
+            <i class="bi bi-clipboard2-check gc-metric-card__icon" aria-hidden="true"></i>
+            <button type="button" class="gc-help-button" data-bs-toggle="popover"
+                    data-bs-content="Documentos ya conciliados a los que todavía no se les ha generado el acta."
+                    aria-label="Ayuda sobre Actas pendientes">?</button>
+          </div>
+          <p class="gc-metric-card__value">0</p>
+          <h3 class="gc-metric-card__title">Actas pendientes</h3>
+          <div class="gc-metric-card__foot">
+            <span class="gc-metric-card__link gc-metric-card__link--muted">Sin pendientes</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Resumen mensual: NO es una caja. El encabezado va sobre el fondo de la
+         página y las únicas cajas son las tarjetas, que además no llevan sombra. -->
+    <section class="gc-dashboard__summary" aria-labelledby="ej-mes">
+      <div class="gc-dashboard__section-head">
+        <div>
+          <p class="gc-kicker">Resumen mensual</p>
+          <h2 class="gc-dashboard__section-title" id="ej-mes">Indicadores del mes</h2>
+        </div>
+        <p class="gc-dashboard__stamp">Cobertura: 01 ago 2026 · 31 ago 2026</p>
+      </div>
+
+      <div class="gc-card-grid gc-card-grid--3">
+        <article class="gc-metric-card gc-metric-card--inline" aria-busy="false">
+          <div class="gc-metric-card__inline-head">
+            <div class="gc-metric-card__label">
+              <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+              <h3 class="gc-metric-card__title">Servicios</h3>
+            </div>
+            <p class="gc-metric-card__value gc-metric-card__value--inline">50</p>
+          </div>
+          <div class="gc-chip-row">
+            <span class="gc-chip">Manifiestos emitidos</span>
+            <span class="gc-chip">Mes en curso</span>
+          </div>
+          <div class="gc-metric-card__foot"></div>
+        </article>
+
+        <article class="gc-metric-card gc-metric-card--inline" aria-busy="false">
+          <div class="gc-metric-card__inline-head">
+            <div class="gc-metric-card__label">
+              <i class="bi bi-signpost" aria-hidden="true"></i>
+              <h3 class="gc-metric-card__title">Rutas programadas</h3>
+            </div>
+            <p class="gc-metric-card__value gc-metric-card__value--inline">16</p>
+          </div>
+          <div class="gc-chip-row">
+            <span class="gc-chip">Rutas planeadas</span>
+            <span class="gc-chip">Seguimiento operativo</span>
+          </div>
+          <div class="gc-metric-card__foot"></div>
+        </article>
+
+        <article class="gc-metric-card gc-metric-card--inline" aria-busy="false">
+          <div class="gc-metric-card__inline-head">
+            <div class="gc-metric-card__label">
+              <i class="bi bi-box-seam" aria-hidden="true"></i>
+              <h3 class="gc-metric-card__title">Cantidades gestionadas &middot; kg</h3>
+            </div>
+            <p class="gc-metric-card__value gc-metric-card__value--inline">0,00</p>
+          </div>
+          <div class="gc-chip-row">
+            <span class="gc-chip">Cantidad conciliada</span>
+            <span class="gc-chip">Unidad: kg</span>
+          </div>
+          <div class="gc-metric-card__foot"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Accesos y herramientas -->
+    <div class="gc-dashboard__lower">
+      <section class="erp-card gc-dashboard__panel" aria-labelledby="ej-accesos">
+        <div class="gc-dashboard__panel-head">
+          <p class="gc-kicker">Navegación rápida</p>
+          <h2 class="gc-dashboard__section-title" id="ej-accesos">Accesos directos</h2>
+        </div>
+        <div class="gc-card-grid gc-card-grid--2">
+          <a class="gc-quick-access" href="#"><i class="bi bi-gear" aria-hidden="true"></i><span class="gc-quick-access__name">Mis datos / Configuraciones</span><span class="gc-quick-access__count gc-quick-access__count--empty" aria-hidden="true">&mdash;</span><i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i></a>
+          <a class="gc-quick-access" href="#"><i class="bi bi-people" aria-hidden="true"></i><span class="gc-quick-access__name">Mis clientes</span><span class="gc-quick-access__count">1.976</span><i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i></a>
+          <a class="gc-quick-access" href="#"><i class="bi bi-buildings" aria-hidden="true"></i><span class="gc-quick-access__name">Mis proveedores / destinos</span><span class="gc-quick-access__count">72</span><i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i></a>
+          <a class="gc-quick-access" href="#"><i class="bi bi-building" aria-hidden="true"></i><span class="gc-quick-access__name">Sucursales</span><span class="gc-quick-access__count">4.258</span><i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i></a>
+          <a class="gc-quick-access" href="#"><i class="bi bi-person" aria-hidden="true"></i><span class="gc-quick-access__name">Mis usuarios</span><span class="gc-quick-access__count">2.084</span><i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i></a>
+          <a class="gc-quick-access" href="#"><i class="bi bi-truck" aria-hidden="true"></i><span class="gc-quick-access__name">Mis vehículos</span><span class="gc-quick-access__count">40</span><i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i></a>
+          <a class="gc-quick-access" href="#"><i class="bi bi-shield-lock" aria-hidden="true"></i><span class="gc-quick-access__name">Mis roles</span><span class="gc-quick-access__count">37</span><i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i></a>
+          <a class="gc-quick-access" href="#"><i class="bi bi-key" aria-hidden="true"></i><span class="gc-quick-access__name">Mis permisos</span><span class="gc-quick-access__count gc-quick-access__count--empty" aria-hidden="true">&mdash;</span><i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i></a>
+        </div>
+      </section>
+
+      <section class="erp-card gc-dashboard__panel" aria-labelledby="ej-tools">
+        <div class="gc-dashboard__panel-head">
+          <p class="gc-kicker">Herramientas de apoyo</p>
+          <h2 class="gc-dashboard__section-title" id="ej-tools">Herramientas frecuentes</h2>
+        </div>
+        <div class="gc-card-grid gc-card-grid--2">
+          <a class="gc-tool-card" href="#"><i class="bi bi-geo-alt" aria-hidden="true"></i><strong class="gc-tool-card__name">Rastreo de Rutas</strong><span class="gc-tool-card__cta">Acceder <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+          <a class="gc-tool-card" href="#"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i><strong class="gc-tool-card__name">Informes Generales</strong><span class="gc-tool-card__cta">Acceder <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+          <a class="gc-tool-card" href="#"><i class="bi bi-play-btn" aria-hidden="true"></i><strong class="gc-tool-card__name">Videos Tutoriales</strong><span class="gc-tool-card__cta">Acceder <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+          <a class="gc-tool-card" href="#"><i class="bi bi-bar-chart-line" aria-hidden="true"></i><strong class="gc-tool-card__name">Indicadores</strong><span class="gc-tool-card__cta">Acceder <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+          <a class="gc-tool-card" href="#"><i class="bi bi-graph-up" aria-hidden="true"></i><strong class="gc-tool-card__name">Cifras de Crecimiento</strong><span class="gc-tool-card__cta">Acceder <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script>
+    // Ayuda contextual: mismo init que producción (trigger por foco, para que
+    // funcione con teclado). Sin red ni CDN: el bundle es local.
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!window.bootstrap || !window.bootstrap.Popover) return;
+      Array.prototype.forEach.call(
+        document.querySelectorAll('[data-bs-toggle="popover"]'),
+        function (el) {
+          new window.bootstrap.Popover(el, {
+            trigger: 'focus',
+            placement: 'left',
+            container: 'body',
+            customClass: 'gc-help-popover'
+          });
+        }
+      );
+    });
+  </script>
+</body>
+</html>

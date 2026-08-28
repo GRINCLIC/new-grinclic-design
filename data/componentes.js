@@ -6034,4 +6034,172 @@ include 'cplus/views/partials/page-head.php';
 </main>`
   }
 
+  ,{
+    id:"tarjetas-resumen",
+    catalogExamples: ["encabezado-modulo","badge-estado"],
+    // SIN `implementations` a proposito: correccion-catalogo-sin-modulos-inconclusos
+    // exige que la evidencia salga de modulos con estado `validado` en
+    // cplus/MIGRATION_LEDGER.md, y «si un patron solo tiene instancias en modulos
+    // sin terminar, se deja sin ejemplos antes que inventarle evidencia». La unica
+    // instancia de estas clases vive hoy en una pantalla de staging en rama sin
+    // merge. Se anadira cuando el modulo entre al ledger.
+    implementations: [],
+    group:"Bloques",
+    name:"Tarjetas de resumen (tablero)",
+    description:"Familia de tarjetas para pantallas de resumen: una cifra grande que se lee de un vistazo, un acceso rápido con su contador y un atajo a una herramienta. Las clases son generales (gc-*), no de un módulo: sirven a cualquier tablero (inicio, Indicadores, Cifras de crecimiento, Métricas).",
+    use:"Usarlas cuando la pantalla resume estado y su valor es que el número se lea antes que el texto. La rejilla gc-card-grid es la que decide cuántas caben: --6 para pendientes, --3 para indicadores, --2 dentro de un panel. Cada cifra la rellena JavaScript: el marcado nace con el esqueleto puesto.",
+    avoid:"No usarlas para listados (eso es tabla-listado) ni para formularios. No pintar un 0 cuando el dato falló: el cero es un dato y el error tiene su propio estado. No inventar acentos nuevos: solo --accent-verde y --accent-naranja, que salen de los tokens de marca.",
+    deps:"Bootstrap CSS + cplus/css/main.min.css (clases compiladas desde cplus/scss/_gc-cards.scss). El botón de ayuda usa gc-help-button + popover de Bootstrap, ya presentes en cplus/scss/_gc-forms.scss. Sin JavaScript propio: el estado lo aplica el JS de la vista.",
+    verified: false,
+    accessibility:"Cada tarjeta que espera datos lleva aria-busy=\"true\" y lo pasa a \"false\" al llegar. El esqueleto es aria-hidden y va acompañado de un texto en .visually-hidden, para que un lector de pantalla anuncie «Cargando» en vez de leer una caja vacía. El enlace «Ir al detalle» es un <a> real: conserva foco, teclado y apertura en pestaña nueva. Los accesos rápidos y las herramientas también son <a>, nunca <button> con window.location. El acento de color nunca es el único portador de significado: el rótulo lo dice.",
+    note:"El acento pastel sale de <code>--grinc-green-card</code> / <code>--grinc-orange-card</code>. <strong>No usar <code>--grinc-success-bg</code></strong>: pese al nombre vale <code>#3c763d</code>, que es el color de TEXTO de éxito de Bootstrap 3, y como fondo deja texto oscuro sobre fondo oscuro. Marcada como Diseño y no como Verificado porque su única implementación vive todavía en una rama de desarrollo, sin merge. <strong>No todos los bloques del tablero son caja:</strong> el de pendientes y los dos inferiores son <code>erp-card</code>, pero el resumen mensual NO lleva contenedor — su encabezado va sobre el fondo de la página y las cajas son solo las tarjetas, que además no tienen sombra. Envolverlo en <code>erp-card</code> «se ve bien» y contradice el diseño.",
+    stateOrder: ["disabled","enabled","error"],
+    stateLabels: { disabled:"Cargando", enabled:"Con datos", error:"Error reintentable" },
+    states:{
+      disabled:`<div class="gc-card-grid gc-card-grid--3">
+  <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="true">
+    <div class="gc-metric-card__top"><i class="bi bi-file-earmark-check gc-metric-card__icon"></i></div>
+    <p class="gc-metric-card__value"><span class="gc-metric-card__skeleton" aria-hidden="true"></span><span class="visually-hidden">Cargando</span></p>
+    <h3 class="gc-metric-card__title">Declaraciones por aprobar</h3>
+    <div class="gc-metric-card__foot"></div>
+  </article>
+</div>`,
+      enabled:`<div class="gc-card-grid gc-card-grid--3">
+  <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="false">
+    <div class="gc-metric-card__top"><i class="bi bi-file-earmark-check gc-metric-card__icon"></i></div>
+    <p class="gc-metric-card__value">1.663</p>
+    <h3 class="gc-metric-card__title">Declaraciones por aprobar</h3>
+    <div class="gc-metric-card__foot">
+      <a class="gc-metric-card__link" href="incluir.php?agregar=15&amp;docbusqueda=101,102">Ir al detalle <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </article>
+  <article class="gc-metric-card gc-metric-card--accent-naranja" aria-busy="false">
+    <div class="gc-metric-card__top"><i class="bi bi-signpost-split gc-metric-card__icon"></i></div>
+    <p class="gc-metric-card__value">8 / 16</p>
+    <h3 class="gc-metric-card__title">Rutas por completar</h3>
+    <div class="gc-metric-card__foot">
+      <a class="gc-metric-card__link" href="incluir.php?agregar=67">Ir al detalle <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </article>
+  <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="false">
+    <div class="gc-metric-card__top"><i class="bi bi-clipboard2-check gc-metric-card__icon"></i></div>
+    <p class="gc-metric-card__value">0</p>
+    <h3 class="gc-metric-card__title">Actas pendientes</h3>
+    <div class="gc-metric-card__foot">
+      <span class="gc-metric-card__link gc-metric-card__link--muted">Sin pendientes</span>
+    </div>
+  </article>
+</div>`,
+      error:`<div class="gc-card-grid gc-card-grid--3">
+  <article class="gc-metric-card gc-metric-card--accent-verde is-error" aria-busy="false">
+    <div class="gc-metric-card__top"><i class="bi bi-file-earmark-check gc-metric-card__icon"></i></div>
+    <p class="gc-metric-card__value"><span class="gc-metric-card__value-error" aria-hidden="true">&mdash;</span><span class="visually-hidden">No se pudo cargar</span></p>
+    <h3 class="gc-metric-card__title">Declaraciones por aprobar</h3>
+    <div class="gc-metric-card__foot">
+      <button type="button" class="erp-btn erp-btn-secondary gc-metric-card__retry"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Reintentar</button>
+    </div>
+  </article>
+</div>`
+    },
+    snippet:`<div class="gc-card-grid gc-card-grid--3">
+  <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="false">
+    <div class="gc-metric-card__top">
+      <i class="bi bi-file-earmark-check gc-metric-card__icon" aria-hidden="true"></i>
+    </div>
+    <p class="gc-metric-card__value">1.663</p>
+    <h3 class="gc-metric-card__title">Declaraciones por aprobar</h3>
+    <div class="gc-metric-card__foot">
+      <a class="gc-metric-card__link" href="incluir.php?agregar=15">Ir al detalle <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </article>
+</div>`,
+    variants:[
+      {
+        name:"Antetítulo de sección (gc-kicker)",
+        description:"Etiqueta corta en mayúsculas sobre el título del bloque: dice de qué trata la sección sin robarle jerarquía al encabezado. Es tipografía pura, sin caja, así que sirve a cualquier pantalla que agrupe contenido en bloques con nombre. Va SIEMPRE dentro del contenedor del encabezado (gc-dashboard__section-head o gc-dashboard__panel-head), nunca suelto delante del h2.",
+        snippet:`<div class="gc-dashboard__section-head">
+  <div>
+    <p class="gc-kicker">Enfoque principal</p>
+    <h2 class="gc-dashboard__section-title">Pendientes que requieren acción inmediata</h2>
+  </div>
+  <p class="gc-dashboard__stamp">Última actualización: hoy &middot; 10:35 a.&nbsp;m.</p>
+</div>`
+      },
+      {
+        name:"Indicador del mes (en línea)",
+        description:"Variante --inline: el rótulo a la izquierda y la cifra a la derecha, con chips que explican qué se está midiendo. Fondo blanco y borde estándar, sin acento: no pide acción, informa.",
+        snippet:`<div class="gc-card-grid gc-card-grid--3">
+  <article class="gc-metric-card gc-metric-card--inline" aria-busy="false">
+    <div class="gc-metric-card__inline-head">
+      <div class="gc-metric-card__label">
+        <i class="bi bi-box-seam" aria-hidden="true"></i>
+        <h3 class="gc-metric-card__title">Cantidades gestionadas &middot; kg</h3>
+      </div>
+      <p class="gc-metric-card__value gc-metric-card__value--inline">0,00</p>
+    </div>
+    <div class="gc-chip-row">
+      <span class="gc-chip">Cantidad conciliada</span>
+      <span class="gc-chip">Unidad: kg</span>
+    </div>
+    <div class="gc-metric-card__foot"></div>
+  </article>
+</div>`
+      },
+      {
+        name:"Acceso rápido con contador",
+        description:"Fila compacta para navegar a un módulo, con el total de registros en una píldora. Es un enlace real: el contador es información, no un botón. Cuando el módulo no tiene contador, la píldora queda en guion y aria-hidden.",
+        snippet:`<div class="gc-card-grid gc-card-grid--2">
+  <a class="gc-quick-access" href="incluir.php?agregar=1">
+    <i class="bi bi-people" aria-hidden="true"></i>
+    <span class="gc-quick-access__name">Mis clientes</span>
+    <span class="gc-quick-access__count">1.976</span>
+    <i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i>
+  </a>
+  <a class="gc-quick-access" href="incluir.php?agregar=6">
+    <i class="bi bi-key" aria-hidden="true"></i>
+    <span class="gc-quick-access__name">Mis permisos</span>
+    <span class="gc-quick-access__count gc-quick-access__count--empty" aria-hidden="true">&mdash;</span>
+    <i class="bi bi-chevron-right gc-quick-access__arrow" aria-hidden="true"></i>
+  </a>
+</div>`
+      },
+      {
+        name:"Tarjeta de herramienta",
+        description:"Atajo alto a una herramienta transversal (informes, tutoriales, indicadores). Icono arriba, nombre en medio y llamada a la acción abajo; el bloque entero es el área de clic.",
+        snippet:`<div class="gc-card-grid gc-card-grid--2">
+  <a class="gc-tool-card" href="incluir.php?agregar=58">
+    <i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i>
+    <strong class="gc-tool-card__name">Informes Generales</strong>
+    <span class="gc-tool-card__cta">Acceder <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+  </a>
+  <a class="gc-tool-card" href="incluir.php?agregar=59">
+    <i class="bi bi-play-btn" aria-hidden="true"></i>
+    <strong class="gc-tool-card__name">Videos Tutoriales</strong>
+    <span class="gc-tool-card__cta">Acceder <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+  </a>
+</div>`
+      },
+      {
+        name:"Ayuda contextual en la tarjeta",
+        description:"Cuando el rótulo no basta para saber qué se cuenta, la tarjeta lleva el botón de ayuda estándar con popover. Se abre con foco, así que funciona con teclado; el contenido es explicación, nunca información imprescindible.",
+        snippet:`<div class="gc-card-grid gc-card-grid--3">
+  <article class="gc-metric-card gc-metric-card--accent-verde" aria-busy="false">
+    <div class="gc-metric-card__top">
+      <i class="bi bi-journal-text gc-metric-card__icon" aria-hidden="true"></i>
+      <button type="button" class="gc-help-button" data-bs-toggle="popover"
+              data-bs-content="Documentos cuyo estado sigue siendo Pendiente: ninguna de sus filas se ha realizado todavía."
+              aria-label="Ayuda sobre Manifiestos por realizar">?</button>
+    </div>
+    <p class="gc-metric-card__value">50</p>
+    <h3 class="gc-metric-card__title">Manifiestos por realizar</h3>
+    <div class="gc-metric-card__foot">
+      <a class="gc-metric-card__link" href="incluir.php?agregar=18">Ir al detalle <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </article>
+</div>`
+      }
+    ],
+    example:"ejemplos/tablero-inicio.html"
+  }
+
 ];
