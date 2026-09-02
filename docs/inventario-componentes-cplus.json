@@ -975,26 +975,26 @@
       "view": "mostrarTipoVehiculos.php",
       "agregar": 137,
       "moduleName": "Tipos de vehículos",
-      "formLocation": "cplus/views/mostrarTipoVehiculos.php:118-167 (form inline #adicionar, no modal); encabezado vía include cplus/views/partials/form-head.php:123",
+      "formLocation": "cplus/views/mostrarTipoVehiculos.php:116-170 (form inline #adicionar, no modal); encabezado vía include cplus/views/partials/page-head.php:122 (medido 2026-09-02)",
       "components": [
         {
           "componentId": "campo-texto",
-          "evidence": "cplus/views/mostrarTipoVehiculos.php:134-137 label.form-label + input#nombre.form-control",
+          "evidence": "cplus/views/mostrarTipoVehiculos.php:126-131 label.form-label + input#nombre.form-control + div.gc-help",
           "confidence": "alta"
         },
         {
           "componentId": "textarea",
-          "evidence": "cplus/views/mostrarTipoVehiculos.php:142-143 <textarea name=\"descripcion\" class=\"form-control\">",
+          "evidence": "cplus/views/mostrarTipoVehiculos.php:133-136 <textarea name=\"descripcion\" class=\"form-control\">",
           "confidence": "alta"
         },
         {
           "componentId": "select-simple",
-          "evidence": "cplus/views/mostrarTipoVehiculos.php:147-150 <select id=\"activo\" class=\"form-select\"> (nativo, opciones Activo/Inactivo); también select#f_tv_estado:191 en filtros",
+          "evidence": "cplus/views/mostrarTipoVehiculos.php:138-143 <select id=\"activo\" class=\"form-select\"> (nativo, opciones Activo/Inactivo); el select#f_tv_estado de los filtros superiores se retiró el 2026-09-02 al pasar el módulo al embudo por columna",
           "confidence": "alta"
         },
         {
           "componentId": "encabezado-formulario",
-          "evidence": "cplus/views/mostrarTipoVehiculos.php:123 include partials/form-head.php -> cplus/views/partials/form-head.php:43-68 header.gc-form-head, div.gc-form-logo, div.gc-history con 'Creado por'/'Último cambio'",
+          "evidence": "cplus/views/mostrarTipoVehiculos.php:122 include partials/page-head.php -> header.gc-page-header; form-head.php se retiró del repo con la corrección del encabezado único (2026-08-28). El formulario hereda $phVariante='listado' de la línea 101, así que hoy NO pinta la retícula de auditoría",
           "confidence": "alta"
         },
         {
@@ -1003,7 +1003,7 @@
           "confidence": "alta"
         }
       ],
-      "notes": "Vista con FORMULARIO real de alta/edición (no solo tabla). El select de filtros (#f_tv_estado, línea 191) es el mismo patrón select-simple, no se duplicó como componente aparte. No se encontró: campo-password, campo-fecha/hora, seleccion-busqueda, multiselect (simple o con búsqueda), radio-si-no, checkbox, carga-pdf/logo, campo-validado (solo hay .gc-help como texto de ayuda estático línea 138, sin .gc-help-button/popover), campo-horario, acordeón ni pestañas internas."
+      "notes": "Vista con FORMULARIO real de alta/edición (no solo tabla). La tarjeta de filtros superiores, con su select#f_tv_estado, se retiró el 2026-09-02: el módulo filtra por el embudo de columna (cplus/js/entities/tipo_vehiculos/datatable.js:37-47). No se encontró: campo-password, campo-fecha/hora, seleccion-busqueda, multiselect (simple o con búsqueda), radio-si-no, checkbox, carga-pdf/logo, campo-validado (solo hay .gc-help como texto de ayuda estático línea 131, sin .gc-help-button/popover), campo-horario, acordeón ni pestañas internas."
     },
     {
       "view": "mostrarInformeGeneral.php",

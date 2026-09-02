@@ -3963,7 +3963,7 @@ include 'cplus/views/partials/page-head.php';
       { module: "Elementos de chequeo", agregar: 117, file: "cplus/views/mostrarElementosChequeo.php", detail: "Cierre gc-review-footer / gc-review-box con el checkbox data-gc-review-check y, dentro de gc-review-actions, el submit Guardar más los hidden _csrf, accion, id y agregar=117 (líneas 117-133)" },
       { module: "Sucursales", agregar: 127, file: "cplus/views/mostrarSucursales.php", detail: "Mismo par de botones, pero el contenedor es div.row SIN mt-3 y con la clase extra form-actions (scoped a #formularioRegistrar en cplus/scss/_sucursales.scss:16 y :29-31); en solo lectura se sustituye por el enlace Volver (líneas 747-781)" },
       { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Botonera dentro de gc-review-actions, con el submit gateado por el checkbox de revisión (líneas 1059-1075)" },
-      { module: "Tipos de vehículos", agregar: 137, file: "cplus/views/mostrarTipoVehiculos.php", detail: "Caso mayoritario, solo Guardar: div.row.mt-3 > div.col-md-12.text-end con el submit erp-btn erp-btn-primary rotulado por la variable PHP y los hidden _csrf, id y agregar=137; todo el bloque va bajo el gate empty($ver) (líneas 153-164)" },
+      { module: "Tipos de vehículos", agregar: 137, file: "cplus/views/mostrarTipoVehiculos.php", detail: "Pie solo en crear y editar (gate empty($ver)): div.row.mt-3 > div.col-md-12.text-end como último bloque del form, con Cancelar (a.erp-btn.erp-btn-secondary con bi-x-lg hacia incluir.php?agregar=137) ANTES del submit erp-btn erp-btn-primary y los hidden _csrf, id y agregar=137 dentro del mismo bloque (líneas 152-166). En modo Ver el formulario NO lleva pie: el Volver se pinta fuera del encabezado y encima de la tarjeta por el parcial cplus/views/partials/back-link.php (líneas 115-118), el mismo patrón en los siete módulos de la revision de QA. Riesgos 143 sigue poniendolo al pie: divergencia abierta el 2026-09-02" },
       { module: "Residuos inventariables", agregar: 126, file: "cplus/views/mostrarResiduosInventariables.php", detail: "Variante degradada: el Cancelar usa erp-btn sin erp-btn-secondary y sin icono (líneas 631-638)" },
       { module: "Riesgos", agregar: 143, file: "cplus/views/mostrarRiesgos.php", detail: "Mismo contenedor con SOLO el submit Guardar y los ocultos _csrf, id y agregar=143, sin enlace Cancelar; el gate añade además $canCreate (líneas 175-186)" },
     ],
@@ -4921,8 +4921,7 @@ ACCIONES_EMBALAJES.push({ tipo: 'export', icono: 'bi-download',
     catalogExamples: ["boton","campo-texto","campo-fecha","select-simple","seleccion-busqueda","tabla-listado"],
     implementations: [
       { module: "Clientes", agregar: 130, file: "cplus/views/mostrarClientes.php", detail: "Grid completa de 6 filtros: Nombre/ID, Clasificación interna, Asesor, Estado, Categoría y Ubicación, con botón Buscar (líneas 54-114)" },
-      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Variante por GET a incluir.php con id de colapso propio usuariosFiltersCollapse (líneas 1084-1137)" },
-      { module: "Tipos de vehículo", agregar: 137, file: "cplus/views/mostrarTipoVehiculos.php", detail: "Versión mínima de dos filtros; usa label.form-label en vez de .form-group (líneas 170-204)" }
+      { module: "Usuarios", agregar: 105, file: "cplus/views/mostrarUsuarios.php", detail: "Variante por GET a incluir.php con id de colapso propio usuariosFiltersCollapse (líneas 1084-1137)" }
     ],
     group:"Listados",
     name:"Filtros de listado",
@@ -5751,7 +5750,8 @@ include 'cplus/views/partials/page-head.php';
       { module: "Sucursales", agregar: 127, file: "cplus/js/entities/sucursales/datatable.js", detail: "Mezcla los dos tipos: Nombre e ID con filter text, y Código, Tipo, Estado y Clasificación interna con filter select (líneas 107-112)" },
       { module: "Roles", agregar: 124, file: "cplus/js/entities/roles/datatable.js", detail: "Columna Estado declarativa con type: 'badge' dentro del mismo bloque de columnas declarativas del listado (línea 41)" },
       { module: "Zonas", agregar: 118, file: "cplus/js/entities/zonas/datatable.js", detail: "Cuatro columnas select alimentadas por buildOptions sobre los filtros que devuelve el BFF (líneas 78-87)" },
-      { module: "Residuos inventariables", agregar: 126, file: "cplus/js/entities/residuos_inventariables/datatable.js", detail: "Cinco columnas select consecutivas, el caso más denso del patrón (líneas 121-151)" }
+      { module: "Residuos inventariables", agregar: 126, file: "cplus/js/entities/residuos_inventariables/datatable.js", detail: "Cinco columnas select consecutivas, el caso más denso del patrón (líneas 121-151)" },
+      { module: "Tipos de vehículos", agregar: 137, file: "cplus/js/entities/tipo_vehiculos/datatable.js", detail: "Caso mínimo: Nombre con filter text y Estado con filter select y filterOptions Activo/Inactivo escritas en el propio archivo, sin ida al BFF por catálogo (líneas 37-47); sustituyó a la tarjeta de filtros superiores del módulo" }
     ],
     group:"Listados",
     name:"Filtros por columna (embudo)",
