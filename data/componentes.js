@@ -69,7 +69,7 @@ window.GC_COMPONENTS = [
     group:"Campos",
     name:"Campo contraseña",
     description:"Input protegido que mantiene el valor oculto. Los requisitos se muestran como resumen compacto con opción Ver requisitos para no sobrecargar el formulario.",
-    use:"Usarlo para claves y configuraciones sensibles. No incluye ver/ocultar porque por política interna la contraseña debe verse siempre como caracteres ocultos. La regla la aplica data-gc-rule=\"password\": gc-validate.js la resuelve contra Validators.password (mínimo 8 caracteres y al menos un número, una minúscula y una mayúscula).",
+    use:"Usarlo para claves y configuraciones sensibles. No incluye ver/ocultar porque por política interna la contraseña debe verse siempre como caracteres ocultos. Excepción documentada: el login (entrada Pantalla pública) sí lo lleva, con la clase general <code>.gc-password-control</code> + <code>.gc-password-toggle</code> de <code>cplus/scss/_gc-forms.scss</code>; fuera del login no usarla sin decisión explícita. La regla la aplica data-gc-rule=\"password\": gc-validate.js la resuelve contra Validators.password (mínimo 8 caracteres y al menos un número, una minúscula y una mayúscula).",
     avoid:"No repetir el listado completo debajo de cada campo cuando existan Nueva clave y Confirmar clave; documentarlo una sola vez en la sección.",
     deps:"Bootstrap CSS + Bootstrap JS Collapse + grinclic-forms.css. En producción la validación la ejecutan cplus/js/core/gc-validate.js y cplus/js/core/validators.js.",
     accessibility:"El botón Ver requisitos controla el panel colapsable con aria-controls y aria-expanded, y la tarjeta lleva aria-label. El estado de error marca is-invalid en el control y añade un div.gc-help.is-invalid, y el resumen recibe la clase is-error.",
@@ -430,7 +430,7 @@ window.GC_COMPONENTS = [
     avoid:"No usarlo para listas de dos o tres opciones. No copiar el markup del snippet a una vista CPlus: producción no entiende data-gc-option, data-gc-search-input ni data-gc-search-label.",
     deps:"Bootstrap CSS + Bootstrap JS + grinclic-forms.css + grinclic-forms.js",
     accessibility:"El disparador es un button con aria-haspopup=\"listbox\" y el aria-expanded que alterna Bootstrap; dentro del menú las flechas recorren los .dropdown-item y Enter selecciona. Limitaciones reales: el menú no declara role=\"listbox\" ni role=\"option\", al abrir el foco se queda en el disparador en vez del buscador, el cambio de selección no se anuncia por región viva y el label no nombra al button, así que añádele aria-label.",
-    note:"<strong>Sin verificar.</strong> El contrato del snippet (<code>data-gc-option</code>, <code>data-gc-search-input</code>, <code>data-gc-search-label</code> e input hidden) solo lo entiende el JS del visor. Producción escribe <code>&lt;select class=\"form-select\" data-gc-search-select&gt;</code> y <code>cplus/js/core/gc-search-select.js</code> genera el dropdown: wrapper <code>dropdown gc-search-select</code>, disparador <code>form-select text-start dropdown-toggle gc-select-trigger</code> y menú <code>dropdown-menu gc-search-menu w-100</code>, sin input hidden.",
+    note:"<strong>Sin verificar.</strong> El contrato del snippet (<code>data-gc-option</code>, <code>data-gc-search-input</code>, <code>data-gc-search-label</code> e input hidden) solo lo entiende el JS del visor. Producción escribe <code>&lt;select class=\"form-select\" data-gc-search-select&gt;</code> y <code>cplus/js/core/gc-search-select.js</code> genera el dropdown: wrapper <code>dropdown gc-search-select</code>, disparador <code>form-select text-start dropdown-toggle gc-select-trigger</code> y menú <code>dropdown-menu gc-search-menu w-100</code>, sin input hidden. Estado disabled productivo (2026-08-12, <code>_gc-forms.scss</code>): el trigger deshabilitado toma el gris de <code>.form-select:disabled</code> y lleva <code>pointer-events:none</code>, así el click cae al wrapper <code>.gc-search-select</code> y la vista puede colgar ahí el aviso del porqué del bloqueo — Usuarios lo hace con la trazabilidad en <code>cplus/js/lib/SignatureManager.js</code>.",
     states:{
       enabled:`<div class="mb-3 gc-search-select" data-gc-search-select>
   <label class="form-label" for="departamento_value_demo">Departamento</label>
@@ -5877,79 +5877,79 @@ include 'cplus/views/partials/page-head.php';
     id:"pantalla-publica-auth",
     catalogExamples: [],
     implementations: [
-      { module: "Login CPlus · genérica", agregar: null, file: "cplus/views/auth/_generico.php", detail: "Se entra directo, sin link: fondo fotográfico, degradado de marca, hexágonos, logo GRINCLIC y acción en el primario verde" },
-      { module: "Login CPlus · por link de cliente", agregar: null, file: "cplus/views/auth/_cliente.php", detail: "Llega con `lk` y trae el logo de la empresa: lienzo claro y neutro, título y bajada, campos con ver/ocultar, acción gris e isotipo GRINCLIC al pie (diseño v2)" },
-      { module: "Login CPlus", agregar: null, file: "cplus/scss/_gc-auth.scss", detail: "Las dos envolventes. La tarjeta es .form-card--auth de _components.scss: aquí solo vive lo que ninguna clase previa resolvía" },
+      { module: "Login CPlus · genérica", agregar: null, file: "cplus/views/auth/_generico.php", detail: "Se entra directo, sin link: foto de ambiente con velo verde plano, logo GRINCLIC, usuario y contraseña ocultos con ojo dentro del campo, acción en el primario y legales con el isotipo al pie (diseño V3)" },
+      { module: "Login CPlus · por link de cliente", agregar: null, file: "cplus/views/auth/_cliente.php", detail: "Llega con `lk` y trae el logo de la empresa: lienzo gris vectorial, título y bajada, mismos campos, acción gris e isotipo GRINCLIC al pie (diseño V3)" },
+      { module: "Login CPlus", agregar: null, file: "cplus/scss/_gc-auth.scss", detail: "Las dos envolventes. La tarjeta es .form-card--auth de _components.scss (600px) y el ojo del campo es .gc-password-control de _gc-forms.scss: aquí solo vive lo que ninguna clase previa resolvía" },
     ],
     group:"Bloques",
     name:"Pantalla pública (gc-auth)",
-    description:"Envolvente de las pantallas a las que se entra sin sesión. Son <strong>dos diseños</strong> con la misma estructura: <code>.gc-auth</code> lleva la marca completa cuando se entra directo, y <code>.gc-auth--cliente</code> apaga el escenario cuando la pantalla llega por link y muestra el logo de una empresa, para que ese logo sea el protagonista.",
-    use:"Usarla en pantallas públicas y centradas, sin chrome ni menú: login y, cuando se migren, recuperación de contraseña y el acceso auxiliar de operadores logísticos. La tarjeta interior es siempre <code>.form-card--auth</code>.",
-    avoid:"No poner el logo del cliente directamente sobre el lienzo: muchos PNG traen fondo blanco horneado y se recortan como un parche. No usar el primario verde como acción en la variante de cliente: 9 de cada 12 logos de cliente son verdes y competiría con ellos. No meter dentro un <code>&lt;footer&gt;</code>: <code>cplus/scss/_base.scss:55</code> tiene un selector global <code>footer { background-color: var(--grinc-primary) }</code> que lo pinta de verde; para los textos legales existe <code>.gc-auth__legal</code>.",
-    deps:"Solo cplus/css/main.min.css y un script propio de menos de 4 KB. Deliberadamente NO carga el bundle vendor (357 KB), ni los 22 scripts core, ni la fuente de iconos (134 KB): una pantalla pública que hace POST clásico no los necesita.",
+    description:"Envolvente de las pantallas a las que se entra sin sesión. Son <strong>dos escenarios</strong> sobre una <strong>misma tarjeta</strong>: <code>.gc-auth</code> lleva la foto de ambiente con velo verde cuando se entra directo, y <code>.gc-auth--cliente</code> apaga el escenario cuando la pantalla llega por link y muestra el logo de una empresa, para que ese logo sea el protagonista.",
+    use:"Usarla en pantallas públicas y centradas, sin chrome ni menú: login y, cuando se migren, recuperación de contraseña y el acceso auxiliar de operadores logísticos. La tarjeta interior es siempre <code>.form-card--auth</code>; los campos de credencial van dentro de <code>.gc-password-control</code> con su <code>.gc-password-toggle</code>; el enlace de recuperación va en <code>.gc-auth__recovery</code>, entre los campos y la acción, y la acción centrada en <code>.gc-auth__actions</code>.",
+    avoid:"No poner el logo del cliente directamente sobre el lienzo: muchos PNG traen fondo blanco horneado y se recortan como un parche. No usar el primario verde como acción en la variante de cliente: 9 de cada 12 logos de cliente son verdes y competiría con ellos. No meter dentro un <code>&lt;footer&gt;</code>: <code>cplus/scss/_base.scss:55</code> tiene un selector global <code>footer { background-color: var(--grinc-primary) }</code> que lo pinta de verde; para los textos legales existe <code>.gc-auth__legal</code>. No volver a los hexágonos, al desenfoque ni al degradado de la v2: V3 los retiró.",
+    deps:"Solo cplus/css/main.min.css, un script propio de menos de 4 KB y cuatro vectores más una foto: logo-grinclic.svg (4 KB), isotipo-grinclic.svg (2 KB), login-bg-cliente.svg (3 KB) y login-bg-desktop.webp (99 KB, la misma foto que antes pesaba 1,25 MB más 609 KB en móvil). Deliberadamente NO carga el bundle vendor (357 KB), ni los 22 scripts core, ni la fuente de iconos (134 KB): una pantalla pública que hace POST clásico no los necesita.",
     verified: true,
-    accessibility:"Los hexágonos y el fondo son ornamento: van con aria-hidden y alt vacío. Medido en Chrome el 2026-08-26 sobre la implementación real de la variante de cliente: título 7,23:1, label 10,35:1, texto legal 6,03:1, enlaces 7,23:1, bajada 4,89:1 y botón gris 7,23:1 con texto blanco; todos sobre el mínimo AA. A 390px la tarjeta cabe sin desborde. La zona del logo reserva 88px de alto fijo para que un tenant con logo apaisado no descuadre la tarjeta.",
-    note:"CUATRO divergencias documentadas, ninguna decidida en silencio. (1) El diseño v2 pide #858584 para la bajada: a 14,4px da 3,69:1 y no alcanza AA, así que se aclara solo un 10% desde $grinc-text y queda en 4,89:1. (2) Los enlaces del párrafo legal van subrayados y en negrita: dentro de un bloque de texto, un enlace que solo se distingue por color no es identificable. (3) Los enlaces se declaran dentro de .gc-auth__shell porque cplus/scss/_layout.scss repite a { color: white } SIN acotar a ningún padre en cinco media queries (:214, :219, :235, :256, :269), lo que en cualquier viewport de 1400px o menos deja blancos los enlaces de todas las vistas cplus — defecto preexistente, aquí solo se neutraliza. (4) La entrada campo-password de este catálogo dice que la contraseña debe verse siempre oculta; el login vivo trae el botón de ver/ocultar y ambas variantes lo conservan con aria-pressed. En la variante de cliente el diseño v2 va más lejos y oculta también el usuario empresarial, que en GRINCLIC es una credencial y no un nombre. · SOBRE ESTOS DOS PREVIEWS: son la pantalla real con cuatro sustituciones de catálogo, porque la biblioteca es file:// y no tiene ni PHP ni los assets de cplus. El logo del cliente sale de assets/logo-demo.svg en vez de includes/verlogo.php; el logo GRINCLIC de assets/logo-grinclic.svg; el fondo de la genérica es la variante móvil (609 KB) en vez de la de escritorio (1,25 MB), que en una ficha no se nota; y los campos del captcha, la alerta y el aviso de ambiente no se pintan porque son condicionales del servidor. El snippet copiable de abajo sí trae las rutas de producción. Los estilos son el espejo de assets/grinclic-forms.css, compilado desde el mismo SCSS.",
+    accessibility:"El fondo es ornamento: va con aria-hidden y alt vacío. Los dos ojos llevan <code>aria-label</code> y <code>aria-pressed</code>, y el script los actualiza al alternar. Contrastes de la implementación real, calculados el 2026-09-08 sobre los tokens compilados: título y enlaces grises 7,23:1, label 10,35:1, bajada 4,95:1, legal 6,03:1, enlace naranja 4,70:1, botón primario 4,62:1 con texto blanco, botón gris 7,23:1; el icono del ojo 3,65:1 (componente de interfaz, mínimo 3:1). Todos sobre el mínimo AA. A 390px la tarjeta ocupa el ancho, el enlace de recuperación pasa a la izquierda y la acción al 100 %. La zona del logo reserva 88px de alto fijo para que un tenant con logo apaisado no descuadre la tarjeta.",
+    note:"CINCO divergencias respecto al V3 entregado, ninguna decidida en silencio (decisiones del 2026-09-08). (1) La bajada pide #7a7a7a y el legal #7b7b7b: dan 4,29:1 y 4,23:1 y no alcanzan AA, así que se derivan de los tokens ($grinc-text aclarado un 10 %, $grinc-muted oscurecido un 14 %). (2) El botón de la genérica pide #3e9836 ($grinc-green, el verde de controles); la acción primaria estándar de CPlus es erp-btn-primary y se conserva con el tamaño V3. (3) Los enlaces de la genérica piden $grinc-orange; se conserva $grinc-cta-dark, el naranja de enlace ya medido. (4) El zip de cliente pone el logo del cliente también en el pie; se conserva el isotipo GRINCLIC, como en el zip genérico y en v2. (5) El logo GRINCLIC se pide a 150px de ancho y el del cliente a 127px; aquí esos anchos son el tope, y manda la zona de 88px de alto porque los logos reales van de 150x150 a 216x122. · Los enlaces se declaran dentro de .gc-auth__shell porque cplus/scss/_layout.scss repite a { color: white } SIN acotar a ningún padre en cinco media queries (:214, :219, :235, :256, :269), lo que en cualquier viewport de 1400px o menos deja blancos los enlaces de todas las vistas cplus — defecto preexistente, aquí solo se neutraliza. · La entrada campo-password de este catálogo dice que la contraseña debe verse siempre oculta; en el login V3 los DOS campos son credenciales ocultas con ojo, en ambas pantallas: el usuario empresarial en GRINCLIC es una credencial, no un nombre. · SOBRE ESTOS DOS PREVIEWS: son la pantalla real con tres sustituciones de catálogo, porque la biblioteca es file:// y no tiene ni PHP ni los assets de cplus. El logo del cliente sale de assets/logo-demo.svg en vez de includes/verlogo.php; los vectores y la foto están copiados en assets/auth-*; y los campos del captcha, la alerta y el aviso de ambiente no se pintan porque son condicionales del servidor. El ojo del visor es estático (la biblioteca no carga login.js); en producción lo mueve cplus/js/auth/login.js por data-gc-login-ver-*. El snippet copiable de abajo sí trae las rutas de producción. Los estilos son el espejo de assets/grinclic-forms.css, extraído del main.css compilado.",
     stateOrder:["generica","cliente"],
     stateLabels:{
-      generica:"GENÉRICA — se entra directo a <code>login.php</code>, sin link. La marca ocupa la pantalla y la acción va en el primario verde.",
-      cliente:"POR LINK DE CLIENTE — la pantalla llega con <code>lk</code> y trae el logo de la empresa. El escenario se apaga y la acción pasa a gris para no competir con ese logo."
+      generica:"GENÉRICA — se entra directo a <code>login.php</code>, sin link. Foto de ambiente con velo verde plano, logo GRINCLIC y la acción en el primario.",
+      cliente:"POR LINK DE CLIENTE — la pantalla llega con <code>lk</code> y trae el logo de la empresa. Lienzo gris vectorial, título y bajada, y la acción pasa a gris para no competir con ese logo."
     },
     states:{
       generica:`<main class="gc-auth">
   <img class="gc-auth__bg" src="assets/auth-bg-generica.webp" alt="" aria-hidden="true">
   <div class="gc-auth__overlay" aria-hidden="true"></div>
 
-  <div class="gc-auth__decor gc-auth__decor--arriba" aria-hidden="true">
-    <img src="assets/auth-hexagono-arriba.svg" alt="">
-  </div>
-  <div class="gc-auth__decor gc-auth__decor--abajo" aria-hidden="true">
-    <img src="assets/auth-hexagono-abajo.svg" alt="">
-  </div>
-
   <div class="gc-auth__shell">
     <div class="form-card form-card--auth">
 
       <div class="gc-auth__logo-zone">
-        <img class="gc-auth__logo" src="assets/logo-grinclic.svg" alt="Grinclic">
+        <img class="gc-auth__logo" src="assets/auth-logo-grinclic.svg" alt="Grinclic">
       </div>
+      <h1 class="visually-hidden">Iniciar sesión</h1>
 
       <form action="validar.php" method="POST" autocomplete="off" novalidate onsubmit="return false;">
         <div class="mb-3">
           <label for="gc-demo-user" class="form-label"><span class="gc-required">*</span>Usuario empresarial</label>
-          <input type="text" class="form-control" id="gc-demo-user" name="user" required autocomplete="username" autocapitalize="off" spellcheck="false">
-        </div>
-
-        <div class="mb-2">
-          <label for="gc-demo-pass" class="form-label"><span class="gc-required">*</span>Contraseña</label>
-          <div class="input-group">
-            <input type="password" class="form-control" id="gc-demo-pass" name="pass" required autocomplete="current-password">
-            <button type="button" class="erp-btn erp-btn-secondary" aria-label="Mostrar contraseña" aria-pressed="false">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>
+          <div class="gc-password-control">
+            <input type="password" class="form-control" id="gc-demo-user" name="user" required autocomplete="username" autocapitalize="off" spellcheck="false">
+            <button type="button" class="gc-password-toggle" aria-label="Mostrar usuario empresarial" aria-pressed="false" data-gc-password-toggle="#gc-demo-user" data-gc-password-label="usuario empresarial">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>
             </button>
           </div>
         </div>
 
-        <div class="d-grid mb-3">
-          <button type="submit" class="erp-btn erp-btn-primary" name="btnir" value="1">Iniciar sesión</button>
+        <div class="mb-2">
+          <label for="gc-demo-pass" class="form-label"><span class="gc-required">*</span>Contraseña</label>
+          <div class="gc-password-control">
+            <input type="password" class="form-control" id="gc-demo-pass" name="pass" required autocomplete="current-password">
+            <button type="button" class="gc-password-toggle" aria-label="Mostrar contraseña" aria-pressed="false" data-gc-password-toggle="#gc-demo-pass">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>
+            </button>
+          </div>
         </div>
 
-        <div class="text-center mb-4">
-          <a href="paginas/vista_recuperarClave.php">¿Olvidaste tu contraseña?</a>
+        <div class="gc-auth__recovery">
+          <a href="paginas/vista_recuperarClave.php">¿Olvidaste la contraseña?</a>
+        </div>
+
+        <div class="gc-auth__actions">
+          <button type="submit" class="erp-btn erp-btn-primary" name="btnir" value="1">Iniciar sesión</button>
         </div>
       </form>
 
-      <div class="gc-auth__legal text-center">
-        <p class="small text-muted mb-2">Grinclic Software. Todos los derechos reservados, prohibida su reproducción total o parcial de los contenidos y bases de datos.</p>
-        <p class="small text-muted mb-2">Al ingresar al sistema estará aprobando <a href="https://grinclic.com/terminosycondiciones.php" target="_blank" rel="noopener noreferrer">Términos y condiciones</a> y <a href="https://grinclic.com/politicadeprivacidad.php" target="_blank" rel="noopener noreferrer">Política de Protección y Tratamiento de Datos Personales</a> de Misresiduos S.A.S.</p>
-        <p class="small text-muted mb-0"><a href="https://app.grinclic.com" target="_blank" rel="noopener noreferrer">app.grinclic.com</a> · Copyright © 2018 - 2026</p>
+      <div class="gc-auth__legal">
+        <img class="gc-auth__isotipo" src="assets/auth-isotipo-grinclic.svg" alt="">
+        <p>Todos los derechos reservados.<br>Prohibida su reproducción total o parcial de los contenidos y bases de datos.</p>
+        <p>Al ingresar al sistema estará aprobando <a href="https://grinclic.com/terminosycondiciones.php" target="_blank" rel="noopener noreferrer">Términos y condiciones</a> y <a href="https://grinclic.com/politicadeprivacidad.php" target="_blank" rel="noopener noreferrer">Política de Protección y Tratamiento de Datos Personales</a> de Misresiduos S.A.S.</p>
+        <p>Copyright © 2018 - 2026</p>
       </div>
 
     </div>
   </div>
 </main>`,
       cliente:`<main class="gc-auth gc-auth--cliente">
-  <img class="gc-auth__bg" src="assets/auth-bg-cliente.png" alt="" aria-hidden="true">
+  <img class="gc-auth__bg" src="assets/auth-bg-cliente.svg" alt="" aria-hidden="true">
 
   <div class="gc-auth__shell">
     <div class="form-card form-card--auth">
@@ -5964,74 +5964,99 @@ include 'cplus/views/partials/page-head.php';
       <form action="validar.php" method="POST" autocomplete="off" novalidate onsubmit="return false;">
         <div class="mb-3">
           <label for="gc-demo-user-cli" class="form-label"><span class="gc-required">*</span>Usuario empresarial</label>
-          <div class="input-group">
+          <div class="gc-password-control">
             <input type="password" class="form-control" id="gc-demo-user-cli" name="user" required autocomplete="username" autocapitalize="off" spellcheck="false">
-            <button type="button" class="erp-btn erp-btn-secondary" aria-label="Mostrar usuario empresarial" aria-pressed="false">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>
+            <button type="button" class="gc-password-toggle" aria-label="Mostrar usuario empresarial" aria-pressed="false" data-gc-password-toggle="#gc-demo-user-cli" data-gc-password-label="usuario empresarial">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>
             </button>
           </div>
         </div>
 
         <div class="mb-2">
           <label for="gc-demo-pass-cli" class="form-label"><span class="gc-required">*</span>Contraseña</label>
-          <div class="input-group">
+          <div class="gc-password-control">
             <input type="password" class="form-control" id="gc-demo-pass-cli" name="pass" required autocomplete="current-password">
-            <button type="button" class="erp-btn erp-btn-secondary" aria-label="Mostrar contraseña" aria-pressed="false">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>
+            <button type="button" class="gc-password-toggle" aria-label="Mostrar contraseña" aria-pressed="false" data-gc-password-toggle="#gc-demo-pass-cli">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>
             </button>
           </div>
         </div>
 
-        <div class="text-end mb-4">
+        <div class="gc-auth__recovery">
           <a href="paginas/vista_recuperarClave.php">¿Olvidaste la contraseña?</a>
         </div>
 
-        <div class="d-flex justify-content-center mb-4">
+        <div class="gc-auth__actions">
           <button type="submit" class="gc-auth__submit" name="btnir" value="1">Iniciar sesión</button>
         </div>
       </form>
 
-      <div class="gc-auth__legal text-center">
-        <p class="mb-3"><img class="gc-auth__isotipo" src="assets/auth-isotipo-grinclic.svg" alt="Grinclic"></p>
+      <div class="gc-auth__legal">
+        <img class="gc-auth__isotipo" src="assets/auth-isotipo-grinclic.svg" alt="Grinclic">
         <p>Todos los derechos reservados.<br>Prohibida su reproducción total o parcial de los contenidos y bases de datos.</p>
         <p>Al ingresar al sistema estará aprobando <a href="https://grinclic.com/terminosycondiciones.php" target="_blank" rel="noopener noreferrer">Términos y condiciones</a> y <a href="https://grinclic.com/politicadeprivacidad.php" target="_blank" rel="noopener noreferrer">Política de Protección y Tratamiento de Datos Personales</a> de Misresiduos S.A.S.</p>
-        <p class="mb-0">Copyright © 2018 - 2026</p>
+        <p>Copyright © 2018 - 2026</p>
       </div>
 
     </div>
   </div>
 </main>`
     },
-    snippet:`<!-- GENÉRICA: marca completa. Para la de cliente: .gc-auth--cliente en el
-     <main>, un solo <img class="gc-auth__bg">, sin overlay ni hexagonos, y
-     .gc-auth__submit en vez de .erp-btn-primary. -->
+    snippet:`<!-- Pantalla GENÉRICA (cplus/views/auth/_generico.php). Rutas de producción. -->
 <main class="gc-auth">
-  <picture>
-    <source media="(max-width: 767.98px)" srcset="cplus/img/auth/login-bg-mobile.webp" type="image/webp">
-    <img class="gc-auth__bg" src="cplus/img/auth/login-bg-desktop.webp" alt="" aria-hidden="true">
-  </picture>
+  <img class="gc-auth__bg" src="cplus/img/auth/login-bg-desktop.webp" alt="" aria-hidden="true" fetchpriority="high">
   <div class="gc-auth__overlay" aria-hidden="true"></div>
-
-  <div class="gc-auth__decor gc-auth__decor--arriba" aria-hidden="true">
-    <img src="cplus/img/auth/hexagono-arriba.svg" alt="">
-  </div>
 
   <div class="gc-auth__shell">
     <div class="form-card form-card--auth">
-      <!-- Zona segura: alto fijo y fondo blanco OPACO, para que el logo se lea
-           igual sea cual sea su color y su relacion de aspecto. En la variante
-           de cliente el src es includes/verlogo.php?k=BASE64_DEL_NOMBRE_DE_BASE
-           (base64 del nombre de base, NO del lk de la URL, que es el NIT). -->
+
       <div class="gc-auth__logo-zone">
-        <img class="gc-auth__logo" src="images/grinclic-logo-verde.png" alt="Grinclic">
+        <img class="gc-auth__logo" src="cplus/img/auth/logo-grinclic.svg" alt="Grinclic">
       </div>
 
-      <!-- Accion principal: erp-btn-primary en la generica, .gc-auth__submit
-           en la de cliente. Los legales van en .gc-auth__legal, NUNCA en un
-           <footer>. -->
+      <form action="validar.php" method="POST" autocomplete="off" novalidate data-gc-login-form>
+        <div class="mb-3">
+          <label for="gc-login-user" class="form-label"><span class="gc-required">*</span>Usuario empresarial</label>
+          <div class="gc-password-control">
+            <input type="password" class="form-control" id="gc-login-user" name="user" required autocomplete="username" data-gc-login-filtrar data-gc-login-usuario>
+            <button type="button" class="gc-password-toggle" aria-label="Mostrar usuario empresarial" aria-pressed="false" data-gc-login-ver-usuario>
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><!-- ojo --></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <label for="gc-login-pass" class="form-label"><span class="gc-required">*</span>Contraseña</label>
+          <div class="gc-password-control">
+            <input type="password" class="form-control" id="gc-login-pass" name="pass" required autocomplete="current-password" data-gc-login-filtrar data-gc-login-clave>
+            <button type="button" class="gc-password-toggle" aria-label="Mostrar contraseña" aria-pressed="false" data-gc-login-ver-clave>
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><!-- ojo --></svg>
+            </button>
+          </div>
+          <div class="gc-help is-warning mt-1" role="status" hidden data-gc-login-mayusculas>Mayúsculas activas.</div>
+        </div>
+
+        <div class="gc-auth__recovery">
+          <a href="paginas/vista_recuperarClave.php">¿Olvidaste la contraseña?</a>
+        </div>
+
+        <div class="gc-auth__actions">
+          <!-- Genérica: erp-btn-primary. Por link de cliente: class="gc-auth__submit". -->
+          <button type="submit" class="erp-btn erp-btn-primary" name="btnir" value="1" data-gc-login-enviar>Iniciar sesión</button>
+        </div>
+      </form>
+
+      <div class="gc-auth__legal">
+        <img class="gc-auth__isotipo" src="cplus/img/auth/isotipo-grinclic.svg" alt="Grinclic">
+        <!-- Los legales van aquí, NUNCA en un <footer>. -->
+      </div>
     </div>
   </div>
-</main>`
+</main>
+
+<!-- Por link de cliente: <main class="gc-auth gc-auth--cliente"> con
+     <img class="gc-auth__bg" src="cplus/img/auth/login-bg-cliente.svg"> y, sobre el
+     formulario, <h1 class="gc-auth__titulo"> y <p class="gc-auth__bajada">. -->`
   }
   ,
   {

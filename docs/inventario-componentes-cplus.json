@@ -1280,6 +1280,38 @@
         }
       ],
       "notes": "Los <div class=\"gc-help\"> del formulario (mostrarBodegas.php:229,237) son solo texto de ayuda estatico bajo el campo, SIN boton '?' ni popover (compara con el patron real 'campo-validado' en design-library/data/componentes.js:874-888, que exige gc-help-button + data-bs-toggle=\"popover\"); por eso NO se reporta como 'campo-validado'. El atributo data-gc-validate del <form> (linea 209) activa validacion de requeridos (gc-validate.js) pero no es en si un componente visual del catalogo. No hay campo-fecha/hora, checkbox, radio, upload, multiselect, acordeon ni pestanas en este modulo; la tabla/DataTable (id=\"informe\") no cuenta como componente del catalogo."
+    },
+    {
+      "view": "auth/_generico.php",
+      "agregar": null,
+      "moduleName": "Login CPlus (genérica, diseño V3)",
+      "formLocation": "cplus/views/auth/_generico.php (form data-gc-login-form); lógica en cplus/js/auth/login.js; envolvente cplus/scss/_gc-auth.scss",
+      "components": [
+        {
+          "componentId": "pantalla-publica-auth",
+          "evidence": "cplus/views/auth/_generico.php:30-154 (main.gc-auth, .form-card--auth, .gc-auth__recovery, .gc-auth__actions, .gc-auth__legal)"
+        },
+        {
+          "componentId": "campo-password",
+          "evidence": "cplus/views/auth/_generico.php:66-99 (.gc-password-control + .gc-password-toggle en usuario y contraseña)"
+        }
+      ]
+    },
+    {
+      "view": "auth/_cliente.php",
+      "agregar": null,
+      "moduleName": "Login CPlus (por link de cliente, diseño V3)",
+      "formLocation": "cplus/views/auth/_cliente.php (form data-gc-login-form); lógica en cplus/js/auth/login.js; envolvente cplus/scss/_gc-auth.scss",
+      "components": [
+        {
+          "componentId": "pantalla-publica-auth",
+          "evidence": "cplus/views/auth/_cliente.php:32-157 (main.gc-auth.gc-auth--cliente, .gc-auth__titulo, .gc-auth__bajada, .gc-auth__submit)"
+        },
+        {
+          "componentId": "campo-password",
+          "evidence": "cplus/views/auth/_cliente.php:69-102 (.gc-password-control + .gc-password-toggle en usuario y contraseña)"
+        }
+      ]
     }
   ]
 }
